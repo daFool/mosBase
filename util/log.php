@@ -94,8 +94,8 @@ class log {
 			$s = "$s1) $s2) returning chain;";
 			$st = $this->pdoPrepare($s, $this->db);
 			$this->pdoExecute($st, $d);
-			$r = $st->fetch(PDO::FETCH_ASSOC);
-			$this->chain=$r["chain"]??False;
+			$r = $st->fetch(\PDO::FETCH_ASSOC);
+			$this->sequence=$r["chain"]??False;
 		}                
     }
 	

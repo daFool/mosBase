@@ -7,13 +7,14 @@ final class malliTest extends TestCase {
         $conf = new mosBase\config();
         $conf->init(getenv("mosBaseIni"));
         $dbconf = $conf->get("Database");
-    	$pdo = new PDO($dbconf["dsn"], $dbconf["user"], $dbconf["password"]);
+    	$pdo = new mosBase\database($dbconf["dsn"], $dbconf["user"], $dbconf["password"]);
     	$log = new mosBase\log("AUDIT", $pdo);
     	$log->log("system","startup",__FILE__,__FUNCTION__,__LINE__, "AUDIT");
         $keys = array("primary"=>array("id"), "foo"=>array("intti", "merkkijono"));
         $taulu = "testi";
         $malli = new mosBase\malli($pdo, $log, $taulu, $keys);
         $this->assertInstanceOf(mosBase\malli::class, $malli);
+		$log->log("system", "end",__FILE__, __FUNCTION__,__LINE__, "AUDIT");
         return $malli;
     }
     
@@ -70,7 +71,7 @@ final class malliTest extends TestCase {
 		$conf = new mosBase\config();
         $conf->init(getenv("mosBaseIni"));
         $dbconf = $conf->get("Database");
-    	$pdo = new PDO($dbconf["dsn"], $dbconf["user"], $dbconf["password"]);
+    	$pdo = new mosBase\database($dbconf["dsn"], $dbconf["user"], $dbconf["password"]);
     	$log = new mosBase\log("AUDIT", $pdo);
     	$log->log("system","startup",__FILE__,__FUNCTION__,__LINE__, "AUDIT");
         $keys = array("primary"=>array("id"), "foo"=>array("intti", "merkkijono"));
@@ -90,7 +91,7 @@ final class malliTest extends TestCase {
 		$tulos=$malli->tableFetch(0, 50, "merkkijono asc", false);
 		$this->assertEquals(50, $tulos["riveja"]);
 		$tulos=$malli->tableFetch(0,20, "merkkijono asc", array("value"=>5));
-		$this->assertEquals(1, $tulos["riveja"]);
+		$this->assertEquals(5, $tulos["riveja"]);
 		$tulos=$malli->tableFetch(22,50, false, false);
 		$this->assertEquals(28, $tulos["riveja"]);
     	$tulos=$malli->tableFetch(0,20, "merkkijono asc", array("value"=>"Merkkijono 3%"));
