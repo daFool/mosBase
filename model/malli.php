@@ -68,7 +68,7 @@ class malli
      * @param string $hakukentat Millä kentillä haetaan
      * @uses Malli2::clear()
      * */
-    public function __construct($db, $log, $taulu, $avaimet, $hakutaulu="", $hakukentat=array()) {
+    public function __construct($db, $log, $taulu, $avaimet, $hakutaulu="", $hakukentat=array()) {            
         $this->db = $db;
         $this->log = $log;
         $this->clear();
@@ -280,14 +280,18 @@ class malli
      * @uses mosBase\log::log()
      * 
      * */
-    public function tableFetch($start, $length, $order, $search, $where=false) {        
+    public function tableFetch($start, $length, $order, $search, $where=False) {        
         $d=array();
         $kuka = isset($_SESSION["user"]) ??"system";
         $ds = false;
         $d = array();     
         $tulos = array("lkm"=>0, "rivit"=>array(), "riveja"=>0, "filtered"=>0);
-            
-        $s = "select count(*) as lkm from ".$this->hakutaulu;
+
+        if($where!==False) {           
+            $s = sprintf("select count(*) as lkm from %s where %s",$this->hakutaulu, $where);
+        }
+        else
+            $s = "select count(*) as lkm from ".$this->hakutaulu;
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st, $d);
         if($st->rowCount()==0) {
@@ -304,11 +308,25 @@ class malli
         if(isset($search["value"]) && $search["value"]!="") {
             $v=$search["value"];
             $so=" where (";
-           $fmt="";
+            $fmt="";
+            $dtype = $this->db->getDatabase();
             foreach($this->hakukentat as $kentta) {
                 switch($kentta["tyyppi"]) {
                     case "string":
-                        $so.=sprintf("%s%s like %s", $fmt, $kentta["nimi"], $this->db->quote($v, \PDO::PARAM_STR));
+                        if($dtype!="pgsql") {
+                            $op = "like";
+                            if(!preg_match("/.*[%_].*/", $v)) {
+                                $v="%".$v."%";
+                            }
+                        } else {
+                            $op = "ilike";
+                            if(preg_match("/.*[.*?+].*/", $v)) {
+                                $op = "~*";
+                            } elseif(!preg_match("/.*[%_].*/",$v)) {                                
+                                $v="%".$v."%";
+                            }    
+                        }
+                        $so.=sprintf("%s%s %s %s", $fmt, $kentta["nimi"], $op, $this->db->quote($v, \PDO::PARAM_STR));
                         $fmt=" or ";          
                         break;
                     case "int":
@@ -352,6 +370,8 @@ class malli
             $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,"ERROR");
             return $tulos;
         }
+        $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,"DEBUG");
+        
         $rivit = $st->fetchAll(\PDO::FETCH_ASSOC);
                               
         $tulos["rivit"]=$rivit;
