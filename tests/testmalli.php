@@ -9,19 +9,21 @@ final class malliTest extends TestCase {
         $dbconf = $conf->get("Database");
     	$pdo = new mosBase\database($dbconf["dsn"], $dbconf["user"], $dbconf["password"]);
     	$log = new mosBase\log("AUDIT", $pdo);
+		$log->setMarker("testCreateInstance");
     	$log->log("system","startup",__FILE__,__FUNCTION__,__LINE__, "AUDIT");
         $keys = array("primary"=>array("id"), "foo"=>array("intti", "merkkijono"));
         $taulu = "testi";
         $malli = new mosBase\malli($pdo, $log, $taulu, $keys);
         $this->assertInstanceOf(mosBase\malli::class, $malli);
 		$log->log("system", "end",__FILE__, __FUNCTION__,__LINE__, "AUDIT");
-        return $malli;
+        $log->setMarker();		
+		return $malli;
     }
     
     /**
 	 * @depends testCreateInstance
 	 * */
-	public function testUpsert($malli) {
+	public function testUpsert($malli) {		
 		$data = array("luoja"=>"mauri.sahlberg@accountor.fi",
 					  "intti"=>5,
 					  "merkkijono"=>"viisi",
