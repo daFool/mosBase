@@ -1,4 +1,7 @@
-drop table if exists log;
+drop table if exists log cascade;
+drop sequence if exists log_chain;
+create sequence log_chain start 1;
+
 create table log (
         id      serial primary key,
         koska   timestamp with time zone default now(),
@@ -9,7 +12,9 @@ create table log (
         rivi    int,
         luokka  varchar(255),
         mista   inet,
-        selain  varchar(255)
+        selain  varchar(255),
+		chain 	int default nextval('log_chain'),
+		marker	varchar(255)
         );
 comment on table log is 'Järjestelmän logitaulu.';
 comment on column log.id is 'Login juokseva järjestysnumero / avain';
@@ -22,6 +27,10 @@ comment on column log.rivi is 'Mikä lähdetiedoston rivi on generoinut viestin'
 comment on column log.luokka is 'Mihin luokkaan: DEBUG/AUDIT/ERROR tms tapahtuma kuuluu';
 comment on column log.mista is 'Mistä ip-osoitteesta viesti on peräisin?';
 comment on column log.selain is 'Mikä selainstringi on aiheuttanut viestin?';
+comment on column log.chain is 'Mihin logi-sekvenssiin tämä logiviesti kuuluu?';
+comment on column log.marker is 'Mihin logi-kokonaisuuteen tämä logivieisti kuuluu?';
+
+comment on sequence log_chain is 'Logisekvenssien avaimet';
 
         
         

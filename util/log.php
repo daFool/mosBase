@@ -22,6 +22,16 @@ class log {
 	 * */
 	private $levels;
     
+	/**
+	 * @var int $sequence Mihin logisekvenssiin tämä logirivi kuuluu
+	 * */
+	private $sequence;
+	
+	/**
+	 * @var string(255) $marker Mihin logikokonaisuuteen tämä logorivi kuuluu
+	 * */
+	private $marker;
+	
 	use util;
 	
 	/**
@@ -40,6 +50,8 @@ class log {
         $this->levels = array("FATAL"=>0, "ERROR"=>1, "INFO"=>2, "AUDIT"=>3, "DEBUG"=>4);
         $this->level=$this->levels[$level]??4;
 		$this->db=$db;
+		$this->sequence=False;
+		$this->marker=False;
     }
     
       /**
@@ -62,6 +74,16 @@ class log {
 						"luokka"=>$taso);
 			$s1 = "insert into log (kuka, viesti, tiedosto, tarkenne, rivi, luokka";
 			$s2 = " values (:kuka, :viesti, :tiedosto, :tarkenne, :rivi, :luokka";
+			if($this->marker!=False) {
+				$s1.=", marker";
+				$s2.=", :marker";
+				$d["marker"]=$this->marker;
+			}
+			if($this->sequence!=False) {
+				$s1.=", chain";
+				$s2.=", :chain";
+				$d["chain"]=$this->sequence;
+			}
 			$res = $this->selainTiedot();
 			if($res===True) {
 				$s1.=", mista, selain";
@@ -69,11 +91,20 @@ class log {
 				$d["mista"]=isset($res["ip"]) ? $res["ip"] : _("Tuntematon");
 				$d["selain"]=isset($res["selain"]) ? $res["selain"] : _("Tuntematon");									   
 			}
-			$s = "$s1) $s2);";
+			$s = "$s1) $s2) returning chain;";
 			$st = $this->pdoPrepare($s, $this->db);
 			$this->pdoExecute($st, $d);
-		}
-                
+			$r = $st->fetch(PDO::FETCH_ASSOC);
+			$this->chain=$r["chain"]??False;
+		}                
     }
+	
+	/**
+	 * Asettaa logimarkkerin
+	 * @param string(255) $m Asetettava markkeri
+	 **/
+	public function setMarker($m=False) {
+		$this->marker=$m;
+	}
 }
 ?>
