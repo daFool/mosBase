@@ -211,6 +211,7 @@ class malli
      * @uses mosBase\log::log()
      * */
     public function upsert($data) {
+        $insert=false;
         if($this->exists($data)) {
             $r = $this->getKey($data);
             $s = "update {$this->taulu} set muokattu=now()";
@@ -235,7 +236,11 @@ class malli
                 $s2.=", :$key";
                 $d[$key]=$data[$key];
             }
-            $s = $s1.")".$s2.");";
+            $insert=true;
+            if($this->db->getDatabase()=='pgsql')
+                $s = $s1.")".$s2.") returning *;";
+            else
+                $s = $s1.")".$s2.");";
         }
             
         $st = $this->pdoPrepare($s, $this->db);
@@ -243,6 +248,12 @@ class malli
         $m = sprintf(_("%s (%s)"), $s, serialize($d));
         $this->log->log("SYSTEM", $m, __FILE__,__METHOD__,__LINE__, "DEBUG");
         $this->log->log("SYSTEM", _("Onnistui"), __FILE__,__METHOD__,__LINE__, "DEBUG");
+         if($insert && $this->db->getDatabase()=='pgsql') {
+            $r = $st->fetch(\PDO::FETCH_ASSOC);            
+            $this->data=$r;
+            $this->empty=false;
+            return true;
+        }
         $tulos = $this->exists($data);
         if($tulos!==true) {
             $this->log->log("SYSTEM", _("WTF? käsiteltyä riviä ei ole!"),__FILE__,__METHOD__,
