@@ -114,6 +114,7 @@ class malli
     protected function getKey($data, $monesko=-1) {
         $i=0;
         $nullrex="/\w*NULL\w*/i";
+        
         foreach($this->avaimet as $avain=>$sarakkeet) {
             $w = "";
             $d = array();
