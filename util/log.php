@@ -91,7 +91,10 @@ class log {
 				$d["mista"]=isset($res["ip"]) ? $res["ip"] : _("Tuntematon");
 				$d["selain"]=isset($res["selain"]) ? $res["selain"] : _("Tuntematon");									   
 			}
-			$s = "$s1) $s2) returning chain;";
+			if($this->db->getDatabase()=='pgsql')
+				$s = "$s1) $s2) returning chain;";
+			else
+				$s = "$s1) $s2);";
 			$st = $this->pdoPrepare($s, $this->db);
 			$this->pdoExecute($st, $d);
 			$r = $st->fetch(\PDO::FETCH_ASSOC);

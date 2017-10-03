@@ -115,7 +115,7 @@ class session {
                 $logouturl="$baseurl";
             header("Location: $logouturl");
         }   
-
+        
         if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"]===false) {
             if(isset($_SERVER["MELLON_NAME_ID"])) {
                 $groups=$_SERVER["MELLON_http://schemas_xmlsoap_org/claims/Group"];
