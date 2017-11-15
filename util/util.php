@@ -13,8 +13,8 @@ trait util {
      * */
     public function pdoError($o, $s) {
         $error = $o->errorInfo();
-        $msg = sprintf(_("Tietokantaoperaatio '$s' (%s, %s, %s) epäonnistui!\n"),
-                        $error[0], $error[1], $error[2]);
+		$m = _("Tietokantaoperaatio '%s' (%s, %s, %s) epäonnistui!\n");
+	    $msg = sprintf($m,$s, $error[0]??"Unknown", $error[1]??"Unknown", $error[2]??"Unkown");
         throw new \Exception($msg);
     }
 	/**
@@ -86,5 +86,17 @@ trait util {
         $k = $merkki*floor(($koko*100 / pow(1000,$indeksi))) /100;
         return $k.$liitteet[$indeksi];
     }
+	
+	/**
+	 * Onko integeri?
+	 * @param string $str Testattava merkkijono
+	 * @return bool
+	 * */
+	function isInt($str) {
+		if(preg_match("/^(0)|(-?[123456789][0-9]+)$/",$str)) {
+			return True;
+		}
+		return False;
+	}
 }
 ?>
