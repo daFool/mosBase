@@ -1,5 +1,11 @@
 <?php
 /**
+ * @author Mauri "mos" Sahlberg <mauri.sahlberg@gmail.com>
+ * @copyright Copyright (c) 2017 Mauri Sahlberg, Helsinki
+ * @license MIT
+ * @license https://opensource.org/licenses/MIT
+ */
+/**
  * Kielivalinnat
  * */
 namespace mosBase;

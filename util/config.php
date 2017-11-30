@@ -1,5 +1,11 @@
 <?php
 /**
+ * @author Mauri "mos" Sahlberg <mauri.sahlberg@gmail.com>
+ * @copyright Copyright (c) 2017 Mauri Sahlberg, Helsinki
+ * @license MIT
+ * @license https://opensource.org/licenses/MIT
+ */
+/**
  * Konfiguraation käsittely
  * */
 namespace mosBase;
@@ -22,7 +28,7 @@ class config {
 	 * @param string $tiedosto Tiedostonimi, mistä konfiguraatio luetaan
 	 * */
 	
-	protected function lue($tiedosto) {
+	protected function lue(string $tiedosto) {
 		$this->data = parse_ini_file($tiedosto, true, INI_SCANNER_NORMAL);
 		return $this->data;
 	}
@@ -31,11 +37,16 @@ class config {
 	 * Hakee yhden osa-alueen konfiguraation
 	 * @param string $alue Osa-alue, jonka konfiguraatio halutaan
 	 * */
-	public function get($alue) {
+	public function get(string $alue) {
 		return $this->data[$alue] ?? False;
 	}
 	
-	public function init($tiedosto) {
+	/**
+	 * Konfiguraation käsittely
+	 * 
+	 * Kutsuu asetustiedoston parseria. Asettaa luokka-loaderin ja aikavyöhykkeen.
+	 * */
+	public function init(string $tiedosto) {
 		if($this->lue($tiedosto)===False) {
 			throw new Exception(sprintf(_("Konfiguraation %s lataaminen epäonnistui."),$tiedosto));
 		}
