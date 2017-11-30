@@ -341,6 +341,18 @@ class malli
                         $so.=sprintf("%s%s %s %s", $fmt, $kentta["nimi"], $op, $this->db->quote($v, \PDO::PARAM_STR));
                         $fmt=" or ";          
                         break;
+                    case "stringA":
+                        if($dtype!="pgsql")
+                            continue;
+                        $op = "ilike";
+                        if(preg_match("/.*[.*?+].*/", $v)) {
+                            $op = "~*";
+                        } elseif(!preg_match("/.*[%_].*/",$v)) {                                
+                            $v="%".$v."%";
+                        }
+                        $so.=sprintf("%s%s %s ANY (%s)", $fmt, $this->db->quote($v, \PDO::PARAM_STR), $op, $kentta["nimi"]);
+                        $fmt=" or ";
+                        break;
                     case "int":
                         if(is_integer($v)) {
                             $so.=sprintf("%s%s = %s", $fmt, $kentta["nimi"], $this->db->quote($v, \PDO::PARAM_INT));
