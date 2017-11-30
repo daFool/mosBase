@@ -1,5 +1,11 @@
 <?php
 /**
+ * @author Mauri "mos" Sahlberg <mauri.sahlberg@gmail.com>
+ * @copyright Copyright (c) 2017 Mauri Sahlberg, Helsinki
+ * @license MIT
+ * @license https://opensource.org/licenses/MIT
+ */
+/**
  * Tietokantaan logaaminen
  * */
 namespace mosBase;
@@ -8,6 +14,8 @@ namespace mosBase;
  * Peruslogi
  *
  * Olettaa, että tietokannassa on taulu, joka on luotu sql/taulu_log.sql-skriptalla.
+ * Taulussa on "chain", jolla voidaan tunnistaa mihinkä kokonaisuuteen logiviesti kuuluu. Tämän
+ * taulun sekvensseistä on kaksi varianttia, normivariantti ja BDR-klusterivariantti.
  * */
 
 class log {
@@ -46,8 +54,8 @@ class log {
 	 * @param string $level Haluttu logaustaso
 	 * @param object $db PDO-kantaonbjekti
 	 * */
-    public function __construct($level, $db) {
-        $this->levels = array("FATAL"=>0, "ERROR"=>1, "INFO"=>2, "AUDIT"=>3, "DEBUG"=>4);
+    public function __construct(string $level, database $db) {
+        $this->levels = array("FATAL"=>0, "ERROR"=>1, "INFO"=>2, "AUDIT"=>3, "DEBUG"=>4, "DEBUGMB"=>5);
         $this->level=$this->levels[$level]??4;
 		$this->db=$db;
 		$this->sequence=False;
@@ -67,7 +75,7 @@ class log {
      * @return void Kuolee mikäli logaus epäonnistuu
      * */
     
-    public function log($kuka, $viesti, $tiedosto, $mika, $rivi,  $taso="DEBUG") {                        
+    public function log(string $kuka, string $viesti, string $tiedosto, string $mika, int $rivi, string $taso="AUDIT") {                        
         if(isset($this->levels[$taso]) && $this->levels[$taso]<=$this->level) {
 			$d=array("kuka"=>$kuka, "viesti"=>$viesti, "tiedosto"=>$tiedosto,
 					 "tarkenne"=>$mika, "rivi"=>$rivi,
@@ -85,7 +93,7 @@ class log {
 				$d["chain"]=$this->sequence;
 			}
 			$res = $this->selainTiedot();
-			if($res===True) {
+			if($res["tulos"]===True) {
 				$s1.=", mista, selain";
 				$s2.=", :mista, :selain";
 				$d["mista"]=isset($res["ip"]) ? $res["ip"] : _("Tuntematon");
@@ -106,7 +114,7 @@ class log {
 	 * Asettaa logimarkkerin
 	 * @param string(255) $m Asetettava markkeri
 	 **/
-	public function setMarker($m=False) {
+	public function setMarker($m=False) : void {
 		$this->marker=$m;
 	}
 }

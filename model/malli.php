@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Mauri "mos" Sahlberg <mauri.sahlberg@accountor.fi>
- * @copyright Copyright (c) 2017 Accountor Systems Oy
+ * @author Mauri "mos" Sahlberg <mauri.sahlberg@gmail.com>
+ * @copyright Copyright (c) 2017 Mauri Sahlberg, Helsinki
  * @license MIT
  * @license https://opensource.org/licenses/MIT
  */
@@ -48,27 +48,33 @@ class malli
     protected $hakukentat; /** @var array $hakukentat Hakukentät **/
     
     /**
-     * @var object $db PDO-objekti tietokannasta
+     * @var database $db PDO-objekti tietokannasta
      * */
     protected $db;
     
     /**
-     * @var object $log mosBase\log objekti tietokantalogaukseen
+     * @var log $log mosBase\log objekti tietokantalogaukseen
      * */
     protected $log;
     
     use util;
     
     /**
-     * @param object $db Tietokannan pdo-objekti
-     * @param object $log Tietokantalogi
+     * Konstruktori
+     *
+     * Jos hakutaulua ei ole määritelty, käytetään itse taulua. Jos hakukenttiä ei ole määritelty, käyttää avaimien
+     * kenttiä hakukenttinä, joiden tyypiksi asettaa kaikille "string".
+     * 
+     * @param database $db Tietokannan pdo-objekti
+     * @param log $log Tietokantalogi
      * @param string $taulu Taulun nimi kannassa
      * @param array $avaimet Mitkä ovat taulun uniikkeja sarakkeita, yksin tai yhdessä. $avaimet[nimi]=array(kentta, kentta)
      * @param string $hakutaulu Mistä taulusta haetaan
      * @param string $hakukentat Millä kentillä haetaan
-     * @uses Malli2::clear()
+     * @uses Malli::clear()
      * */
-    public function __construct($db, $log, $taulu, $avaimet, $hakutaulu="", $hakukentat=array()) {            
+    public function __construct(database $db, log $log, string $taulu, array $avaimet, string $hakutaulu="",
+                                array $hakukentat=array()) {            
         $this->db = $db;
         $this->log = $log;
         $this->clear();
@@ -99,7 +105,7 @@ class malli
     /**
      * Tyhjätään cache
      * */
-    protected function clear() {
+    protected function clear() : void {
         $this->data = array();
         $this->empty=true;
     }
@@ -111,7 +117,7 @@ class malli
      * @return mixed Boolean=false, mikäli ei löytynyt avainta ja array,
      * jossa on where-ehto, positio ja avainsarakkeet arvoineen
      * */
-    protected function getKey($data, $monesko=-1) {
+    protected function getKey(array $data, int $monesko=-1) {
         $i=0;
         $nullrex="/\w*NULL\w*/i";
         
@@ -147,6 +153,7 @@ class malli
         }
         return False;        
     }
+    
     /**
      * Etsii taulusta avaimilla
      * @param array $data Hakuehdot. Yksi hakuehto koostuu $ehto[nimi]=array(arvo, arvo)
@@ -156,7 +163,7 @@ class malli
      * @uses mosBase\util::pdoExecute()
      * @uses mosBase\log::log()
      * */
-    public function exists($data) {        
+    public function exists(array $data) : bool {        
         $found=false;
         $this->clear();
         $j=1;
@@ -171,7 +178,7 @@ class malli
             $this->pdoExecute($st, $d);
             $ds = serialize($data);
             $m=sprintf(_("Testaus %s ({%s})"), $s, $ds);
-            $this->log->log("system", $m, __FILE__, __METHOD__, __LINE__, "DEBUG");
+            $this->log->log("system", $m, __FILE__, __METHOD__, __LINE__, "DEBUGMB");
             $rows = $st->fetchAll(\PDO::FETCH_ASSOC);
             if(count($rows)>1) {
                 return false;
@@ -192,7 +199,7 @@ class malli
      * @param string $column Sarakkeen nimi
      * @return boolean
      * */
-    protected function isKeyColumn($column) {
+    protected function isKeyColumn(string $column) : bool {
         foreach($this->avaimet as $avain=>$sarakkeet) {
             foreach($sarakkeet as $sarake) {
                 if($column==$sarake)
@@ -211,7 +218,7 @@ class malli
      * @uses mosBase\::pdoExecute()
      * @uses mosBase\log::log()
      * */
-    public function upsert($data) {
+    public function upsert(array $data) {
         $insert=false;
         if($this->exists($data)) {
             $r = $this->getKey($data);
@@ -247,8 +254,8 @@ class malli
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st,$d);
         $m = sprintf(_("%s (%s)"), $s, serialize($d));
-        $this->log->log("SYSTEM", $m, __FILE__,__METHOD__,__LINE__, "DEBUG");
-        $this->log->log("SYSTEM", _("Onnistui"), __FILE__,__METHOD__,__LINE__, "DEBUG");
+        $this->log->log("SYSTEM", $m, __FILE__,__METHOD__,__LINE__, "DEBUGMB");
+        $this->log->log("SYSTEM", _("Onnistui"), __FILE__,__METHOD__,__LINE__, "DEBUGMB");
          if($insert && $this->db->getDatabase()=='pgsql') {
             $r = $st->fetch(\PDO::FETCH_ASSOC);            
             $this->data=$r;
@@ -267,7 +274,7 @@ class malli
      * Löytyykö puskurista?
      * @return boolean true jos jotakin löytyy
      * */
-    public function has() {
+    public function has() :bool {
         return !$this->empty;
     }
     
@@ -275,7 +282,7 @@ class malli
      * Data puskurista
      * @return array Puskurin sisältö
      * */
-    public function give() {
+    public function give() : array {
         return $this->data;
     }
     
@@ -292,7 +299,7 @@ class malli
      * @uses mosBase\log::log()
      * 
      * */
-    public function tableFetch($start, $length, $order, $search, $where=False) {        
+    public function tableFetch(int $start, int $length, string $order, string $search, bool $where=False) {        
         $d=array();
         $kuka = isset($_SESSION["user"]) ??"system";
         $ds = false;
@@ -394,7 +401,7 @@ class malli
             $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,"ERROR");
             return $tulos;
         }
-        $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,"DEBUG");
+        $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,"DEBUGMB");
         
         $rivit = $st->fetchAll(\PDO::FETCH_ASSOC);
                               
@@ -442,7 +449,7 @@ class malli
      * @uses mosBase\malli::getKey()
      * @uses mosBase\log::log()
      * */
-    function delete($mika) {                
+    function delete(array $mika) :bool {                
         $s = "delete from {$this->taulu} ";
         $r = $this->getKey($mika);
         if($r!==False) {
@@ -466,7 +473,7 @@ class malli
             $this->log->log("SYSTEM", _("En poista kaikkia rivejä!"), __FILE__, __METHOD__, __LINE__, "FATAL");
             return false;
         }
-        $this->log->log((isset($d["muokkaaja"])??"SYSTEM"), $s.serialize($d),__FILE__,__METHOD__,__LINE__,"INFO");
+        $this->log->log((isset($d["muokkaaja"])??"SYSTEM"), $s.serialize($d),__FILE__,__METHOD__,__LINE__,"DEBUGMB");
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st, $d);
         return True;        
@@ -480,7 +487,7 @@ class malli
      * @uses mosBase\util::pdoPrepare()
      * @uses mosBase\util::pdoExecute()
      * */
-    private function lastMod($where) {
+    private function lastMod(string $where) {
         $s = "select muokattu, muokkaaja from {$this->taulu} ".$where." order by muokattu desc limit 1;";
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st);
@@ -499,7 +506,7 @@ class malli
      * @uses mosBase\util::pdoPrepare
      * @uses mosBase\util::pdoExecute
      * */
-    private function lastInsert($where) {
+    private function lastInsert(string $where) {
         $s = "select luotu, luoja from {$this->taulu} ".$where." order by luoja desc limit 1;";
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st);
