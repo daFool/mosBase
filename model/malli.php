@@ -299,7 +299,7 @@ class malli
      * @uses mosBase\log::log()
      * 
      * */
-    public function tableFetch(int $start, int $length, string $order, array $search, $where=False) {        
+    public function tableFetch(int $start, int $length, string $order, array $search, bool $where=False) {        
         $d=array();
         $kuka = isset($_SESSION["user"]) ??"system";
         $ds = false;
