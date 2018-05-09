@@ -226,6 +226,7 @@ class malli
             if(!isset($data["muokkaaja"]) && isset($data["luoja"])) {
                 $data["muokkaaja"]=$data["luoja"];
             }
+            $d = array();
             foreach($data as $key=>$value) {
                 if($key=="muokattu" || $key=="luoja" || $key=="luotu" || $this->isKeyColumn($key))
                     continue;
