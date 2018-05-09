@@ -1,9 +1,11 @@
 drop table if exists log cascade;
 drop sequence if exists log_chain;
 create sequence log_chain start 1 using bdr;
+drop sequence if exists gl_log_id_seq;
+create sequence gl_log_id_seq start 1 using bdr;
 
 create table log (
-        id      serial primary key,
+        id      bigint default nextval('gl_log_id_seq') primary key,
         koska   timestamp with time zone default now(),
         kuka    varchar(255) default 'system',
         viesti  text,
