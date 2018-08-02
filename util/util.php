@@ -1,9 +1,14 @@
 <?php
 /**
- * @author Mauri "mos" Sahlberg <mauri.sahlberg@gmail.com>
- * @copyright Copyright (c) 2017 Mauri Sahlberg, Helsinki
- * @license MIT
- * @license https://opensource.org/licenses/MIT
+ * Apumetodeita tietokannan käsittelyyn ja vähän muuhunkin
+ *
+ * @category	Util
+ * @package		mosBase
+ * @author 		Mauri "mos" Sahlberg <mauri.sahlberg@gmail.com>
+ * @copyright 	2018 Mauri Sahlberg, Helsinki
+ * @license 	MIT https://opensource.org/licenses/MIT
+ * @link		www.iki.fi/mos
+ *
  */
 /**
  * Kaikille yhteisiä usein toistuvia "ominaisuuksia"
@@ -14,24 +19,24 @@ namespace mosBase;
 trait util {
 	/**
      * Käsittelee pdo-virheen
-     * @param database $o 
+     * @param database/PDOStatement $o 
      * @throws Exception 
      * */
     public function pdoError($o, string $s) : void {
         $error = $o->errorInfo();
 		$m = _("Tietokantaoperaatio '%s' (%s, %s, %s) epäonnistui!\n");
-	    $msg = sprintf($m,$s??"Unknown", $error[0]??"Unknown", $error[1]??"Unknown", $error[2]??"Unkown");
+	    $msg = sprintf($m,$s??_("Ei tiedossa"), $error[0]??_("Ei tiedossa"), $error[1]??_("Ei tiedossa"), $error[2]??_("Ei tiedossa"));
         throw new \Exception($msg);
     }
 	/**
      * SQL-lauseen prepare virheenkäsittelyllä
      * @param object $db PDO-database-objekti
      * @param string $s SQL-lause, joka preparoidaan
-     * @return object PDO::Statement-objekti
+     * @return \PDOStatement PDO::Statement-objekti
      * @uses mosbase\util\pdoError
      * @throws Exception tai oikeammin pdoError heittää poikkeuksen
      * */
-	 public function pdoPrepare(string $s, database $db) {
+	 public function pdoPrepare(string $s, database $db) : \PDOStatement {
         if(!isset($db) || gettype($db)!="object") {
 			$msg = _("Ei tietokantayhteyttä! ");
 			throw new \Exception($msg);

@@ -119,7 +119,7 @@ class session {
                 $logouturl.=urlencode("https://".$this->hostname.$this->baseurl);
             }
             else
-                $logouturl="$baseurl";
+                $logouturl=$this->$baseurl;
             header("Location: $logouturl");
         }   
         

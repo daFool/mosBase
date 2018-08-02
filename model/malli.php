@@ -1,9 +1,12 @@
 <?php
 /**
- * @author Mauri "mos" Sahlberg <mauri.sahlberg@gmail.com>
- * @copyright Copyright (c) 2017 Mauri Sahlberg, Helsinki
- * @license MIT
- * @license https://opensource.org/licenses/MIT
+ * Tietokantarajapinta
+ *
+ * @category    Model
+ * @package     mosBase
+ * @author      Mauri "mos" Sahlberg <mauri.sahlberg@gmail.com>
+ * @copyright   2018 Mauri Sahlberg, Helsinki
+ * @license     MIT https://opensource.org/licenses/MIT
  */
 namespace mosBase;
 /**
@@ -22,28 +25,28 @@ namespace mosBase;
 class malli 
 {
     /**
-     * @var array Rivipuskuri, sisältää viimeiseksi luetun rivin sarakkeet.
+     * @var array $data Rivipuskuri, sisältää viimeiseksi luetun rivin sarakkeet.
      * */
     protected $data;
     /**
-     * @var boolean Onko rivipuskurissa rivi vai ei?
+     * @var boolean $empty Onko rivipuskurissa rivi vai ei?
      * */
     protected $empty; 
     /**
-     * @var string Tietokantataulun nimi.
+     * @var string $taulu Tietokantataulun nimi.
      * */
     protected $taulu;
     /**
-     * @var array Taulukko kenttäjoukkoja, joista kukin joukko kuvaa joko pääavaimen tauluun tai mun uniikin
+     * @var array $avaimet Taulukko kenttäjoukkoja, joista kukin joukko kuvaa joko pääavaimen tauluun tai mun uniikin
      * kombinaation sarakkeita.
      * */
     protected $avaimet;
     /**
-     * @var string Hakutaulu tai -näkymä, jota käytetään tietojen esittämiseen alla olevan tietokantataulun sijaan.
+     * @var string $hakutaulu Hakutaulu tai -näkymä, jota käytetään tietojen esittämiseen alla olevan tietokantataulun sijaan.
      * */
     protected $hakutaulu; 
     /**
-     * @var array Hakutaulun sarakkeet, joista etsittävää arvoa haetaan
+     * @var array $hakukentat Hakutaulun sarakkeet, joista etsittävää arvoa haetaan
      * */
     protected $hakukentat; /** @var array $hakukentat Hakukentät **/
     
@@ -57,7 +60,10 @@ class malli
      * */
     protected $log;
     
-    use util;
+    /**
+     * Käytetään taulun sarakkeiden ominaisuuksien etsimiseen
+     * */
+    use pgsql;
     
     /**
      * Konstruktori
@@ -187,7 +193,16 @@ class malli
                 $r = $this->getKey($data, $j+1);
                 continue;
             }
-            $this->data = $rows[0];
+            $re=$this->hasArrayColumns($st, $rows[0]);
+            if($re!==false) {
+                $s = "select ".$re[0]." from {$this->taulu} $w;";
+                $st = $this->pdoPrepare($s, $this->db);
+                $this->pdoExecute($st, $d);
+                $row = $st->fetch(\PDO::FETCH_ASSOC);
+                $this->data = $this->unpack($row, $re[1]);
+            } else {
+                $this->data = $rows[0];
+            }
             $this->empty = false;
             return true;
         }            
