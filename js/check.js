@@ -7,8 +7,8 @@
  * siitä onko kontrollin tila "validi" vai "epävalidi"
  * */
 function check(kontrolli) {
-    parent = $(kontrolli).parent('div');
-	spani = $(kontrolli).next('span');
+    var parent = $(kontrolli).parent('div');
+	var spani = $(kontrolli).next('span');
     if(!spani.hasClass("glyphicon")) {
         spani=parent.children("span.glyphicon");
     }

@@ -9,6 +9,7 @@
  * @license     MIT https://opensource.org/licenses/MIT
  */
 namespace mosBase;
+
 /**
  * "Abstrakti"-luokka tietokantataulujen käsittelemiseen.
  *
@@ -65,6 +66,24 @@ class malli
      * */
     use pgsql;
     
+    protected const LUOJA='luoja';
+    protected const MUOKKAAJA='muokkaaja';
+    protected const MUOKATTU='muokattu';
+    protected const LUOTU='luotu';
+    public const PGSQL='pgsql';
+    
+    private const LKM="lkm";
+    private const FILTERED="filtered";
+    private const VALUE="value";
+    private const SQLPATTERN='/.*[%_].*/';
+    private const REXPATTERN="/.*[.*?+].*/";
+    private const NIMI='nimi';
+    private const RIVIT='rivi';
+    private const RIVEJA='riveja';
+    
+    public const STRINGI="string";
+    public const STRINGA="stringA";
+    
     /**
      * Konstruktori
      *
@@ -86,21 +105,21 @@ class malli
         $this->clear();
         $this->taulu=$taulu;
         $this->avaimet=$avaimet;
-        if($hakutaulu!="") {
+        if ($hakutaulu!="") {
             $this->hakutaulu=$hakutaulu;
         }
         else {
             $this->hakutaulu=$taulu;
         }
-        if(count($hakukentat)) {
+        if (count($hakukentat)) {
             $this->hakukentat=$hakukentat;
         } else {
             $this->hakukentat=array();
             $i=0;
-            foreach($avaimet as $avain) {
-                foreach($avain as $kentta) {
-                    if(!array_search($kentta, $this->hakukentat)) {
-                        $this->hakukentat[$i++]=array("nimi"=>$kentta, "tyyppi"=>"string");
+            foreach ($avaimet as $avain) {
+                foreach ($avain as $kentta) {
+                    if (!array_search($kentta, $this->hakukentat)) {
+                        $this->hakukentat[$i++]=array(malli::NIMI=>$kentta, "tyyppi"=>"string");
                     }
                 }
             }
@@ -127,20 +146,21 @@ class malli
         $i=0;
         $nullrex="/\w*NULL\w*/i";
         
-        foreach($this->avaimet as $avain=>$sarakkeet) {
+        foreach ($this->avaimet as $avain=>$sarakkeet) {
             $w = "";
             $d = array();
             $i++;
-            if($monesko!=-1 && $i<$monesko)
+            if ($monesko!=-1 && $i<$monesko) {
                 continue;
+            }
             // Onko hakuehdossa tämä avain mukana, vai ei?
             $found=False;
             $all=True;
-            foreach($sarakkeet as $sarake) {
-                if(isset($data[$sarake]) && $data[$sarake]!=="" &&
+            foreach ($sarakkeet as $sarake) {
+                if (isset($data[$sarake]) && $data[$sarake]!=="" &&
                        !preg_match($nullrex, $data[$sarake])) {
                     $d[$sarake]=$data[$sarake];
-                    if($w=="") {
+                    if ($w=="") {
                         $w="where {$sarake}=:{$sarake}";
                     } else {
                         $w.=" and {$sarake}=:{$sarake}";
@@ -152,9 +172,8 @@ class malli
                     break;
                 }
             }
-            if($all && $found) {
-                $r = array("avain"=>$avain, "i"=>$i, "d"=>$d, "w"=>$w);
-                return $r;
+            if ($all && $found) {
+                return array("avain"=>$avain, "i"=>$i, "d"=>$d, "w"=>$w);                
             }
         }
         return False;        
@@ -170,12 +189,11 @@ class malli
      * @uses mosBase\log::log()
      * */
     public function exists(array $data) : bool {        
-        $found=false;
         $this->clear();
         $j=1;
         $r = $this->getKey($data, $j);
         
-        while($r!=False) {
+        while ($r!==false) {
             $w = $r["w"];
             $j = $r["i"];
             $d = $r["d"];
@@ -184,17 +202,17 @@ class malli
             $this->pdoExecute($st, $d);
             $ds = serialize($data);
             $m=sprintf(_("Testaus %s ({%s})"), $s, $ds);
-            $this->log->log("system", $m, __FILE__, __METHOD__, __LINE__, "DEBUGMB");
+            $this->log->log("system", $m, __FILE__, __METHOD__, __LINE__, log::DEBUGMB);
             $rows = $st->fetchAll(\PDO::FETCH_ASSOC);
-            if(count($rows)>1) {
+            if (count($rows)>1) {
                 return false;
             }
-            if(count($rows)==0) {
+            if (count($rows)==0) {
                 $r = $this->getKey($data, $j+1);
                 continue;
             }
-            $re=$this->hasArrayColumns($st, $rows[0]);
-            if($re!==false) {
+            $re=$this->hasArrayColumns($st);
+            if ($re!==false) {
                 $s = "select ".$re[0]." from {$this->taulu} $w;";
                 $st = $this->pdoPrepare($s, $this->db);
                 $this->pdoExecute($st, $d);
@@ -215,10 +233,11 @@ class malli
      * @return boolean
      * */
     protected function isKeyColumn(string $column) : bool {
-        foreach($this->avaimet as $avain=>$sarakkeet) {
-            foreach($sarakkeet as $sarake) {
-                if($column==$sarake)
+        foreach ($this->avaimet as $sarakkeet) {
+            foreach ($sarakkeet as $sarake) {
+                if ($column==$sarake) {
                     return True;
+                }
             }
         }
         return False;
@@ -235,16 +254,17 @@ class malli
      * */
     public function upsert(array $data) {
         $insert=false;
-        if($this->exists($data)) {
+        if ($this->exists($data)) {
             $r = $this->getKey($data);
             $s = "update {$this->taulu} set muokattu=now()";
-            if(!isset($data["muokkaaja"]) && isset($data["luoja"])) {
-                $data["muokkaaja"]=$data["luoja"];
+            if (!isset($data[malli::MUOKKAAJA]) && isset($data[malli::LUOJA])) {
+                $data[malli::MUOKKAAJA]=$data[malli::LUOJA];
             }
             $d = array();
-            foreach($data as $key=>$value) {
-                if($key=="muokattu" || $key=="luoja" || $key=="luotu" || $this->isKeyColumn($key))
+            foreach ($data as $key=>$value) {
+                if ($key==malli::MUOKATTU || $key==malli::LUOJA || $key==malli::LUOTU || $this->isKeyColumn($key)) {
                     continue;
+                }
                 $s.=", $key=:$key";
                 $d[$key]=$value;
             }
@@ -253,35 +273,38 @@ class malli
         } else {
             $s1="insert into {$this->taulu} (luotu ";
             $s2=" values (now()";
-            foreach($data as $key=>$value) {
-                if($key=="luotu" || $key=="muokkaaja" || $key=="muokattu")
+            foreach ($data as $key=>$value) {
+                if ($key==malli::LUOTU || $key==malli::MUOKKAAJA || $key==malli::MUOKATTU) {
                     continue;
+                }
                 $s1.=", $key";
                 $s2.=", :$key";
                 $d[$key]=$data[$key];
             }
             $insert=true;
-            if($this->db->getDatabase()=='pgsql')
+            if ($this->db->getDatabase()=='pgsql') {
                 $s = $s1.")".$s2.") returning *;";
-            else
+            }
+            else {
                 $s = $s1.")".$s2.");";
+            }
         }
             
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st,$d);
         $m = sprintf(_("%s (%s)"), $s, serialize($d));
-        $this->log->log("SYSTEM", $m, __FILE__,__METHOD__,__LINE__, "DEBUGMB");
-        $this->log->log("SYSTEM", _("Onnistui"), __FILE__,__METHOD__,__LINE__, "DEBUGMB");
-         if($insert && $this->db->getDatabase()=='pgsql') {
+        $this->log->log(log::MOSBASE, $m, __FILE__,__METHOD__,__LINE__, log::DEBUGMB);
+        $this->log->log(log::MOSBASE, _("Onnistui"), __FILE__,__METHOD__,__LINE__, log::DEBUGMB);
+         if ($insert && $this->db->getDatabase()==malli::PGSQL) {
             $r = $st->fetch(\PDO::FETCH_ASSOC);            
             $this->data=$r;
             $this->empty=false;
             return true;
         }
         $tulos = $this->exists($data);
-        if($tulos!==true) {
-            $this->log->log("SYSTEM", _("WTF? käsiteltyä riviä ei ole!"),__FILE__,__METHOD__,
-                    __LINE__, "ERROR");
+        if ($tulos!==true) {
+            $this->log->log(log::MOSBASE, _("WTF? käsiteltyä riviä ei ole!"),__FILE__,__METHOD__,
+                    __LINE__, log::ERROR);
         }
         return $tulos;
     }
@@ -317,16 +340,18 @@ class malli
      * */
     public function tableFetch(int $start, int $length, string $order, array $search, $where=False) {        
         $d=array();
-        $kuka = isset($_SESSION["user"]) ??"system";
+        $kuka = isset($_SESSION["user"]) ??"anonymous";
         $ds = false;
-        $d = array();     
-        $tulos = array("lkm"=>0, "rivit"=>array(), "riveja"=>0, "filtered"=>0);
+        $d = array();
+       
+        $tulos = array(malli::LKM=>0, malli::RIVIT=>array(), malli::RIVEJA=>0, malli::FILTERED=>0);
 
-        if($where!==False) {           
+        if ($where!==False) {           
             $s = sprintf("select count(*) as lkm from %s where %s",$this->hakutaulu, $where);
         }
-        else
+        else {
             $s = "select count(*) as lkm from ".$this->hakutaulu;
+        }
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st, $d);
         if($st->rowCount()==0) {
@@ -334,58 +359,59 @@ class malli
         }
             
         $rivi = $st->fetch(\PDO::FETCH_ASSOC);
-        $tulos["lkm"]=$rivi["lkm"];
-        $tulos["filtered"]=$rivi["lkm"];
+        $tulos[malli::LKM]=$rivi[malli::LKM];
+        $tulos[malli::FILTERED]=$rivi[malli::LKM];
             
         $o="";
         $v="";
         $so="";
-        if(isset($search["value"]) && $search["value"]!="") {
-            $v=$search["value"];
+        if(isset($search[malli::VALUE]) && $search[malli::VALUE]!="") {
+            $v=$search[malli::VALUE];
             $so=" where (";
             $fmt="";
             $dtype = $this->db->getDatabase();
-            foreach($this->hakukentat as $kentta) {
-                switch($kentta["tyyppi"]) {
-                    case "string":
-                        if($dtype!="pgsql") {
+            foreach ($this->hakukentat as $kentta) {
+                switch ($kentta["tyyppi"]) {
+                    case malli::STRINGI:
+                        if ($dtype!=malli::PGSQL) {
                             $op = "like";
-                            if(!preg_match("/.*[%_].*/", $v)) {
+                            if (!preg_match(malli::SQLPATTERN, $v)) {
                                 $v="%".$v."%";
                             }
                         } else {
                             $op = "ilike";
-                            if(preg_match("/.*[.*?+].*/", $v)) {
+                            if (preg_match(malli::REXPATTERN, $v)) {
                                 $op = "~*";
-                            } elseif(!preg_match("/.*[%_].*/",$v)) {                                
+                            } elseif (!preg_match(malli::SQLPATTERN,$v)) {                                
                                 $v="%".$v."%";
                             }    
                         }
-                        $so.=sprintf("%s%s %s %s", $fmt, $kentta["nimi"], $op, $this->db->quote($v, \PDO::PARAM_STR));
+                        $so.=sprintf("%s%s %s %s", $fmt, $kentta[malli::NIMI], $op, $this->db->quote($v, \PDO::PARAM_STR));
                         $fmt=" or ";          
                         break;
-                    case "stringA":
-                        if($dtype!="pgsql")
+                    case malli::STRINGA:
+                        if ($dtype!=malli::PGSQL) {
                             continue;
+                        }
                         $op = "ilike";
-                        if(preg_match("/.*[.*?+].*/", $v)) {
+                        if (preg_match(malli::REXPATTERN, $v)) {
                             $op = "~*";
-                        } elseif(!preg_match("/.*[%_].*/",$v)) {                                
+                        } elseif (!preg_match(malli::SQLPATTERN,$v)) {                                
                             $v="%".$v."%";
                         }
-                        $so.=sprintf("%s%s %s ANY (%s)", $fmt, $this->db->quote($v, \PDO::PARAM_STR), $op, $kentta["nimi"]);
+                        $so.=sprintf("%s%s %s ANY (%s)", $fmt, $this->db->quote($v, \PDO::PARAM_STR), $op, $kentta[malli::NIMI]);
                         $fmt=" or ";
                         break;
                     case "int":
-                        if(is_integer($v)) {
-                            $so.=sprintf("%s%s = %s", $fmt, $kentta["nimi"], $this->db->quote($v, \PDO::PARAM_INT));
+                        if (is_integer($v)) {
+                            $so.=sprintf("%s%s = %s", $fmt, $kentta[malli::NIMI], $this->db->quote($v, \PDO::PARAM_INT));
                             $fmt=" or ";          
                         }
                         break;
                     case "date":
                         $pvm = date_create($v);
-                        if($pvm !== False) {
-                            $so.=sprintf("%s%s = %s", $fmt, $kentta["nimi"], $this->db->quote($v, \PDO::PARAM_STR));
+                        if ($pvm !== False) {
+                            $so.=sprintf("%s%s = %s", $fmt, $kentta[malli::NIMI], $this->db->quote($v, \PDO::PARAM_STR));
                             $fmt=" or ";
                         }
                         break;                        
@@ -398,31 +424,31 @@ class malli
             $ds=true;
             if($so!="") {
                 $so.=" and $where";
-            } else
+            } else {
                 $so.=" where $where";
-                
+            }
         }
 
         $s1= "select * from ".$this->hakutaulu;
         $s2 = " limit $length offset $start;";
         $o="";
-        if($order!==false) {
+        if ($order!==false) {
             $o = " order by $order ";                
         }
         $s = "$s1$so$o$s2";
         $m = "$s";
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st,$d);
-        if($st->rowCount()==0) {
-            $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,"ERROR");
+        if ($st->rowCount()==0) {
+            $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,log::ERROR);
             return $tulos;
         }
-        $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,"DEBUGMB");
+        $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,log::DEBUGMB);
         
         $rivit = $st->fetchAll(\PDO::FETCH_ASSOC);
                               
-        $tulos["rivit"]=$rivit;
-        $tulos["riveja"]=count($rivit);
+        $tulos[malli::RIVIT]=$rivit;
+        $tulos[malli::RIVEJA]=count($rivit);
             
         if($ds) {
             $s1 = "select count(*) as lkm from ".$this->hakutaulu;
@@ -431,12 +457,12 @@ class malli
             $this->pdoExecute($st,$d);
             if($st->rowCount()==0) {
                 $m="$s";
-                $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,"ERROR");
+                $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,log::ERROR);
                 return $tulos;
             }
             
             $rivi = $st->fetch(\PDO::FETCH_ASSOC);
-            $tulos["filtered"]=$rivi["lkm"];        
+            $tulos[malli::FILTERED]=$rivi[malli::LKM];        
         }    
         return $tulos;
     }
@@ -450,10 +476,10 @@ class malli
         $s = "select * from $this->taulu;";
         $st=$this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st);
-        if($st->rowCount()==0)
+        if ($st->rowCount()==0) {
             return false;
-        $rivit = $st->fetchAll(\PDO::FETCH_ASSOC);
-        return $rivit;
+        }
+        return $st->fetchAll(\PDO::FETCH_ASSOC);        
     }
     
     /**
@@ -468,31 +494,31 @@ class malli
     function delete(array $mika) :bool {                
         $s = "delete from {$this->taulu} ";
         $r = $this->getKey($mika);
-        if($r!==False) {
+        if ($r!==false) {
             $s.=$r["w"];
             $st = $this->pdoPrepare($s, $this->db);
             $this->pdoExecute($st, $r["d"]);
-            return True;
+            return true;
         }
         $s.="where ";
         $eka=true;
         $d = array();
-        foreach($mika as $avain=>$arvo) {
-            if(!$eka) {
+        foreach ($mika as $avain=>$arvo) {
+            if (!$eka) {
                 $s.=" and ";
             } 
             $eka=false;
             $s.="$avain = :$avain";
             $d[$avain]=$arvo;            
         }
-        if($eka===true) {
-            $this->log->log("SYSTEM", _("En poista kaikkia rivejä!"), __FILE__, __METHOD__, __LINE__, "FATAL");
+        if ($eka===true) {
+            $this->log->log(log::MOSBASE, _("En poista kaikkia rivejä!"), __FILE__, __METHOD__, __LINE__, log::FATAL);
             return false;
         }
-        $this->log->log((isset($d["muokkaaja"])??"SYSTEM"), $s.serialize($d),__FILE__,__METHOD__,__LINE__,"DEBUGMB");
+        $this->log->log((isset($d[malli::MUOKKAAJA])??log::MOSBASE), $s.serialize($d),__FILE__,__METHOD__,__LINE__,log::DEBUGMB);
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st, $d);
-        return True;        
+        return true;        
     }
     
     /**
@@ -503,13 +529,13 @@ class malli
      * @uses mosBase\util::pdoPrepare()
      * @uses mosBase\util::pdoExecute()
      * */
-    private function lastMod(string $where) {
+    protected function lastMod(string $where) {
         $s = "select muokattu, muokkaaja from {$this->taulu} ".$where." order by muokattu desc limit 1;";
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st);
         if($st->rowCount()==1) {
             $r = $st->fetch(\PDO::FETCH_ASSOC);
-            return array($r["muokattu"], $r["muokkaaja"]);
+            return array($r[malli::MUOKATTU], $r[malli::MUOKKAAJA]);
         }
         return false;
     }
@@ -522,13 +548,13 @@ class malli
      * @uses mosBase\util::pdoPrepare
      * @uses mosBase\util::pdoExecute
      * */
-    private function lastInsert(string $where) {
+    protected function lastInsert(string $where) {
         $s = "select luotu, luoja from {$this->taulu} ".$where." order by luoja desc limit 1;";
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st);
         if($st->rowCount()==1) {
             $r = $st->fetch(\PDO::FETCH_ASSOC);
-            return array($r["luotu"], $r["luoja"]);
+            return array($r[malli::LUOTU], $r[malli::LUOJA]);
         }
         return false;
     }

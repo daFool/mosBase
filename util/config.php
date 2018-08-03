@@ -1,9 +1,11 @@
 <?php
 /**
- * @author Mauri "mos" Sahlberg <mauri.sahlberg@gmail.com>
- * @copyright Copyright (c) 2017 Mauri Sahlberg, Helsinki
- * @license MIT
- * @license https://opensource.org/licenses/MIT
+ * Konfiguraatiotiedostojen käsittely
+ * @category 	Util
+ * @package		mosBase	
+ * @author 		Mauri "mos" Sahlberg <mauri.sahlberg@gmail.com>
+ * @copyright 	2018 Mauri Sahlberg, Helsinki
+ * @license 	MIT https://opensource.org/licenses/MIT
  */
 /**
  * Konfiguraation käsittely
@@ -60,11 +62,11 @@ class config {
 		foreach($this->data["ClassDirs"]["dir"] as $classDir) {
 			$fn = "$classDir/$class.php";
 			if(file_exists($fn)) {
-			    $res = require($fn);
-			    return $res==1 ? True : False;
+			    require($fn); // if require fails it kills, no need to check return value here!
+			    return true;
 			}
 		}	
-		return False;
+		return false;
 	}
 }
 ?>

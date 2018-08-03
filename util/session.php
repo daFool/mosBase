@@ -56,6 +56,9 @@ class session {
      * */
     protected $ldapGroup;
     
+    private const ACTIVITY='activity';
+    private const MELLON_NAME_ID="MELLON_NAME_ID";
+    private const LOGGEDIN="loggedin";
     /**
      * Konstruktori
      * @param array $sessionparams Istunnon parametrit
@@ -86,15 +89,15 @@ class session {
         session_start();
         setcookie(session_name(), session_id(), time()+$this->session_timeout, $this->session_cookiepath);
 
-        if(!isset($_SESSION['activity'])) {
-            $_SESSION['activity']=time();
+        if(!isset($_SESSION[session::ACTIVITY])) {
+            $_SESSION[session::ACTIVITY]=time();
             $logout=false;
         }
         else {
-            if (time() - $_SESSION['activity'] > $this->session_timeout) {
+            if (time() - $_SESSION[session::ACTIVITY] > $this->session_timeout) {
                 $logout=true;
             } else {
-                $_SESSION['activity']=time();
+                $_SESSION[session::ACTIVITY]=time();
                 $logout=false;
             }
         }
@@ -114,40 +117,42 @@ class session {
 
             // Finally, destroy the session.
             session_destroy();
-            if(isset($_SERVER["MELLON_NAME_ID"])) {
+            if(isset($_SERVER[session::MELLON_NAME_ID])) {
                 $logouturl=$this->mellonendpoint."/logout?ReturnTo=";
                 $logouturl.=urlencode("https://".$this->hostname.$this->baseurl);
             }
-            else
-                $logouturl=$this->$baseurl;
+            else {
+                $logouturl=$this->baseurl;
+            }
             header("Location: $logouturl");
         }   
         
-        if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"]===false) {
-            if(isset($_SERVER["MELLON_NAME_ID"])) {
-                $groups=$_SERVER["MELLON_http://schemas_xmlsoap_org/claims/Group"];
-                if(preg_match_all($this->mellonrex, $groups, $m, PREG_PATTERN_ORDER)) {
-                    foreach($this->ldapGroup as $group) {
-                        if(array_search($group, $m[1])) {
-                            $_SESSION["loggedin"]=true;
-                            $_SESSION["user"]=explode('\\',$_SERVER["MELLON_NAME_ID"])[1];
-                            break;
-                        }
+        $loggedin=$_SESSION[session::LOGGEDIN]??false;
+        if(!$loggedin && isset($_SERVER[session::MELLON_NAME_ID])) {
+            $groups=$_SERVER["MELLON_http://schemas_xmlsoap_org/claims/Group"];
+            if(preg_match_all($this->mellonrex, $groups, $m, PREG_PATTERN_ORDER)) {
+                foreach($this->ldapGroup as $group) {
+                    if(array_search($group, $m[1])) {
+                        $_SESSION[session::LOGGEDIN]=true;
+                        $_SESSION["user"]=explode('\\',$_SERVER[session::MELLON_NAME_ID])[1];
+                        break;
                     }
-                }            
-            }
-        }     
+                }
+            }            
+        }
     }
     
     /**
      * Onko istuntoa?
      * */
     public function loggedIn($loginUrl=False) {    
-        if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"]===false) {
-            if($loginUrl===False)
+        if(!isset($_SESSION[session::LOGGEDIN]) || $_SESSION[session::LOGGEDIN]===false) {
+            if($loginUrl===False) {
                 header("Location: ".$this->baseurl."/controller/cLogin.php");
-            else
+            }
+            else {
                 header("Location: $loginUrl");
+            }
         die;
     }
 }

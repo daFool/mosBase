@@ -48,6 +48,15 @@ class log {
 	
 	private $db;
 	
+	public const FATAL = 'FATAL';
+	public const ERROR = 'ERROR';
+	public const INFO = 'INFO';
+	public const AUDIT = 'AUDIT';
+	public const DEBUG = 'DEBUG';
+	public const DEBUGMB = 'DEBUGMB';
+	public const MOSBASE = 'mosBase';
+	
+	private const SELAIN = 'selain';
 	/**
 	 * Konstruktori
 	 * Asettaa käytössä olevan logaustason ja käytettävän kannan.
@@ -55,7 +64,7 @@ class log {
 	 * @param object $db PDO-kantaonbjekti
 	 * */
     public function __construct(string $level, database $db) {
-        $this->levels = array("FATAL"=>0, "ERROR"=>1, "INFO"=>2, "AUDIT"=>3, "DEBUG"=>4, "DEBUGMB"=>5);
+        $this->levels = array(log::FATAL=>0, log::ERROR=>1, log::INFO=>2, log::AUDIT=>3, log::DEBUG=>4, log::DEBUGMB=>5);
         $this->level=$this->levels[$level]??4;
 		$this->db=$db;
 		$this->sequence=False;
@@ -75,19 +84,19 @@ class log {
      * @return void Kuolee mikäli logaus epäonnistuu
      * */
     
-    public function log(string $kuka, string $viesti, string $tiedosto, string $mika, int $rivi, string $taso="AUDIT") {                        
+    public function log(string $kuka, string $viesti, string $tiedosto, string $mika, int $rivi, string $taso=log::AUDIT) {                        
         if(isset($this->levels[$taso]) && $this->levels[$taso]<=$this->level) {
 			$d=array("kuka"=>$kuka, "viesti"=>$viesti, "tiedosto"=>$tiedosto,
 					 "tarkenne"=>$mika, "rivi"=>$rivi,
 						"luokka"=>$taso);
 			$s1 = "insert into log (kuka, viesti, tiedosto, tarkenne, rivi, luokka";
 			$s2 = " values (:kuka, :viesti, :tiedosto, :tarkenne, :rivi, :luokka";
-			if($this->marker!=False) {
+			if($this->marker!==false) {
 				$s1.=", marker";
 				$s2.=", :marker";
 				$d["marker"]=$this->marker;
 			}
-			if($this->sequence!=False) {
+			if($this->sequence!==false) {
 				$s1.=", chain";
 				$s2.=", :chain";
 				$d["chain"]=$this->sequence;
@@ -97,12 +106,14 @@ class log {
 				$s1.=", mista, selain";
 				$s2.=", :mista, :selain";
 				$d["mista"]=isset($res["ip"]) ? $res["ip"] : _("Tuntematon");
-				$d["selain"]=isset($res["selain"]) ? $res["selain"] : _("Tuntematon");									   
+				$d[log::SELAIN]=isset($res[log::SELAIN]) ? $res[log::SELAIN] : _("Tuntematon");									   
 			}
-			if($this->db->getDatabase()=='pgsql')
+			if ($this->db->getDatabase()==malli::PGSQL) {
 				$s = "$s1) $s2) returning chain;";
-			else
+			}
+			else {
 				$s = "$s1) $s2);";
+			}
 			$st = $this->pdoPrepare($s, $this->db);
 			$this->pdoExecute($st, $d);
 			$r = $st->fetch(\PDO::FETCH_ASSOC);

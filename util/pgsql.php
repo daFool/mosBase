@@ -37,11 +37,11 @@ trait pgsql {
         $s = sprintf("select * from %s limit 1;", $tablename);
         $st = $this->pdoPrepare($s, $db);
         $this->pdoExecute($st);
-        $rivi = $st->fetch(\PDO::FETCH_ASSOC);
+        $st->fetch(\PDO::FETCH_ASSOC);
         $res=array();
-        $i=0;
-        foreach($rivi as $n) {
-            $c = $st->getColumnMeta($i++);
+        $clkm = $st->columnCount();
+        for($i=0;$i<$clkm;$i++) {
+            $c = $st->getColumnMeta($i);
             array_push($res, array("name"=>$c["name"], "type"=>$c["native_type"], "pdotype"=>$c["pdo_type"]));
         }
         return $res;
@@ -50,18 +50,18 @@ trait pgsql {
     /**
      * Does the result have arrays in it?
      * @param \PDOStatement $st  Statement generating the result
-     * @param array $rivi The result
      *
      * @return mixed false if there were no array columns in the result and
      *  an array with select-list and array of fields that are arrays and need to be unpacked
      *  */
-    public function hasArrayColumns(\PDOStatement $st, array $rivi) {
+    public function hasArrayColumns(\PDOStatement $st) {
         $i=0;
         $res=false;
         $slist="";
         $f=array();
-        foreach ($rivi as $n) {
-            $c = $st->getColumnMeta($i++);
+        $clkm=$st->columnCount();
+        for($i=0;$i<$clkm;$i++) {
+            $c = $st->getColumnMeta($i);
             $slist.=$slist!=""?",":"";
             if (preg_match('/^_.*$/',$c["native_type"])) {
                 $slist.="to_json(".$c["name"].") as ".$c["name"];
