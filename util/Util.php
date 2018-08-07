@@ -15,19 +15,19 @@
  * */
 
 namespace mosBase;
+define("UNKNOWN", _("Ei tiedossa"));
+define("TULOS", "tulos");
 
-trait util {
+trait Util {
+	
 	/**
      * Käsittelee pdo-virheen
      * @param database/PDOStatement $o 
      * @throws Exception 
      * */
-    public function pdoError($o, string $s) : void {
-        $error = $o->errorInfo();
-		$m = _("Tietokantaoperaatio '%s' (%s, %s, %s) epäonnistui!\n");
-	    $msg = sprintf($m,$s??_("Ei tiedossa"), $error[0]??_("Ei tiedossa"), $error[1]??_("Ei tiedossa"), $error[2]??_("Ei tiedossa"));
-        throw new \Exception($msg);
-    }
+    public function pdoError($o, string $s) : void {        
+        throw new DatabaseException("", $o, $s);
+    } 
 	/**
      * SQL-lauseen prepare virheenkäsittelyllä
      * @param object $db PDO-database-objekti
@@ -39,7 +39,7 @@ trait util {
 	 public function pdoPrepare(string $s, database $db) : \PDOStatement {
         if(!isset($db) || gettype($db)!="object") {
 			$msg = _("Ei tietokantayhteyttä! ");
-			throw new \Exception($msg);
+			throw new DatabaseException($msg);
 		}
 		$st = $db->prepare($s);
         if($st===False) {
@@ -58,10 +58,12 @@ trait util {
      * */
     
     public function pdoExecute(\PDOStatement $st, $d=False) : bool {
-        if($d!==False)
+        if ($d!==False) {
             $res = $st->execute($d);
-        else
+        }
+        else {
             $res = $st->execute();
+        }
 		if($res===False) {
             $this->pdoError($st, $st->queryString);
         }
@@ -73,14 +75,14 @@ trait util {
 	 * @return array, array (tulos, ip, selain)
 	 * */
 	public function selainTiedot() : array {
-		$res = array("tulos"=>False);
-		if(isset($_SERVER['HTTP_USER_AGENT'])) {
+		$res = array(TULOS=>False);
+		if (isset($_SERVER['HTTP_USER_AGENT'])) {
 			$res["selain"]=$_SERVER['HTTP_USER_AGENT'];
-			$res["tulos"]=True;
+			$res[TULOS]=True;
 		}
-		if(isset($_SERVER["REMOTE_ADDR"])) {
+		if (isset($_SERVER["REMOTE_ADDR"])) {
 			$res["ip"]=$_SERVER["REMOTE_ADDR"];
-			$res["tulos"]=True;
+			$res[TULOS]=True;
 		}
 		return $res;
 	}
@@ -92,8 +94,9 @@ trait util {
 	 * @return string Joko siistityn luvun merkkijonona tai tekstin "Ei arvoa" halutulla kielellä.
 	 * */
 	function isJarjestelma(int $koko) : string {
-        if(!isset($koko) || $koko==0)
+        if (!isset($koko) || $koko==0) {
             return _("Ei arvoa");
+        }
         $merkki = $koko < 0 ? -1 : 1;
         $koko = abs($koko);
         $liitteet = array('B','kB', 'MB','GB','TB','PB','YB');
@@ -108,7 +111,7 @@ trait util {
 	 * @return bool
 	 * */
 	function isInt(string $str) : bool {
-		if(preg_match("/^(0)|(-?[123456789][0-9]+)$/",$str)) {
+		if (preg_match("/^(0)|(-?[123456789][0-9]+)$/",$str)) {
 			return True;
 		}
 		return False;

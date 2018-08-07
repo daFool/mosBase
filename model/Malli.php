@@ -23,7 +23,7 @@ namespace mosBase;
  * Muokattu ja luotu ovat aikaleimoja, jotka kertovat muutoshetken ja luontihetken.
  */
 
-class malli 
+class Malli 
 {
     /**
      * @var array $data Rivipuskuri, sisältää viimeiseksi luetun rivin sarakkeet.
@@ -64,7 +64,7 @@ class malli
     /**
      * Käytetään taulun sarakkeiden ominaisuuksien etsimiseen
      * */
-    use pgsql;
+    use Pgsql;
     
     protected const LUOJA='luoja';
     protected const MUOKKAAJA='muokkaaja';
@@ -529,11 +529,10 @@ class malli
             if($st->rowCount()==0) {
                 $m="$s";
                 $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,log::ERROR);
-                return $tulos;
+            } else {            
+                $rivi = $st->fetch(\PDO::FETCH_ASSOC);
+                $tulos[malli::FILTERED]=$rivi[malli::LKM];
             }
-            
-            $rivi = $st->fetch(\PDO::FETCH_ASSOC);
-            $tulos[malli::FILTERED]=$rivi[malli::LKM];        
         }    
         return $tulos;
     }

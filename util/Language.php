@@ -14,7 +14,7 @@ namespace mosBase;
  * Kielten käsittely
  * */
 
-class language {
+class Language {
     /**
      * @var array $allLocales Kaikki levyltä löytyneet lokalisointitiedostot
      * */
@@ -36,13 +36,14 @@ class language {
     private $basepath;
     
     /**
-     * @var object $log Logi
+     * @var log $log Logi
      * */
     private $log;
     
     private const LOCALE="locale";
     private const LANGUAGE="language";
     private const MESSAGES='messages';
+    private const KIELIREX="/(.*),/U";
     
     /**
      * Konstruktori
@@ -51,14 +52,14 @@ class language {
      * 
      * @param string $path Kielitiedostojen hakupolku
      * @param string $basepath Sovelluksen asennuspolku
-     * @param object $log Logi
+     * @param log $log Logi
      * */
-    public function __construct($path, $basepath, $log) {
+    public function __construct(string $path, string $basepath, log $log) {
         $cmd = sprintf('find %s -maxdepth 1 -mindepth 1 -type d -printf "%f\n"', $path);
         $f = shell_exec($cmd);        
         $this->allLocales = explode("\n", $f);
         $this->languages=array();
-        foreach($this->allLocales as $locale) {
+        foreach ($this->allLocales as $locale) {
             if ($locale=="") {
                 continue;
             }
@@ -75,13 +76,13 @@ class language {
      * @param string $locale Etsittävä lokaali
      * @return boolean False jos ei, True jos on
      * */
-    function onko($locale) {       
+    public function onko(string $locale) : boolean {       
         $path = $this->basepath."/locale/$locale/LC_MESSAGES/messages.mo";
-         if(file_exists($path)) {
+         if (file_exists($path)) {
             putenv("LC_ALL=$locale");
             $res=setlocale(LC_ALL, $locale);
             if($res!=$locale) {
-                return False;
+                return false;
             }
             bindtextdomain(language::MESSAGES, $this->basepath."/locale");
             bind_textdomain_codeset(language::MESSAGES,"UTF-8");    
@@ -94,30 +95,12 @@ class language {
     }
     
     /**
-     * Käyttäjän lokaali
-     *
-     * Yrittää selvittää mitä kieltä on tarkoitus käyttää.
-     * @uses mosBase\language::onko()
-     * @return boolean False jos ei saanut asetettua "oikeaa" kieltä ja True jos sai.
-     **/
-    function kieli() {
-        
-        if(isset($_SESSION[language::LOCALE])) {
-            return $this->onko($_SESSION[language::LOCALE]);
-        }
-        if(!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            return "fi_FI";
-        }
-        $kielet = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-        $locale = locale_accept_from_http($kielet);
-        if($this->onko($locale)) {
-            if(isset($_SESSION)) {
-                $_SESSION[language::LOCALE]=$locale;
-            }
-            return $locale;
-        }
-        $rex = "/(.*),/U";
-        $res = preg_match_all($rex, $kielet, $matches);
+     * ACCEPT-LANGUAGES purku
+     * @param string $kielet Toivotut kielet
+     * @return boolean true jos tuetaan ja false jos ei
+     * */
+    private function searchLocale(string $kielet) : boolean {
+        $res = preg_match_all(language::KIELIREX, $kielet, $matches);
         if ($res) {
             $matches=$matches[0];
             $high=0;
@@ -134,12 +117,41 @@ class language {
                     $high=$val;
                     $lng = $this->lokaaliksi($lang);
                     if ($lng!==false) {
-                        $this->onko($lng);                        
+                        return $this->onko($lng);                        
                     }
                 }
             }
         }
         return false;    
+    }
+   
+    /**
+     * Käyttäjän lokaali
+     *
+     * Yrittää selvittää mitä kieltä on tarkoitus käyttää.
+     * @uses mosBase\language::onko()
+     * @return string palauttaa lokaalin
+     **/
+    public function kieli() : boolean {
+        
+        $res = false;
+        if(isset($_SESSION[language::LOCALE])) {
+            $res=$this->onko($_SESSION[language::LOCALE]);
+        }
+        if($res===false && !isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            $res="fi_FI";
+        }
+        else {
+            $kielet = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+            $locale = locale_accept_from_http($kielet);
+            if($this->onko($locale)) {
+                if(isset($_SESSION)) {
+                    $_SESSION[language::LOCALE]=$locale;
+                }
+                $res=$locale;
+            }
+        }
+        return $res || $this->searchLocale($kielet);        
     }
 
     /**
@@ -147,7 +159,7 @@ class language {
      * @param $string $locale
      * @return mixed False jos ei ole ja lokaali, joka on olemassa
      * */
-    function lokaaliksi($locale) {                        
+    public function lokaaliksi(string $locale) {                        
         foreach ($this->allLocales as $mun) {
             if (strlen($locale)==2) {
                 $locale=$locale."_".strtoupper($locale);

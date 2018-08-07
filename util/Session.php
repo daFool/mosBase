@@ -14,7 +14,7 @@ namespace mosBase;
 /**
  * Istunto
  * */
-class session {
+class Session {
     /**
      * @var string $session_name Istunnon nimi
      * */
@@ -75,6 +75,47 @@ class session {
         $this->ldapGroup = $sessionparams["ldapGroup"]??array();
     }
     
+    private function logout() {
+        // Unset all of the session variables.
+        $_SESSION = array();
+    
+        // If it is desired to kill the session, also delete the session cookie.
+        // Note: This will destroy the session, and not just the session data!
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]);
+        }
+
+        // Finally, destroy the session.
+        session_destroy();
+        if(isset($_SERVER[session::MELLON_NAME_ID])) {
+            $logouturl=$this->mellonendpoint."/logout?ReturnTo=";
+            $logouturl.=urlencode("https://".$this->hostname.$this->baseurl);
+        }
+        else {
+            $logouturl=$this->baseurl;
+        }
+        header("Location: $logouturl");
+        die;
+    }
+    
+    private function timeOut() {
+        if(!isset($_SESSION[session::ACTIVITY])) {
+            $_SESSION[session::ACTIVITY]=time();
+            $logout=false;
+        }
+        else {
+            if (time() - $_SESSION[session::ACTIVITY] > $this->session_timeout) {
+                $logout=true;
+            } else {
+                $_SESSION[session::ACTIVITY]=time();
+                $logout=false;
+            }
+        }
+        return $logout;
+    }
     /**
      * Sivun aloitus
      *
@@ -89,42 +130,10 @@ class session {
         session_start();
         setcookie(session_name(), session_id(), time()+$this->session_timeout, $this->session_cookiepath);
 
-        if(!isset($_SESSION[session::ACTIVITY])) {
-            $_SESSION[session::ACTIVITY]=time();
-            $logout=false;
-        }
-        else {
-            if (time() - $_SESSION[session::ACTIVITY] > $this->session_timeout) {
-                $logout=true;
-            } else {
-                $_SESSION[session::ACTIVITY]=time();
-                $logout=false;
-            }
-        }
+      
 
-        if (isset($_REQUEST['logout']) || $logout===true) {  
-            // Unset all of the session variables.
-            $_SESSION = array();
-    
-            // If it is desired to kill the session, also delete the session cookie.
-            // Note: This will destroy the session, and not just the session data!
-            if (ini_get("session.use_cookies")) {
-                $params = session_get_cookie_params();
-                setcookie(session_name(), '', time() - 42000,
-                $params["path"], $params["domain"],
-                $params["secure"], $params["httponly"]);
-            }
-
-            // Finally, destroy the session.
-            session_destroy();
-            if(isset($_SERVER[session::MELLON_NAME_ID])) {
-                $logouturl=$this->mellonendpoint."/logout?ReturnTo=";
-                $logouturl.=urlencode("https://".$this->hostname.$this->baseurl);
-            }
-            else {
-                $logouturl=$this->baseurl;
-            }
-            header("Location: $logouturl");
+        if (isset($_REQUEST['logout']) || $this->timeOut()) {
+            $this->logout();
         }   
         
         $loggedin=$_SESSION[session::LOGGEDIN]??false;

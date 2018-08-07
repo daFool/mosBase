@@ -10,7 +10,7 @@ namespace mosBase;
 /**
  * Eroaa isännästä tallettamalla tiedon tietokannan tyypistä
  * */
-class database extends \PDO {
+class Database extends \PDO {
     /**
      * @var string $dsn Data source name - connection string
      * */

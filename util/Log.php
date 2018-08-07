@@ -18,7 +18,7 @@ namespace mosBase;
  * taulun sekvensseistä on kaksi varianttia, normivariantti ja BDR-klusterivariantti.
  * */
 
-class log {
+class Log {
 
 	/**
 	 * @var int $level Nykyinen logaamisen taso
@@ -71,6 +71,38 @@ class log {
 		$this->marker=False;
     }
     
+	/* Rakentaa log-insert-lauseen
+	 * @param array& logattava data
+	 * @return string insert-lause
+	 * */
+	private function buildInsert(array &$d) {
+		$s1 = "insert into log (kuka, viesti, tiedosto, tarkenne, rivi, luokka";
+		$s2 = " values (:kuka, :viesti, :tiedosto, :tarkenne, :rivi, :luokka";
+		if($this->marker!==false) {
+			$s1.=", marker";
+			$s2.=", :marker";
+			$d["marker"]=$this->marker;
+		}
+		if($this->sequence!==false) {
+			$s1.=", chain";
+			$s2.=", :chain";
+			$d["chain"]=$this->sequence;
+		}
+		$res = $this->selainTiedot();
+		if($res["tulos"]===True) {
+			$s1.=", mista, selain";
+			$s2.=", :mista, :selain";
+			$d["mista"]=isset($res["ip"]) ? $res["ip"] : _("Tuntematon");
+			$d[log::SELAIN]=isset($res[log::SELAIN]) ? $res[log::SELAIN] : _("Tuntematon");									   
+		}
+		if ($this->db->getDatabase()==malli::PGSQL) {
+			$s = "$s1) $s2) returning chain;";
+		}
+		else {
+			$s = "$s1) $s2);";
+		}
+		return $s;
+	}
       /**
      * Tietokantalogi
      *
@@ -84,36 +116,12 @@ class log {
      * @return void Kuolee mikäli logaus epäonnistuu
      * */
     
-    public function log(string $kuka, string $viesti, string $tiedosto, string $mika, int $rivi, string $taso=log::AUDIT) {                        
+    public function l(string $kuka, string $viesti, string $tiedosto, string $mika, int $rivi, string $taso=log::AUDIT) {                        
         if(isset($this->levels[$taso]) && $this->levels[$taso]<=$this->level) {
 			$d=array("kuka"=>$kuka, "viesti"=>$viesti, "tiedosto"=>$tiedosto,
 					 "tarkenne"=>$mika, "rivi"=>$rivi,
 						"luokka"=>$taso);
-			$s1 = "insert into log (kuka, viesti, tiedosto, tarkenne, rivi, luokka";
-			$s2 = " values (:kuka, :viesti, :tiedosto, :tarkenne, :rivi, :luokka";
-			if($this->marker!==false) {
-				$s1.=", marker";
-				$s2.=", :marker";
-				$d["marker"]=$this->marker;
-			}
-			if($this->sequence!==false) {
-				$s1.=", chain";
-				$s2.=", :chain";
-				$d["chain"]=$this->sequence;
-			}
-			$res = $this->selainTiedot();
-			if($res["tulos"]===True) {
-				$s1.=", mista, selain";
-				$s2.=", :mista, :selain";
-				$d["mista"]=isset($res["ip"]) ? $res["ip"] : _("Tuntematon");
-				$d[log::SELAIN]=isset($res[log::SELAIN]) ? $res[log::SELAIN] : _("Tuntematon");									   
-			}
-			if ($this->db->getDatabase()==malli::PGSQL) {
-				$s = "$s1) $s2) returning chain;";
-			}
-			else {
-				$s = "$s1) $s2);";
-			}
+			$s=$this->buildInsert($d);
 			$st = $this->pdoPrepare($s, $this->db);
 			$this->pdoExecute($st, $d);
 			$r = $st->fetch(\PDO::FETCH_ASSOC);

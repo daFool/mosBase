@@ -14,7 +14,7 @@ namespace mosBase;
 /**
  * Konfiguraation lukeminen tiedostosta
  * */
-class config {
+class Config {
 	/**
 	 * @var array $data Konfiguraatio tiedostosta
 	 * */

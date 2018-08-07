@@ -17,9 +17,9 @@
 
 namespace mosBase;
 
-trait pgsql {
+trait Pgsql {
     
-    use util;
+    use Util;
     
     /**
      * Palauttaa annetun taulun sarakkeet ja niiden tyypit
