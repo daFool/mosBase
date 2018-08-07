@@ -78,11 +78,14 @@ class malli
     private const SQLPATTERN='/.*[%_].*/';
     private const REXPATTERN="/.*[.*?+].*/";
     private const NIMI='nimi';
+    private const TYYPPI="tyyppi";
     private const RIVIT='rivi';
     private const RIVEJA='riveja';
-    
+    private const NULLPATTERN="/\w*NULL\w*/i";
     public const STRINGI="string";
     public const STRINGA="stringA";
+    public const INTTI="int";
+    public const DATE="date";
     
     /**
      * Konstruktori
@@ -119,7 +122,7 @@ class malli
             foreach ($avaimet as $avain) {
                 foreach ($avain as $kentta) {
                     if (!array_search($kentta, $this->hakukentat)) {
-                        $this->hakukentat[$i++]=array(malli::NIMI=>$kentta, "tyyppi"=>"string");
+                        $this->hakukentat[$i++]=array(malli::NIMI=>$kentta, malli::TYYPPI=>"string");
                     }
                 }
             }
@@ -136,43 +139,56 @@ class malli
     }
     
     /**
+     * Tutkii löytyvätkö kaikki avaimen kentät hakuehdosto,
+     * jos löytyvät rakentaa where-lauseen
+     * @param array $avain Yksittäinen avain
+     * @param array $data Hakuehto
+     * @return array (tulos, where-ehto, array(hakudata))
+     * */
+    private function checkKey(array $avain, array $data) :array  {
+        $d=array();
+        $w="";
+        $all=true;
+        foreach ($avain as $sarake) {
+            if (isset($data[$sarake]) && $data[$sarake]!=="" &&
+               !preg_match(malli::NULLPATTERN, $data[$sarake])) {
+                $d[$sarake]=$data[$sarake];
+                if ($w=="") {
+                    $w="where {$sarake}=:{$sarake}";
+                } else {
+                    $w.=" and {$sarake}=:{$sarake}";
+                }
+                continue;
+            }
+            $all=false;
+            break;
+        }
+        if ($all) {
+            return array(true, $w, $d);            
+        }
+        return array(false, "", array());
+    }
+    
+    /**
      * Avaimen purkaminen sarake-datasta
      * @param array $data Sarake-data, mistä avainta etsitään,
-     * @param int $monesko, monnestako avaimesta alkaen etsitään
+     * @param int $monesko, monennestako avaimesta alkaen etsitään
      * @return mixed Boolean=false, mikäli ei löytynyt avainta ja array,
      * jossa on where-ehto, positio ja avainsarakkeet arvoineen
      * */
     protected function getKey(array $data, int $monesko=-1) {
         $i=0;
-        $nullrex="/\w*NULL\w*/i";
         
+        /* Kukin yksittäinen avain on joukko sarakkeita,esim
+         * $this->avaimet["primary"]=array(nimi, maa)
+        */
         foreach ($this->avaimet as $avain=>$sarakkeet) {
-            $w = "";
-            $d = array();
             $i++;
             if ($monesko!=-1 && $i<$monesko) {
                 continue;
             }
-            // Onko hakuehdossa tämä avain mukana, vai ei?
-            $found=False;
-            $all=True;
-            foreach ($sarakkeet as $sarake) {
-                if (isset($data[$sarake]) && $data[$sarake]!=="" &&
-                       !preg_match($nullrex, $data[$sarake])) {
-                    $d[$sarake]=$data[$sarake];
-                    if ($w=="") {
-                        $w="where {$sarake}=:{$sarake}";
-                    } else {
-                        $w.=" and {$sarake}=:{$sarake}";
-                    }
-                    $found=True;
-                }
-                else {
-                    $all=False;
-                    break;
-                }
-            }
-            if ($all && $found) {
+            list ($all, $w, $d)=$this->checkKey($sarakkeet,$data);
+            if ($all) {
                 return array("avain"=>$avain, "i"=>$i, "d"=>$d, "w"=>$w);                
             }
         }
@@ -244,6 +260,55 @@ class malli
     }
     
     /**
+     * Rakennetaan päivityslause ja kootaan data
+     * @param array $data Data, jolla päivitetään
+     * @return array (sql-lause, array(sarake=>arvo)
+     * */
+    private function update(array $data) : array {        
+        $r = $this->getKey($data);
+        $s = "update {$this->taulu} set muokattu=now()";
+        if (!isset($data[malli::MUOKKAAJA]) && isset($data[malli::LUOJA])) {
+            $data[malli::MUOKKAAJA]=$data[malli::LUOJA];
+        }
+        $d = array();
+        foreach ($data as $key=>$value) {
+            /* Avainten arvoja ei päitivitetä, eikä luojatietoja. Muokattu menee automaattisesti */
+            if ($key==malli::MUOKATTU || $key==malli::LUOJA || $key==malli::LUOTU || $this->isKeyColumn($key)) {
+                continue;
+            }
+            $s.=", $key=:$key";
+            $d[$key]=$value;
+        }
+        $s.=" {$r["w"]}";
+        $d = array_merge($d, $r["d"]);
+        return array($s, $d);
+    }
+    
+    /**
+     * Rakennetaan lisäyslaus ja kootaan data
+     * @param array $data Rivi, joka lisätään kantaan
+     * @return array (sql-lause, array(sarake=>arvo))
+     * */
+    private function insert(array $data) : array {
+        $s1="insert into {$this->taulu} (luotu ";
+        $s2=" values (now()";
+        foreach ($data as $key=>$value) {
+            if ($key==malli::LUOTU || $key==malli::MUOKKAAJA || $key==malli::MUOKATTU) {
+                continue;
+            }
+            $s1.=", $key";
+            $s2.=", :$key";
+            $d[$key]=$data[$key];
+        }
+        if ($this->db->getDatabase()=='pgsql') {
+            $s = $s1.")".$s2.") returning *;";
+        }
+        else {
+            $s = $s1.")".$s2.");";
+        }
+        return array($s, $d);
+    }
+    /**
      * Lisätään tai päivitetään Sovellus
      * @param array $data allokointi
      * @return mixed false jos epäonnistui true, jos onnistui
@@ -255,39 +320,10 @@ class malli
     public function upsert(array $data) {
         $insert=false;
         if ($this->exists($data)) {
-            $r = $this->getKey($data);
-            $s = "update {$this->taulu} set muokattu=now()";
-            if (!isset($data[malli::MUOKKAAJA]) && isset($data[malli::LUOJA])) {
-                $data[malli::MUOKKAAJA]=$data[malli::LUOJA];
-            }
-            $d = array();
-            foreach ($data as $key=>$value) {
-                if ($key==malli::MUOKATTU || $key==malli::LUOJA || $key==malli::LUOTU || $this->isKeyColumn($key)) {
-                    continue;
-                }
-                $s.=", $key=:$key";
-                $d[$key]=$value;
-            }
-            $s.=" {$r["w"]}";
-            $d = array_merge($d, $r["d"]);
+            list($s, $d)=$this->update($data);
         } else {
-            $s1="insert into {$this->taulu} (luotu ";
-            $s2=" values (now()";
-            foreach ($data as $key=>$value) {
-                if ($key==malli::LUOTU || $key==malli::MUOKKAAJA || $key==malli::MUOKATTU) {
-                    continue;
-                }
-                $s1.=", $key";
-                $s2.=", :$key";
-                $d[$key]=$data[$key];
-            }
             $insert=true;
-            if ($this->db->getDatabase()=='pgsql') {
-                $s = $s1.")".$s2.") returning *;";
-            }
-            else {
-                $s = $s1.")".$s2.");";
-            }
+            list($s, $d)=$this->insert($data);
         }
             
         $st = $this->pdoPrepare($s, $this->db);
@@ -295,7 +331,8 @@ class malli
         $m = sprintf(_("%s (%s)"), $s, serialize($d));
         $this->log->log(log::MOSBASE, $m, __FILE__,__METHOD__,__LINE__, log::DEBUGMB);
         $this->log->log(log::MOSBASE, _("Onnistui"), __FILE__,__METHOD__,__LINE__, log::DEBUGMB);
-         if ($insert && $this->db->getDatabase()==malli::PGSQL) {
+        
+        if ($insert && $this->db->getDatabase()==malli::PGSQL) {
             $r = $st->fetch(\PDO::FETCH_ASSOC);            
             $this->data=$r;
             $this->empty=false;
@@ -325,6 +362,89 @@ class malli
         return $this->data;
     }
     
+    /** Hakukentän tyyppi string
+     * @param $v string Haettava arvo
+     * @return array(arvoi oikein "lainattuna", vertailuoperaattori)
+     * */
+    private function kasitteleStringi(string $v) {
+       $dtype = $this->db->getDatabase();
+     
+        if ($dtype!=malli::PGSQL) {
+            $op = "like";
+            if (!preg_match(malli::SQLPATTERN, $v)) {
+                $v="%".$v."%";
+            }
+        } else {
+            $op = "ilike";
+            if (preg_match(malli::REXPATTERN, $v)) {
+                $op = "~*";
+            } elseif (!preg_match(malli::SQLPATTERN,$v)) {                                
+                $v="%".$v."%";
+            }    
+        }
+        return array($v, $op);
+    }
+    
+    /** Hakukentän tyyppi stringgitaulu
+     * @param $v string haettava arvo
+     * @return array(arvoi oikein "lainattuna", vertailuoperaattori)
+     * */
+    private function kasitteleStringitaulu($v) {
+        $op = "ilike";
+        if (preg_match(malli::REXPATTERN, $v)) {
+            $op = "~*";
+        } elseif (!preg_match(malli::SQLPATTERN,$v)) {                                
+            $v="%".$v."%";
+        }
+        return array($v, $op);            
+    }
+    /**
+     * Datatablen haun käsittely
+     * Käydään lävitse kaikki hakutaulun hakukentät ja kokeillaan sopisiko datatablen
+     * hakukenttää soviteltava arvo niihin. Rakennetaan sopiva where-ehto selectiä varten.
+     * @param string $so where-ehdon "pohjat"
+     * @param string $v arvo, jota kentistä etsitään
+     * @return string where-ehto
+     * */
+    
+    private function kasitteleHakukentat(string $so, string $v) {        
+        $dtype = $this->db->getDatabase();
+        $fmt="";
+        foreach ($this->hakukentat as $kentta) {
+            switch ($kentta[malli::TYYPPI]) {
+                case malli::STRINGI:
+                    list($v,$op)=$this->kasitteleStringi($v);
+                    $so.=sprintf("%s%s %s %s", $fmt, $kentta[malli::NIMI], $op, $this->db->quote($v, \PDO::PARAM_STR));   
+                    $fmt=" or ";          
+                    break;
+                case malli::STRINGA:
+                    if ($dtype!=malli::PGSQL) {
+                        continue;
+                    }
+                    list($v,$op) = $this->kasitteleStringitaulu($v);
+                    $so.=sprintf("%s%s %s ANY (%s)", $fmt, $this->db->quote($v, \PDO::PARAM_STR), $op, $kentta[malli::NIMI]);
+                    $fmt=" or ";
+                    break;
+                case malli::INTTI:
+                    if (is_integer($v)) {
+                        $so.=sprintf("%s%s = %s", $fmt, $kentta[malli::NIMI], $this->db->quote($v, \PDO::PARAM_INT));
+                        $fmt=" or ";          
+                    }
+                    break;
+                case malli::DATE:
+                    $pvm = date_create($v);
+                    if ($pvm !== False) {
+                        $so.=sprintf("%s%s = %s", $fmt, $kentta[malli::NIMI], $this->db->quote($v, \PDO::PARAM_STR));
+                        $fmt=" or ";
+                    }
+                    break;
+                default:
+                    throw new Exception(sprintf(_("Ohjelmointivirhe, tuntematon tyyppi:%s"),$kentta[malli::TYYPPI]));
+            }                            
+            $so.=") ";
+        }
+        return $so;
+    }
     /**
      * Tauluhaku Datatablesia silmällä pitäen
      * @param int $start Mistä rivistä aloitetaan
@@ -368,58 +488,9 @@ class malli
         if(isset($search[malli::VALUE]) && $search[malli::VALUE]!="") {
             $v=$search[malli::VALUE];
             $so=" where (";
-            $fmt="";
-            $dtype = $this->db->getDatabase();
-            foreach ($this->hakukentat as $kentta) {
-                switch ($kentta["tyyppi"]) {
-                    case malli::STRINGI:
-                        if ($dtype!=malli::PGSQL) {
-                            $op = "like";
-                            if (!preg_match(malli::SQLPATTERN, $v)) {
-                                $v="%".$v."%";
-                            }
-                        } else {
-                            $op = "ilike";
-                            if (preg_match(malli::REXPATTERN, $v)) {
-                                $op = "~*";
-                            } elseif (!preg_match(malli::SQLPATTERN,$v)) {                                
-                                $v="%".$v."%";
-                            }    
-                        }
-                        $so.=sprintf("%s%s %s %s", $fmt, $kentta[malli::NIMI], $op, $this->db->quote($v, \PDO::PARAM_STR));
-                        $fmt=" or ";          
-                        break;
-                    case malli::STRINGA:
-                        if ($dtype!=malli::PGSQL) {
-                            continue;
-                        }
-                        $op = "ilike";
-                        if (preg_match(malli::REXPATTERN, $v)) {
-                            $op = "~*";
-                        } elseif (!preg_match(malli::SQLPATTERN,$v)) {                                
-                            $v="%".$v."%";
-                        }
-                        $so.=sprintf("%s%s %s ANY (%s)", $fmt, $this->db->quote($v, \PDO::PARAM_STR), $op, $kentta[malli::NIMI]);
-                        $fmt=" or ";
-                        break;
-                    case "int":
-                        if (is_integer($v)) {
-                            $so.=sprintf("%s%s = %s", $fmt, $kentta[malli::NIMI], $this->db->quote($v, \PDO::PARAM_INT));
-                            $fmt=" or ";          
-                        }
-                        break;
-                    case "date":
-                        $pvm = date_create($v);
-                        if ($pvm !== False) {
-                            $so.=sprintf("%s%s = %s", $fmt, $kentta[malli::NIMI], $this->db->quote($v, \PDO::PARAM_STR));
-                            $fmt=" or ";
-                        }
-                        break;                        
-                }                
-            }
-            $so.=") ";
-            $ds = true;
+            $so=$this->kasitteleHakukentat($so, $v);
         }
+        
         if($where !== false) {
             $ds=true;
             if($so!="") {
