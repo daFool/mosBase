@@ -10,7 +10,7 @@
 /**
  * Konfiguraation käsittely
  * */
-namespace mosBase;
+namespace mosBase\util;
 /**
  * Konfiguraation lukeminen tiedostosta
  * */

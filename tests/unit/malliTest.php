@@ -1,7 +1,6 @@
 <?php
-use PHPUnit\Framework\TestCase;
 
-final class malliTest extends TestCase {
+class malliTest extends \PHPUnit_Framework_TestCase {
     
     public function testCreateInstance() {
         $conf = new mosBase\config();
