@@ -67,8 +67,8 @@ class Log {
         $this->levels = array(log::FATAL=>0, log::ERROR=>1, log::INFO=>2, log::AUDIT=>3, log::DEBUG=>4, log::DEBUGMB=>5);
         $this->level=$this->levels[$level]??4;
 		$this->db=$db;
-		$this->sequence=False;
-		$this->marker=False;
+		$this->sequence=false;
+		$this->marker=false;
     }
     
 	/* Rakentaa log-insert-lauseen
@@ -135,6 +135,30 @@ class Log {
 	 **/
 	public function setMarker($m=False) : void {
 		$this->marker=$m;
+	}
+	
+	/**
+	 * Palauttaa logitason
+	 * @return int logaustaso
+	 * */
+	public function getLogLevel() : int {
+		return $this->level;
+	}
+	
+	/**
+	 * Palauttaa sekvenssin
+	 * @return int sekvenssi
+	 * */
+	public function getSequence() : int {
+		return $this->sequence;
+	}
+	
+	/**
+	 * Palauttaa markkerin
+	 * @return string markkeri
+	 * */
+	public function getMarker() : string {
+		return $this->marker;
 	}
 }
 ?>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <table name="log">
+        <column>kuka</column>
+        <column>viesti</column>
+        <column>tiedosto</column>
+        <column>tarkenne</column>
+        <column>luokka</column>
+        <column>selain</column>
+        <column>marker</column>
+        <row>
+           <value>Mää</value>
+           <value>Testaan</value>
+           <value>/home/mos/projektit/mosBase/tests/unit/logTest.php</value>
+           <value>logTest::correctMarkerAndLogRow</value>
+           <value>AUDIT</value>
+           <null/>
+           <value>Mun</value> 
+        </row>
+        <row>
+           <value>Mää</value>
+           <value>Testaan lisää</value>
+           <value>/home/mos/projektit/mosBase/tests/unit/logTest.php</value>
+           <value>logTest::correctMarkerAndLogRow</value>
+           <value>INFO</value>
+           <value>Mozilla/5.0 (X11; Fedora; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36</value>
+           <value>Mun</value> 
+        </row>
+    </table>
+</dataset>
