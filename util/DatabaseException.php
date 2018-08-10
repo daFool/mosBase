@@ -22,7 +22,7 @@
      * */
     public function __construct(string $msg, $dbobj=false, $s=false) {
         $this->message=$msg;
-        if ($dboj && $dbobj->method_exists($dbobj, "errorInfo")) {
+        if ($dbobj && $dbobj->method_exists($dbobj, "errorInfo")) {
             $error=$dbobj->errorInfo();
             $m = _("Tietokantaoperaatio '%s' (%s, %s, %s) epäonnistui! %s %s");
             $this->message=sprintf($m, $s??UNKNOWN, $error[0]??UNKNOWN, $error[1]??UNKNOWN, $error[2]??UNKNOWN, $msg, \PHPEOL );
