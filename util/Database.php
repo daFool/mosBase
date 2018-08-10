@@ -38,6 +38,7 @@ class Database extends \PDO {
     
     /**
      * Purkaa DSN:stä tietokantayhteystyypin
+     * @return string Tietokanta-ajurin tyyppi/nimi
      * */
     public function getDatabase() : string {
         return explode(":", $this->dsn)[0];        

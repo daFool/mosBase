@@ -1,6 +1,6 @@
 <?php
 /**
- * Tietokantapoikkeus
+ * Konfiguraatiopoikkeus
  *
  * @category	Util
  * @package		mosBase
@@ -10,6 +10,7 @@
  * @link		www.iki.fi/mos
  *
  */
+namespace mosBase;
 /**
  * Poikkeuskäsittely
  * */
