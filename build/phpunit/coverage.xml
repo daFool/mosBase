@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1533899098">
+  <project timestamp="1533899098">
+    <package name="mosBase">
+      <file name="/home/mos/Projektit/mosBase/model/Malli.php">
+        <class name="Malli" namespace="mosBase">
+          <metrics complexity="88" methods="19" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="271" coveredstatements="0" elements="290" coveredelements="0"/>
+        </class>
+        <line num="104" type="method" name="__construct" visibility="public" complexity="6" crap="42" count="0"/>
+        <line num="106" type="stmt" count="0"/>
+        <line num="107" type="stmt" count="0"/>
+        <line num="108" type="stmt" count="0"/>
+        <line num="109" type="stmt" count="0"/>
+        <line num="110" type="stmt" count="0"/>
+        <line num="111" type="stmt" count="0"/>
+        <line num="112" type="stmt" count="0"/>
+        <line num="115" type="stmt" count="0"/>
+        <line num="117" type="stmt" count="0"/>
+        <line num="118" type="stmt" count="0"/>
+        <line num="120" type="stmt" count="0"/>
+        <line num="121" type="stmt" count="0"/>
+        <line num="122" type="stmt" count="0"/>
+        <line num="123" type="stmt" count="0"/>
+        <line num="124" type="stmt" count="0"/>
+        <line num="125" type="stmt" count="0"/>
+        <line num="130" type="stmt" count="0"/>
+        <line num="136" type="method" name="clear" visibility="protected" complexity="1" crap="2" count="0"/>
+        <line num="137" type="stmt" count="0"/>
+        <line num="138" type="stmt" count="0"/>
+        <line num="139" type="stmt" count="0"/>
+        <line num="148" type="method" name="checkKey" visibility="private" complexity="7" crap="56" count="0"/>
+        <line num="149" type="stmt" count="0"/>
+        <line num="150" type="stmt" count="0"/>
+        <line num="151" type="stmt" count="0"/>
+        <line num="152" type="stmt" count="0"/>
+        <line num="153" type="stmt" count="0"/>
+        <line num="154" type="stmt" count="0"/>
+        <line num="155" type="stmt" count="0"/>
+        <line num="156" type="stmt" count="0"/>
+        <line num="157" type="stmt" count="0"/>
+        <line num="159" type="stmt" count="0"/>
+        <line num="161" type="stmt" count="0"/>
+        <line num="163" type="stmt" count="0"/>
+        <line num="164" type="stmt" count="0"/>
+        <line num="166" type="stmt" count="0"/>
+        <line num="167" type="stmt" count="0"/>
+        <line num="169" type="stmt" count="0"/>
+        <line num="179" type="method" name="getKey" visibility="protected" complexity="5" crap="30" count="0"/>
+        <line num="180" type="stmt" count="0"/>
+        <line num="185" type="stmt" count="0"/>
+        <line num="186" type="stmt" count="0"/>
+        <line num="187" type="stmt" count="0"/>
+        <line num="188" type="stmt" count="0"/>
+        <line num="190" type="stmt" count="0"/>
+        <line num="191" type="stmt" count="0"/>
+        <line num="192" type="stmt" count="0"/>
+        <line num="195" type="stmt" count="0"/>
+        <line num="207" type="method" name="exists" visibility="public" complexity="5" crap="30" count="0"/>
+        <line num="208" type="stmt" count="0"/>
+        <line num="209" type="stmt" count="0"/>
+        <line num="210" type="stmt" count="0"/>
+        <line num="212" type="stmt" count="0"/>
+        <line num="213" type="stmt" count="0"/>
+        <line num="214" type="stmt" count="0"/>
+        <line num="215" type="stmt" count="0"/>
+        <line num="216" type="stmt" count="0"/>
+        <line num="217" type="stmt" count="0"/>
+        <line num="218" type="stmt" count="0"/>
+        <line num="219" type="stmt" count="0"/>
+        <line num="220" type="stmt" count="0"/>
+        <line num="221" type="stmt" count="0"/>
+        <line num="222" type="stmt" count="0"/>
+        <line num="223" type="stmt" count="0"/>
+        <line num="224" type="stmt" count="0"/>
+        <line num="226" type="stmt" count="0"/>
+        <line num="227" type="stmt" count="0"/>
+        <line num="228" type="stmt" count="0"/>
+        <line num="230" type="stmt" count="0"/>
+        <line num="231" type="stmt" count="0"/>
+        <line num="232" type="stmt" count="0"/>
+        <line num="233" type="stmt" count="0"/>
+        <line num="234" type="stmt" count="0"/>
+        <line num="235" type="stmt" count="0"/>
+        <line num="236" type="stmt" count="0"/>
+        <line num="238" type="stmt" count="0"/>
+        <line num="240" type="stmt" count="0"/>
+        <line num="241" type="stmt" count="0"/>
+        <line num="243" type="stmt" count="0"/>
+        <line num="251" type="method" name="isKeyColumn" visibility="protected" complexity="4" crap="20" count="0"/>
+        <line num="252" type="stmt" count="0"/>
+        <line num="253" type="stmt" count="0"/>
+        <line num="254" type="stmt" count="0"/>
+        <line num="255" type="stmt" count="0"/>
+        <line num="259" type="stmt" count="0"/>
+        <line num="267" type="method" name="update" visibility="private" complexity="8" crap="72" count="0"/>
+        <line num="268" type="stmt" count="0"/>
+        <line num="269" type="stmt" count="0"/>
+        <line num="270" type="stmt" count="0"/>
+        <line num="271" type="stmt" count="0"/>
+        <line num="273" type="stmt" count="0"/>
+        <line num="274" type="stmt" count="0"/>
+        <line num="276" type="stmt" count="0"/>
+        <line num="277" type="stmt" count="0"/>
+        <line num="279" type="stmt" count="0"/>
+        <line num="280" type="stmt" count="0"/>
+        <line num="282" type="stmt" count="0"/>
+        <line num="283" type="stmt" count="0"/>
+        <line num="284" type="stmt" count="0"/>
+        <line num="292" type="method" name="insert" visibility="private" complexity="6" crap="42" count="0"/>
+        <line num="293" type="stmt" count="0"/>
+        <line num="294" type="stmt" count="0"/>
+        <line num="295" type="stmt" count="0"/>
+        <line num="296" type="stmt" count="0"/>
+        <line num="297" type="stmt" count="0"/>
+        <line num="299" type="stmt" count="0"/>
+        <line num="300" type="stmt" count="0"/>
+        <line num="301" type="stmt" count="0"/>
+        <line num="303" type="stmt" count="0"/>
+        <line num="304" type="stmt" count="0"/>
+        <line num="307" type="stmt" count="0"/>
+        <line num="309" type="stmt" count="0"/>
+        <line num="320" type="method" name="upsert" visibility="public" complexity="5" crap="30" count="0"/>
+        <line num="321" type="stmt" count="0"/>
+        <line num="322" type="stmt" count="0"/>
+        <line num="323" type="stmt" count="0"/>
+        <line num="325" type="stmt" count="0"/>
+        <line num="326" type="stmt" count="0"/>
+        <line num="329" type="stmt" count="0"/>
+        <line num="330" type="stmt" count="0"/>
+        <line num="331" type="stmt" count="0"/>
+        <line num="332" type="stmt" count="0"/>
+        <line num="333" type="stmt" count="0"/>
+        <line num="335" type="stmt" count="0"/>
+        <line num="336" type="stmt" count="0"/>
+        <line num="337" type="stmt" count="0"/>
+        <line num="338" type="stmt" count="0"/>
+        <line num="339" type="stmt" count="0"/>
+        <line num="341" type="stmt" count="0"/>
+        <line num="342" type="stmt" count="0"/>
+        <line num="343" type="stmt" count="0"/>
+        <line num="344" type="stmt" count="0"/>
+        <line num="346" type="stmt" count="0"/>
+        <line num="353" type="method" name="has" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="354" type="stmt" count="0"/>
+        <line num="361" type="method" name="give" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="362" type="stmt" count="0"/>
+        <line num="369" type="method" name="kasitteleStringi" visibility="private" complexity="5" crap="30" count="0"/>
+        <line num="370" type="stmt" count="0"/>
+        <line num="372" type="stmt" count="0"/>
+        <line num="373" type="stmt" count="0"/>
+        <line num="374" type="stmt" count="0"/>
+        <line num="375" type="stmt" count="0"/>
+        <line num="378" type="stmt" count="0"/>
+        <line num="379" type="stmt" count="0"/>
+        <line num="380" type="stmt" count="0"/>
+        <line num="381" type="stmt" count="0"/>
+        <line num="382" type="stmt" count="0"/>
+        <line num="385" type="stmt" count="0"/>
+        <line num="392" type="method" name="kasitteleStringitaulu" visibility="private" complexity="3" crap="12" count="0"/>
+        <line num="393" type="stmt" count="0"/>
+        <line num="394" type="stmt" count="0"/>
+        <line num="395" type="stmt" count="0"/>
+        <line num="396" type="stmt" count="0"/>
+        <line num="397" type="stmt" count="0"/>
+        <line num="399" type="stmt" count="0"/>
+        <line num="410" type="method" name="kasitteleHakukentat" visibility="private" complexity="9" crap="90" count="0"/>
+        <line num="411" type="stmt" count="0"/>
+        <line num="412" type="stmt" count="0"/>
+        <line num="413" type="stmt" count="0"/>
+        <line num="414" type="stmt" count="0"/>
+        <line num="415" type="stmt" count="0"/>
+        <line num="416" type="stmt" count="0"/>
+        <line num="417" type="stmt" count="0"/>
+        <line num="418" type="stmt" count="0"/>
+        <line num="419" type="stmt" count="0"/>
+        <line num="420" type="stmt" count="0"/>
+        <line num="421" type="stmt" count="0"/>
+        <line num="422" type="stmt" count="0"/>
+        <line num="424" type="stmt" count="0"/>
+        <line num="425" type="stmt" count="0"/>
+        <line num="426" type="stmt" count="0"/>
+        <line num="427" type="stmt" count="0"/>
+        <line num="428" type="stmt" count="0"/>
+        <line num="429" type="stmt" count="0"/>
+        <line num="430" type="stmt" count="0"/>
+        <line num="431" type="stmt" count="0"/>
+        <line num="433" type="stmt" count="0"/>
+        <line num="434" type="stmt" count="0"/>
+        <line num="435" type="stmt" count="0"/>
+        <line num="436" type="stmt" count="0"/>
+        <line num="437" type="stmt" count="0"/>
+        <line num="438" type="stmt" count="0"/>
+        <line num="440" type="stmt" count="0"/>
+        <line num="442" type="stmt" count="0"/>
+        <line num="444" type="stmt" count="0"/>
+        <line num="446" type="stmt" count="0"/>
+        <line num="461" type="method" name="tableFetch" visibility="public" complexity="11" crap="132" count="0"/>
+        <line num="462" type="stmt" count="0"/>
+        <line num="463" type="stmt" count="0"/>
+        <line num="464" type="stmt" count="0"/>
+        <line num="465" type="stmt" count="0"/>
+        <line num="467" type="stmt" count="0"/>
+        <line num="469" type="stmt" count="0"/>
+        <line num="470" type="stmt" count="0"/>
+        <line num="473" type="stmt" count="0"/>
+        <line num="475" type="stmt" count="0"/>
+        <line num="476" type="stmt" count="0"/>
+        <line num="477" type="stmt" count="0"/>
+        <line num="478" type="stmt" count="0"/>
+        <line num="481" type="stmt" count="0"/>
+        <line num="482" type="stmt" count="0"/>
+        <line num="483" type="stmt" count="0"/>
+        <line num="485" type="stmt" count="0"/>
+        <line num="486" type="stmt" count="0"/>
+        <line num="487" type="stmt" count="0"/>
+        <line num="488" type="stmt" count="0"/>
+        <line num="489" type="stmt" count="0"/>
+        <line num="490" type="stmt" count="0"/>
+        <line num="491" type="stmt" count="0"/>
+        <line num="494" type="stmt" count="0"/>
+        <line num="495" type="stmt" count="0"/>
+        <line num="496" type="stmt" count="0"/>
+        <line num="497" type="stmt" count="0"/>
+        <line num="499" type="stmt" count="0"/>
+        <line num="503" type="stmt" count="0"/>
+        <line num="504" type="stmt" count="0"/>
+        <line num="505" type="stmt" count="0"/>
+        <line num="506" type="stmt" count="0"/>
+        <line num="507" type="stmt" count="0"/>
+        <line num="509" type="stmt" count="0"/>
+        <line num="510" type="stmt" count="0"/>
+        <line num="511" type="stmt" count="0"/>
+        <line num="512" type="stmt" count="0"/>
+        <line num="513" type="stmt" count="0"/>
+        <line num="514" type="stmt" count="0"/>
+        <line num="515" type="stmt" count="0"/>
+        <line num="517" type="stmt" count="0"/>
+        <line num="519" type="stmt" count="0"/>
+        <line num="521" type="stmt" count="0"/>
+        <line num="522" type="stmt" count="0"/>
+        <line num="524" type="stmt" count="0"/>
+        <line num="525" type="stmt" count="0"/>
+        <line num="526" type="stmt" count="0"/>
+        <line num="527" type="stmt" count="0"/>
+        <line num="528" type="stmt" count="0"/>
+        <line num="529" type="stmt" count="0"/>
+        <line num="530" type="stmt" count="0"/>
+        <line num="531" type="stmt" count="0"/>
+        <line num="533" type="stmt" count="0"/>
+        <line num="534" type="stmt" count="0"/>
+        <line num="537" type="stmt" count="0"/>
+        <line num="545" type="method" name="all" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="546" type="stmt" count="0"/>
+        <line num="547" type="stmt" count="0"/>
+        <line num="548" type="stmt" count="0"/>
+        <line num="549" type="stmt" count="0"/>
+        <line num="550" type="stmt" count="0"/>
+        <line num="552" type="stmt" count="0"/>
+        <line num="564" type="method" name="delete" complexity="5" crap="30" count="0"/>
+        <line num="565" type="stmt" count="0"/>
+        <line num="566" type="stmt" count="0"/>
+        <line num="567" type="stmt" count="0"/>
+        <line num="568" type="stmt" count="0"/>
+        <line num="569" type="stmt" count="0"/>
+        <line num="570" type="stmt" count="0"/>
+        <line num="571" type="stmt" count="0"/>
+        <line num="573" type="stmt" count="0"/>
+        <line num="574" type="stmt" count="0"/>
+        <line num="575" type="stmt" count="0"/>
+        <line num="576" type="stmt" count="0"/>
+        <line num="577" type="stmt" count="0"/>
+        <line num="578" type="stmt" count="0"/>
+        <line num="580" type="stmt" count="0"/>
+        <line num="581" type="stmt" count="0"/>
+        <line num="582" type="stmt" count="0"/>
+        <line num="584" type="stmt" count="0"/>
+        <line num="585" type="stmt" count="0"/>
+        <line num="586" type="stmt" count="0"/>
+        <line num="588" type="stmt" count="0"/>
+        <line num="589" type="stmt" count="0"/>
+        <line num="590" type="stmt" count="0"/>
+        <line num="591" type="stmt" count="0"/>
+        <line num="602" type="method" name="lastMod" visibility="protected" complexity="2" crap="6" count="0"/>
+        <line num="603" type="stmt" count="0"/>
+        <line num="604" type="stmt" count="0"/>
+        <line num="605" type="stmt" count="0"/>
+        <line num="606" type="stmt" count="0"/>
+        <line num="607" type="stmt" count="0"/>
+        <line num="608" type="stmt" count="0"/>
+        <line num="610" type="stmt" count="0"/>
+        <line num="621" type="method" name="lastInsert" visibility="protected" complexity="2" crap="6" count="0"/>
+        <line num="622" type="stmt" count="0"/>
+        <line num="623" type="stmt" count="0"/>
+        <line num="624" type="stmt" count="0"/>
+        <line num="625" type="stmt" count="0"/>
+        <line num="626" type="stmt" count="0"/>
+        <line num="627" type="stmt" count="0"/>
+        <line num="629" type="stmt" count="0"/>
+        <metrics loc="632" ncloc="446" classes="1" methods="19" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="271" coveredstatements="0" elements="290" coveredelements="0"/>
+      </file>
+      <file name="/home/mos/Projektit/mosBase/util/Config.php">
+        <class name="Config" namespace="mosBase">
+          <metrics complexity="11" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="22" coveredstatements="22" elements="27" coveredelements="27"/>
+        </class>
+        <line num="25" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="7"/>
+        <line num="27" type="stmt" count="7"/>
+        <line num="34" type="method" name="lue" visibility="protected" complexity="2" crap="2" count="7"/>
+        <line num="36" type="stmt" count="7"/>
+        <line num="37" type="stmt" count="6"/>
+        <line num="39" type="stmt" count="1"/>
+        <line num="40" type="stmt" count="1"/>
+        <line num="49" type="method" name="get" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="50" type="stmt" count="2"/>
+        <line num="58" type="method" name="init" visibility="public" complexity="4" crap="4" count="7"/>
+        <line num="59" type="stmt" count="7"/>
+        <line num="60" type="stmt" count="1"/>
+        <line num="62" type="stmt" count="6"/>
+        <line num="63" type="stmt" count="5"/>
+        <line num="65" type="stmt" count="6"/>
+        <line num="66" type="stmt" count="1"/>
+        <line num="68" type="stmt" count="5"/>
+        <line num="69" type="stmt" count="5"/>
+        <line num="79" type="method" name="classLoader" visibility="public" complexity="3" crap="3" count="2"/>
+        <line num="80" type="stmt" count="2"/>
+        <line num="81" type="stmt" count="2"/>
+        <line num="82" type="stmt" count="2"/>
+        <line num="83" type="stmt" count="2"/>
+        <line num="84" type="stmt" count="2"/>
+        <line num="85" type="stmt" count="1"/>
+        <line num="86" type="stmt" count="2"/>
+        <line num="89" type="stmt" count="1"/>
+        <metrics loc="92" ncloc="49" classes="1" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="22" coveredstatements="22" elements="27" coveredelements="27"/>
+      </file>
+      <file name="/home/mos/Projektit/mosBase/util/Database.php">
+        <class name="Database" namespace="mosBase">
+          <metrics complexity="2" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="0" elements="8" coveredelements="0"/>
+        </class>
+        <line num="32" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="33" type="stmt" count="0"/>
+        <line num="34" type="stmt" count="0"/>
+        <line num="35" type="stmt" count="0"/>
+        <line num="36" type="stmt" count="0"/>
+        <line num="37" type="stmt" count="0"/>
+        <line num="42" type="method" name="getDatabase" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="43" type="stmt" count="0"/>
+        <metrics loc="45" ncloc="20" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="0" elements="8" coveredelements="0"/>
+      </file>
+      <file name="/home/mos/Projektit/mosBase/util/Language.php">
+        <class name="Language" namespace="mosBase">
+          <metrics complexity="28" methods="7" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="65" coveredstatements="0" elements="72" coveredelements="0"/>
+        </class>
+        <line num="57" type="method" name="__construct" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="58" type="stmt" count="0"/>
+        <line num="59" type="stmt" count="0"/>
+        <line num="60" type="stmt" count="0"/>
+        <line num="61" type="stmt" count="0"/>
+        <line num="62" type="stmt" count="0"/>
+        <line num="63" type="stmt" count="0"/>
+        <line num="64" type="stmt" count="0"/>
+        <line num="66" type="stmt" count="0"/>
+        <line num="67" type="stmt" count="0"/>
+        <line num="69" type="stmt" count="0"/>
+        <line num="70" type="stmt" count="0"/>
+        <line num="71" type="stmt" count="0"/>
+        <line num="79" type="method" name="onko" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="80" type="stmt" count="0"/>
+        <line num="81" type="stmt" count="0"/>
+        <line num="82" type="stmt" count="0"/>
+        <line num="83" type="stmt" count="0"/>
+        <line num="84" type="stmt" count="0"/>
+        <line num="85" type="stmt" count="0"/>
+        <line num="87" type="stmt" count="0"/>
+        <line num="88" type="stmt" count="0"/>
+        <line num="89" type="stmt" count="0"/>
+        <line num="90" type="stmt" count="0"/>
+        <line num="91" type="stmt" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="94" type="stmt" count="0"/>
+        <line num="102" type="method" name="searchLocale" visibility="private" complexity="7" crap="56" count="0"/>
+        <line num="103" type="stmt" count="0"/>
+        <line num="104" type="stmt" count="0"/>
+        <line num="105" type="stmt" count="0"/>
+        <line num="106" type="stmt" count="0"/>
+        <line num="107" type="stmt" count="0"/>
+        <line num="108" type="stmt" count="0"/>
+        <line num="109" type="stmt" count="0"/>
+        <line num="110" type="stmt" count="0"/>
+        <line num="111" type="stmt" count="0"/>
+        <line num="113" type="stmt" count="0"/>
+        <line num="115" type="stmt" count="0"/>
+        <line num="116" type="stmt" count="0"/>
+        <line num="117" type="stmt" count="0"/>
+        <line num="118" type="stmt" count="0"/>
+        <line num="119" type="stmt" count="0"/>
+        <line num="120" type="stmt" count="0"/>
+        <line num="125" type="stmt" count="0"/>
+        <line num="135" type="method" name="kieli" visibility="public" complexity="7" crap="56" count="0"/>
+        <line num="137" type="stmt" count="0"/>
+        <line num="138" type="stmt" count="0"/>
+        <line num="139" type="stmt" count="0"/>
+        <line num="141" type="stmt" count="0"/>
+        <line num="142" type="stmt" count="0"/>
+        <line num="145" type="stmt" count="0"/>
+        <line num="146" type="stmt" count="0"/>
+        <line num="147" type="stmt" count="0"/>
+        <line num="148" type="stmt" count="0"/>
+        <line num="149" type="stmt" count="0"/>
+        <line num="151" type="stmt" count="0"/>
+        <line num="154" type="stmt" count="0"/>
+        <line num="162" type="method" name="lokaaliksi" visibility="public" complexity="4" crap="20" count="0"/>
+        <line num="163" type="stmt" count="0"/>
+        <line num="164" type="stmt" count="0"/>
+        <line num="165" type="stmt" count="0"/>
+        <line num="167" type="stmt" count="0"/>
+        <line num="168" type="stmt" count="0"/>
+        <line num="171" type="stmt" count="0"/>
+        <line num="178" type="method" name="kielet" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="179" type="stmt" count="0"/>
+        <line num="186" type="method" name="nyt" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="187" type="stmt" count="0"/>
+        <line num="188" type="stmt" count="0"/>
+        <line num="189" type="stmt" count="0"/>
+        <line num="192" type="stmt" count="0"/>
+        <metrics loc="194" ncloc="127" classes="1" methods="7" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="65" coveredstatements="0" elements="72" coveredelements="0"/>
+      </file>
+      <file name="/home/mos/Projektit/mosBase/util/Log.php">
+        <class name="Log" namespace="mosBase">
+          <metrics complexity="12" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="38" coveredstatements="0" elements="42" coveredelements="0"/>
+        </class>
+        <line num="66" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="67" type="stmt" count="0"/>
+        <line num="68" type="stmt" count="0"/>
+        <line num="69" type="stmt" count="0"/>
+        <line num="70" type="stmt" count="0"/>
+        <line num="71" type="stmt" count="0"/>
+        <line num="72" type="stmt" count="0"/>
+        <line num="78" type="method" name="buildInsert" visibility="private" complexity="7" crap="56" count="0"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="80" type="stmt" count="0"/>
+        <line num="81" type="stmt" count="0"/>
+        <line num="82" type="stmt" count="0"/>
+        <line num="83" type="stmt" count="0"/>
+        <line num="84" type="stmt" count="0"/>
+        <line num="86" type="stmt" count="0"/>
+        <line num="87" type="stmt" count="0"/>
+        <line num="88" type="stmt" count="0"/>
+        <line num="89" type="stmt" count="0"/>
+        <line num="91" type="stmt" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="93" type="stmt" count="0"/>
+        <line num="94" type="stmt" count="0"/>
+        <line num="95" type="stmt" count="0"/>
+        <line num="96" type="stmt" count="0"/>
+        <line num="98" type="stmt" count="0"/>
+        <line num="99" type="stmt" count="0"/>
+        <line num="102" type="stmt" count="0"/>
+        <line num="104" type="stmt" count="0"/>
+        <line num="119" type="method" name="l" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="120" type="stmt" count="0"/>
+        <line num="121" type="stmt" count="0"/>
+        <line num="122" type="stmt" count="0"/>
+        <line num="123" type="stmt" count="0"/>
+        <line num="124" type="stmt" count="0"/>
+        <line num="125" type="stmt" count="0"/>
+        <line num="126" type="stmt" count="0"/>
+        <line num="127" type="stmt" count="0"/>
+        <line num="128" type="stmt" count="0"/>
+        <line num="130" type="stmt" count="0"/>
+        <line num="136" type="method" name="setMarker" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="137" type="stmt" count="0"/>
+        <line num="138" type="stmt" count="0"/>
+        <metrics loc="140" ncloc="83" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="38" coveredstatements="0" elements="42" coveredelements="0"/>
+      </file>
+      <file name="/home/mos/Projektit/mosBase/util/Pgsql.php">
+        <class name="Pgsql" namespace="mosBase">
+          <metrics complexity="11" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="34" coveredstatements="0" elements="37" coveredelements="0"/>
+        </class>
+        <line num="33" type="method" name="tableColumns" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="34" type="stmt" count="0"/>
+        <line num="35" type="stmt" count="0"/>
+        <line num="37" type="stmt" count="0"/>
+        <line num="38" type="stmt" count="0"/>
+        <line num="39" type="stmt" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <line num="41" type="stmt" count="0"/>
+        <line num="42" type="stmt" count="0"/>
+        <line num="43" type="stmt" count="0"/>
+        <line num="44" type="stmt" count="0"/>
+        <line num="45" type="stmt" count="0"/>
+        <line num="47" type="stmt" count="0"/>
+        <line num="57" type="method" name="hasArrayColumns" visibility="public" complexity="5" crap="30" count="0"/>
+        <line num="58" type="stmt" count="0"/>
+        <line num="59" type="stmt" count="0"/>
+        <line num="60" type="stmt" count="0"/>
+        <line num="61" type="stmt" count="0"/>
+        <line num="62" type="stmt" count="0"/>
+        <line num="63" type="stmt" count="0"/>
+        <line num="64" type="stmt" count="0"/>
+        <line num="65" type="stmt" count="0"/>
+        <line num="66" type="stmt" count="0"/>
+        <line num="67" type="stmt" count="0"/>
+        <line num="68" type="stmt" count="0"/>
+        <line num="69" type="stmt" count="0"/>
+        <line num="71" type="stmt" count="0"/>
+        <line num="74" type="stmt" count="0"/>
+        <line num="75" type="stmt" count="0"/>
+        <line num="77" type="stmt" count="0"/>
+        <line num="86" type="method" name="unpack" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="87" type="stmt" count="0"/>
+        <line num="88" type="stmt" count="0"/>
+        <line num="89" type="stmt" count="0"/>
+        <line num="90" type="stmt" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="95" type="stmt" count="0"/>
+        <metrics loc="97" ncloc="60" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="34" coveredstatements="0" elements="37" coveredelements="0"/>
+      </file>
+      <file name="/home/mos/Projektit/mosBase/util/Session.php">
+        <class name="Session" namespace="mosBase">
+          <metrics complexity="19" methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="54" coveredstatements="0" elements="59" coveredelements="0"/>
+        </class>
+        <line num="67" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="68" type="stmt" count="0"/>
+        <line num="69" type="stmt" count="0"/>
+        <line num="70" type="stmt" count="0"/>
+        <line num="71" type="stmt" count="0"/>
+        <line num="72" type="stmt" count="0"/>
+        <line num="73" type="stmt" count="0"/>
+        <line num="74" type="stmt" count="0"/>
+        <line num="75" type="stmt" count="0"/>
+        <line num="76" type="stmt" count="0"/>
+        <line num="78" type="method" name="logout" visibility="private" complexity="3" crap="12" count="0"/>
+        <line num="80" type="stmt" count="0"/>
+        <line num="84" type="stmt" count="0"/>
+        <line num="85" type="stmt" count="0"/>
+        <line num="86" type="stmt" count="0"/>
+        <line num="87" type="stmt" count="0"/>
+        <line num="88" type="stmt" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="93" type="stmt" count="0"/>
+        <line num="94" type="stmt" count="0"/>
+        <line num="95" type="stmt" count="0"/>
+        <line num="98" type="stmt" count="0"/>
+        <line num="100" type="stmt" count="0"/>
+        <line num="101" type="stmt" count="0"/>
+        <line num="104" type="method" name="timeOut" visibility="private" complexity="3" crap="12" count="0"/>
+        <line num="105" type="stmt" count="0"/>
+        <line num="106" type="stmt" count="0"/>
+        <line num="107" type="stmt" count="0"/>
+        <line num="110" type="stmt" count="0"/>
+        <line num="111" type="stmt" count="0"/>
+        <line num="113" type="stmt" count="0"/>
+        <line num="114" type="stmt" count="0"/>
+        <line num="117" type="stmt" count="0"/>
+        <line num="125" type="method" name="pageStart" visibility="public" complexity="8" crap="72" count="0"/>
+        <line num="126" type="stmt" count="0"/>
+        <line num="127" type="stmt" count="0"/>
+        <line num="128" type="stmt" count="0"/>
+        <line num="129" type="stmt" count="0"/>
+        <line num="130" type="stmt" count="0"/>
+        <line num="131" type="stmt" count="0"/>
+        <line num="135" type="stmt" count="0"/>
+        <line num="136" type="stmt" count="0"/>
+        <line num="139" type="stmt" count="0"/>
+        <line num="140" type="stmt" count="0"/>
+        <line num="141" type="stmt" count="0"/>
+        <line num="142" type="stmt" count="0"/>
+        <line num="143" type="stmt" count="0"/>
+        <line num="144" type="stmt" count="0"/>
+        <line num="145" type="stmt" count="0"/>
+        <line num="146" type="stmt" count="0"/>
+        <line num="147" type="stmt" count="0"/>
+        <line num="152" type="stmt" count="0"/>
+        <line num="157" type="method" name="loggedIn" visibility="public" complexity="4" crap="20" count="0"/>
+        <line num="158" type="stmt" count="0"/>
+        <line num="159" type="stmt" count="0"/>
+        <line num="160" type="stmt" count="0"/>
+        <line num="163" type="stmt" count="0"/>
+        <line num="165" type="stmt" count="0"/>
+        <line num="167" type="stmt" count="0"/>
+        <metrics loc="169" ncloc="110" classes="1" methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="54" coveredstatements="0" elements="59" coveredelements="0"/>
+      </file>
+      <file name="/home/mos/Projektit/mosBase/util/Util.php">
+        <class name="Util" namespace="mosBase">
+          <metrics complexity="17" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="33" coveredstatements="0" elements="39" coveredelements="0"/>
+        </class>
+        <line num="18" type="stmt" count="0"/>
+        <line num="19" type="stmt" count="0"/>
+        <line num="28" type="method" name="pdoError" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="29" type="stmt" count="0"/>
+        <line num="39" type="method" name="pdoPrepare" visibility="public" complexity="4" crap="20" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <line num="41" type="stmt" count="0"/>
+        <line num="42" type="stmt" count="0"/>
+        <line num="44" type="stmt" count="0"/>
+        <line num="45" type="stmt" count="0"/>
+        <line num="46" type="stmt" count="0"/>
+        <line num="48" type="stmt" count="0"/>
+        <line num="60" type="method" name="pdoExecute" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="61" type="stmt" count="0"/>
+        <line num="62" type="stmt" count="0"/>
+        <line num="65" type="stmt" count="0"/>
+        <line num="67" type="stmt" count="0"/>
+        <line num="68" type="stmt" count="0"/>
+        <line num="70" type="stmt" count="0"/>
+        <line num="77" type="method" name="selainTiedot" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="78" type="stmt" count="0"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="80" type="stmt" count="0"/>
+        <line num="81" type="stmt" count="0"/>
+        <line num="83" type="stmt" count="0"/>
+        <line num="84" type="stmt" count="0"/>
+        <line num="85" type="stmt" count="0"/>
+        <line num="87" type="stmt" count="0"/>
+        <line num="96" type="method" name="isJarjestelma" complexity="4" crap="20" count="0"/>
+        <line num="97" type="stmt" count="0"/>
+        <line num="98" type="stmt" count="0"/>
+        <line num="100" type="stmt" count="0"/>
+        <line num="101" type="stmt" count="0"/>
+        <line num="102" type="stmt" count="0"/>
+        <line num="103" type="stmt" count="0"/>
+        <line num="104" type="stmt" count="0"/>
+        <line num="105" type="stmt" count="0"/>
+        <line num="113" type="method" name="isInt" complexity="2" crap="6" count="0"/>
+        <line num="114" type="stmt" count="0"/>
+        <line num="115" type="stmt" count="0"/>
+        <line num="117" type="stmt" count="0"/>
+        <metrics loc="119" ncloc="68" classes="1" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="35" coveredstatements="0" elements="41" coveredelements="0"/>
+      </file>
+    </package>
+    <file name="/home/mos/Projektit/mosBase/util/DatabaseException.php">
+      <class name="DatabaseException" namespace="global">
+        <metrics complexity="3" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="0" elements="7" coveredelements="0"/>
+      </class>
+      <line num="23" type="method" name="__construct" visibility="public" complexity="3" crap="12" count="0"/>
+      <line num="24" type="stmt" count="0"/>
+      <line num="25" type="stmt" count="0"/>
+      <line num="26" type="stmt" count="0"/>
+      <line num="27" type="stmt" count="0"/>
+      <line num="28" type="stmt" count="0"/>
+      <line num="30" type="stmt" count="0"/>
+      <metrics loc="31" ncloc="12" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="0" elements="7" coveredelements="0"/>
+    </file>
+    <metrics files="9" loc="1519" ncloc="975" classes="9" methods="52" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="531" coveredstatements="22" elements="583" coveredelements="27"/>
+  </project>
+</coverage>

@@ -9,4 +9,15 @@
 			<directory>tests</directory>
 		</testsuite>
 	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">model</directory>
+			<directory suffix=".php">util</directory>
+		</whitelist>
+	</filter>
+	<logging>
+		<log type="coverage-clover" target="build/phpunit/coverage.xml"/>
+		<log type="junit" target="build/phpunit/log.xml"/>
+		<log type="testdox-html" target="build/phpunit/testdox.html"/>
+	</logging>
 </phpunit>

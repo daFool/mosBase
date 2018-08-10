@@ -57,13 +57,13 @@ class Config {
 	 * */
 	public function init(string $tiedosto) {
 		if ($this->lue($tiedosto)===false) {
-			throw new \Exception(sprintf(_("Konfiguraation %s lataaminen epäonnistui."),$tiedosto));
+			throw new ConfigException(sprintf(_("Konfiguraation %s lataaminen epäonnistui."),$tiedosto));
 		}		
 		if (isset($this->data["ClassDirs"])) {
 			spl_autoload_register("mosBase\Config::classLoader");
 		}
 		if (!isset($this->data["General"]["TZ"])) {
-			throw new \Exception(sprintf(_("Konfiguraatiosta %s uupuu aikavyöhyke, liian suspektia!"),$tiedosto));
+			throw new ConfigException(sprintf(_("Konfiguraatiosta %s uupuu aikavyöhyke, liian suspektia!"),$tiedosto));
 		}
 		date_default_timezone_set($this->data["General"]["TZ"]);
 		return true;
