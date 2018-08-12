@@ -127,7 +127,6 @@ class logTest extends \PHPUnit\Framework\TestCase {
         // 42 4242 424242 42424242
         $o = [ "42B", "4.24kB", "424.24kB", "42.42MB", "4.24GB", "424.24GB", "42.42TB", "4.24PB", "424.24PB", "42.24YB" ];
         for($j=0;$j<9;$j++) {
-            var_dump($i);
             $this->assertEquals($o[$j], $log->isJarjestelma($i));
             $i.="42";
         }

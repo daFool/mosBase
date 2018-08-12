@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1533925416">
-  <project timestamp="1533925416">
+<coverage generated="1534093540">
+  <project timestamp="1534093540">
     <package name="mosBase">
       <file name="/home/mos/projektit/mosBase/model/Malli.php">
         <class name="mosBase\Malli" namespace="mosBase">

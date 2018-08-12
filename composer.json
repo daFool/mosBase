@@ -1,7 +1,8 @@
 {
 	"autoload" : {
 		"psr-4" : {
-			"mosBase\\" : [ ".", "./model", "./util" ]
+			"mosBase\\" : [ ".", "./model", "./util" ],
+			"testStubs\\" : [ "./teststubs" ]
 		}
 	}
 }
