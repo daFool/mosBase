@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <table name="testi">
+        <column>id</column>
+        <column>intti</column>
+        <column>merkkijono</column>
+        <column>pvm</column>
+        <column>aika</column>
+        <column>aikaleima</column>
+        <column>kommentti</column>
+        <column>merkkijonot</column>
+        <column>valittu</column>
+        <column>muokattu</column>
+        <column>muokkaaja</column>
+        <column>luotu</column>
+        <column>luoja</column>
+        <row>
+            <value>1</value>
+            <value>10</value>
+            <value>Kymmenen</value>
+            <value>2018-08-13</value>
+            <value>09:35:55+0300</value>
+            <value>2018-08-13 09:31:08+03:00</value>
+            <value>Ensimmäinen testirivi</value>
+            <value>{10,0x0A,01010}</value>
+            <value>2</value>
+            <value>2018-08-12 09:38:29+03:00</value>
+            <value>Testaaja</value>
+            <value>2018-08-03 09:39:08+03:00</value>
+            <value>Luoja</value>
+        </row>
+         <row>
+            <value>2</value>
+            <value>20</value>
+            <value>Kakskyt</value>
+            <value>2017-08-13</value>
+            <value>17:35:55+0300</value>
+            <value>2017-07-13 09:31:08+03:00</value>
+            <value>Toinen testirivi</value>
+            <value>{20,0xF4,010100}</value>
+            <value>3</value>
+            <value>2018-08-13 09:38:29+03:00</value>
+            <value>Testaaja</value>
+            <value>2017-08-13 09:39:08+03:00</value>
+            <value>Luoja</value>
+        </row>
+    </table>
+</dataset>

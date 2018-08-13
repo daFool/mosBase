@@ -202,7 +202,7 @@ class Malli
      * @uses mosBase\malli::getKey()
      * @uses mosBase\util::pdoPrepare()
      * @uses mosBase\util::pdoExecute()
-     * @uses mosBase\log::log()
+     * @uses mosBase\log::l()
      * */
     public function exists(array $data) : bool {        
         $this->clear();
@@ -218,7 +218,7 @@ class Malli
             $this->pdoExecute($st, $d);
             $ds = serialize($data);
             $m=sprintf(_("Testaus %s ({%s})"), $s, $ds);
-            $this->log->log("system", $m, __FILE__, __METHOD__, __LINE__, log::DEBUGMB);
+            $this->log->l("system", $m, __FILE__, __METHOD__, __LINE__, log::DEBUGMB);
             $rows = $st->fetchAll(\PDO::FETCH_ASSOC);
             if (count($rows)>1) {
                 return false;
@@ -329,8 +329,8 @@ class Malli
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st,$d);
         $m = sprintf(_("%s (%s)"), $s, serialize($d));
-        $this->log->log(log::MOSBASE, $m, __FILE__,__METHOD__,__LINE__, log::DEBUGMB);
-        $this->log->log(log::MOSBASE, _("Onnistui"), __FILE__,__METHOD__,__LINE__, log::DEBUGMB);
+        $this->log->l(log::MOSBASE, $m, __FILE__,__METHOD__,__LINE__, log::DEBUGMB);
+        $this->log->l(log::MOSBASE, _("Onnistui"), __FILE__,__METHOD__,__LINE__, log::DEBUGMB);
         
         if ($insert && $this->db->getDatabase()==malli::PGSQL) {
             $r = $st->fetch(\PDO::FETCH_ASSOC);            
@@ -340,7 +340,7 @@ class Malli
         }
         $tulos = $this->exists($data);
         if ($tulos!==true) {
-            $this->log->log(log::MOSBASE, _("WTF? käsiteltyä riviä ei ole!"),__FILE__,__METHOD__,
+            $this->log->l(log::MOSBASE, _("WTF? käsiteltyä riviä ei ole!"),__FILE__,__METHOD__,
                     __LINE__, log::ERROR);
         }
         return $tulos;
@@ -413,36 +413,41 @@ class Malli
         foreach ($this->hakukentat as $kentta) {
             switch ($kentta[malli::TYYPPI]) {
                 case malli::STRINGI:
-                    list($v,$op)=$this->kasitteleStringi($v);
-                    $so.=sprintf("%s%s %s %s", $fmt, $kentta[malli::NIMI], $op, $this->db->quote($v, \PDO::PARAM_STR));   
+                    list($va,$op)=$this->kasitteleStringi($v);
+                    $so.=sprintf("%s%s %s %s", $fmt, $kentta[malli::NIMI], $op, $this->db->quote($va, \PDO::PARAM_STR));   
                     $fmt=" or ";          
                     break;
                 case malli::STRINGA:
                     if ($dtype!=malli::PGSQL) {
                         continue;
                     }
-                    list($v,$op) = $this->kasitteleStringitaulu($v);
-                    $so.=sprintf("%s%s %s ANY (%s)", $fmt, $this->db->quote($v, \PDO::PARAM_STR), $op, $kentta[malli::NIMI]);
+                    list($va,$op) = $this->kasitteleStringitaulu($v);
+                    //$so.=sprintf("%s%s %s ANY (%s)", $fmt, $this->db->quote($v, \PDO::PARAM_STR), $op, $kentta[malli::NIMI]);
+                    $so.=sprintf("%sexists (select * from unnest(%s) as x where x %s %s)",
+                                 $fmt, $kentta[malli::NIMI],$op, $this->db->quote($va, \PDO::PARAM_STR));
                     $fmt=" or ";
                     break;
                 case malli::INTTI:
                     if (is_integer($v)) {
                         $so.=sprintf("%s%s = %s", $fmt, $kentta[malli::NIMI], $this->db->quote($v, \PDO::PARAM_INT));
-                        $fmt=" or ";          
+                        $fmt=" or ";
                     }
                     break;
                 case malli::DATE:
                     $pvm = date_create($v);
                     if ($pvm !== False) {
                         $so.=sprintf("%s%s = %s", $fmt, $kentta[malli::NIMI], $this->db->quote($v, \PDO::PARAM_STR));
-                        $fmt=" or ";
+                        $fmt=" or ";                        
+                    } else {
+                        var_dump($v);
+                        var_dump($pvm);
                     }
                     break;
                 default:
                     throw new Exception(sprintf(_("Ohjelmointivirhe, tuntematon tyyppi:%s"),$kentta[malli::TYYPPI]));
             }                            
-            $so.=") ";
         }
+        $so.=") ";
         return $so;
     }
     /**
@@ -511,10 +516,10 @@ class Malli
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st,$d);
         if ($st->rowCount()==0) {
-            $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,log::ERROR);
+            $this->log->l($kuka, $m, __FILE__,__METHOD__,__LINE__,log::ERROR);
             return $tulos;
         }
-        $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,log::DEBUGMB);
+        $this->log->l($kuka, $m, __FILE__,__METHOD__,__LINE__,log::DEBUGMB);
         
         $rivit = $st->fetchAll(\PDO::FETCH_ASSOC);
                               
@@ -528,7 +533,7 @@ class Malli
             $this->pdoExecute($st,$d);
             if($st->rowCount()==0) {
                 $m="$s";
-                $this->log->log($kuka, $m, __FILE__,__METHOD__,__LINE__,log::ERROR);
+                $this->log->l($kuka, $m, __FILE__,__METHOD__,__LINE__,log::ERROR);
             } else {            
                 $rivi = $st->fetch(\PDO::FETCH_ASSOC);
                 $tulos[malli::FILTERED]=$rivi[malli::LKM];
@@ -582,10 +587,10 @@ class Malli
             $d[$avain]=$arvo;            
         }
         if ($eka===true) {
-            $this->log->log(log::MOSBASE, _("En poista kaikkia rivejä!"), __FILE__, __METHOD__, __LINE__, log::FATAL);
+            $this->log->l(log::MOSBASE, _("En poista kaikkia rivejä!"), __FILE__, __METHOD__, __LINE__, log::FATAL);
             return false;
         }
-        $this->log->log((isset($d[malli::MUOKKAAJA])??log::MOSBASE), $s.serialize($d),__FILE__,__METHOD__,__LINE__,log::DEBUGMB);
+        $this->log->l((isset($d[malli::MUOKKAAJA])??log::MOSBASE), $s.serialize($d),__FILE__,__METHOD__,__LINE__,log::DEBUGMB);
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st, $d);
         return true;        
