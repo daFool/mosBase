@@ -93,7 +93,7 @@ trait Util {
 	 * @param int $koko Siivottava luku
 	 * @return string Joko siistityn luvun merkkijonona tai tekstin "Ei arvoa" halutulla kielellä.
 	 * */
-	function isJarjestelma(int $koko) : string {
+	public function isJarjestelma(int $koko) : string {
         if (!isset($koko) || $koko==0) {
             return _("Ei arvoa");
         }
