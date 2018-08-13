@@ -1,6 +1,6 @@
 <?php
 
-class databaseTest extends \PHPUnit_Framework_TestCase {
+class databaseTest extends \PHPUnit\Framework\TestCase {
     
     /**
      * @test

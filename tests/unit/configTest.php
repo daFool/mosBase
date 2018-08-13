@@ -1,6 +1,6 @@
 <?php
 
-class configTest extends \PHPUnit_Framework_TestCase {
+class configTest extends \PHPUnit\Framework\TestCase {
     
     const puuttuvaTiedosto='foobar.ini';
     const huonoTiedosto='/etc/passwd';

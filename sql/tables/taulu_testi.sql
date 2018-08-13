@@ -7,6 +7,8 @@ create table testi (
         aika    time with time zone,
         aikaleima       timestamp with time zone,
         kommentti       text,
+	merkkijonot	varchar(256)[],
+	valittu		int,
         
         like pohjat including ALL);
         
