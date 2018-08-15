@@ -10,7 +10,8 @@ namespace mosBase;
 /**
  * Eroaa isännästä tallettamalla tiedon tietokannan tyypistä
  * */
-class Database extends \PDO {
+class Database extends \PDO
+{
     /**
      * @var string $dsn Data source name - connection string
      * */
@@ -29,7 +30,8 @@ class Database extends \PDO {
      * Konstruktori
      * Käytännössä koppaa talteen yhteysparametrit ja kutsuu PDO:ta.
      * */
-    public function __construct(string $dsn, string $user, string $password) {
+    public function __construct(string $dsn, string $user, string $password) 
+    {
         parent::__construct($dsn, $user, $password);
         $this->dsn=$dsn;
         $this->user=$user;
@@ -38,9 +40,11 @@ class Database extends \PDO {
     
     /**
      * Purkaa DSN:stä tietokantayhteystyypin
+     *
      * @return string Tietokanta-ajurin tyyppi/nimi
      * */
-    public function getDatabase() : string {
+    public function getDatabase() : string 
+    {
         return explode(":", $this->dsn)[0];        
     }
 }
