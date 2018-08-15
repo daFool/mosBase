@@ -4,7 +4,7 @@
  <property name="pdepend" value="pdepend"/>
  <property name="phpcpd"  value="phpcpd"/>
  <property name="phpcs"   value="phpcs"/>
- <property name="phpdox"  value="phpdox"/>
+ <property name="phpdox"  value="/usr/local/bin/phpdox"/>
  <property name="phploc"  value="phploc"/>
  <property name="phpmd"   value="phpmd"/>
  <property name="phpunit" value="phpunit6"/>
@@ -78,7 +78,11 @@
   <mkdir dir="${basedir}/build/logs"/>
   <mkdir dir="${basedir}/build/pdepend"/>
   <mkdir dir="${basedir}/build/phpdox"/>
-  <property name="prepare.done" value="true"/>
+  <exec executable="composer" taskname="composer">
+   <arg value="dump-autoload" />
+  </exec>
+  
+<property name="prepare.done" value="true"/>
  </target>
 
  <target name="lint"
