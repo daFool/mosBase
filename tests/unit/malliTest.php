@@ -181,5 +181,104 @@ class malliTest extends \PHPUnit\Framework\TestCase {
         $res=$foo->tableFetch(0, 10, "id asc", $search);
         $this->assertCount(1, $res["rivi"]);
     }
+    
+    /**
+     *@test
+     *@depends konstruktoriHakutaululla
+     **/
+    public function loytyykoKakkosrivinAikaleimalla() {
+        $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);
+        $search=[];
+        $search["value"]="2017-07-13 09:31:08";
+        $res=$foo->tableFetch(0, 10, "id asc", $search);
+        $this->assertCount(1, $res["rivi"]); 
+    }
+    
+    /**
+     *@test
+     *@depends konstruktoriHakutaululla
+     **/
+    public function loytyykoTestirivit() {
+        $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);
+        $search=[];
+        $search["value"]="testirivi";
+        $res=$foo->tableFetch(0, 10, "id asc", $search);
+        $this->assertCount(2, $res["rivi"]); 
+    }
+    
+    /**
+     *@test
+     *@depends konstruktoriHakutaululla
+     **/
+    public function osumatonHaku() {
+        $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);
+        $search=[];
+        $search["value"]="gargamel";
+        $res=$foo->tableFetch(0, 10, "id asc", $search);
+        $this->assertCount(0, $res["rivi"]);  
+    }
+    
+    /**
+     *@test
+     *@depends konstruktoriHakutaululla
+     **/
+    public function uusiRivi() {
+        $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);
+        $rivi=array("intti"=>30,
+                    "merkkijono"=>"Kolkyt",
+                    "pvm"=>"2019-03-03",
+                    "aika"=>"23:59:59+03",
+                    "aikaleima"=>"2020-01-02 12:12:12+03:00",
+                    "kommentti"=>"Kolmas testirivi",
+                    "merkkijonot"=>"{'30','0x1D','011110'}",
+                    "valittu"=>1,
+                    "luoja"=>"Ruoja");
+        $this->assertTrue($foo->upsert($rivi));
+        $this->assertTrue($foo->has());
+        $res = $foo->give();
+        foreach($rivi as $i=>$v) {
+            switch($i) {
+                case "aikaleima":
+                    break;
+                default:
+                    $this->assertEquals($v, $res[$i]);
+                    break;
+            }
+        }
+        $this->assertArrayHasKey('id', $res);
+    }
+
+    /**
+     *@test
+     *@depends konstruktoriHakutaululla
+     **/   
+    public function paivitaRivi() {
+        $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);
+        $rivi=array("id"=>2,
+                    "intti"=>30,
+                    "merkkijono"=>"Kolkyt",
+                    "pvm"=>"2019-03-03",
+                    "aika"=>"23:59:59+03",
+                    "aikaleima"=>"2020-01-02 12:12:12+03:00",
+                    "kommentti"=>"Kolmas testirivi",
+                    "merkkijonot"=>"{'30','0x1D','011110'}",
+                    "valittu"=>1,
+                    "muokkaaja"=>"Ruoja");
+        $this->assertTrue($foo->upsert($rivi));
+        $this->assertTrue($foo->has());
+        $this->assertTrue($foo->exists(array("id"=>2)));
+        $res = $foo->give();
+        foreach($rivi as $i=>$v) {
+            switch($i) {
+                case "aikaleima":
+                    break;
+                case "merkkijonot":
+                    break;                
+                default:
+                    $this->assertEquals($v, $res[$i]);
+                    break;
+            }
+        }        
+    }
 }
 ?>

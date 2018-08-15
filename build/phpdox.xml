@@ -1,0 +1,16 @@
+<phpdox xmlns="http://xml.phpdox.net/config">
+ <project name="mosBase" source="${basedir}/.." workdir="${basedir}/phpdox">
+  <collector publiconly="false">
+   <include mask="*.php" />
+   <exclude mask="**tests**" />
+   <exclude mask="**teststubs**" />
+   <exlucde mask="**vendor**" />
+  </collector>
+
+  <generator output="${basedir}">
+   <build engine="html" enabled="true" output="api">
+    <file extension="html" />
+   </build>
+  </generator>
+ </project>
+</phpdox>

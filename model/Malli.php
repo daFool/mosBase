@@ -423,7 +423,7 @@ class Malli
      * */
     public function resolveTime(string $malli, string $arvo) : bool {
         foreach($this->mallit[$malli] as $hahmo) {
-            if(($koe=\DateTime::createFromFormat($hahmo, $arvo))) {
+            if($koe=\DateTime::createFromFormat($hahmo, $arvo)) {
                 if($koe->format($hahmo)!=$arvo) {
                     continue;
                 }
@@ -456,7 +456,6 @@ class Malli
                         continue;
                     }
                     list($va,$op) = $this->kasitteleStringitaulu($v);
-                    //$so.=sprintf("%s%s %s ANY (%s)", $fmt, $this->db->quote($v, \PDO::PARAM_STR), $op, $kentta[malli::NIMI]);
                     $so.=sprintf("%sexists (select * from unnest(%s) as x where x %s %s)",
                                  $fmt, $kentta[malli::NIMI],$op, $this->db->quote($va, \PDO::PARAM_STR));
                     $fmt=" or ";
@@ -479,9 +478,8 @@ class Malli
                 default:
                     throw new Exception(sprintf(_("Ohjelmointivirhe, tuntematon tyyppi:%s"),$kentta[malli::TYYPPI]));
             }                            
-        }
-        $so.=") ";
-        return $so;
+        }        
+        return $so.=") ";
     }
     /**
      * Tauluhaku Datatablesia silmällä pitäen

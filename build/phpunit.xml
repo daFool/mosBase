@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="../vendor/autoload.php"
+	colors="true"
+	verbose="true"
+	stopOnFailure="false">
+	<testsuites>
+		<testsuite name="mosBase">
+			<directory>../tests</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">../model</directory>
+			<directory suffix=".php">../util</directory>
+		</whitelist>
+	</filter>
+	<logging>
+		<log type="coverage-clover" target="phpunit/coverage.xml"/>
+		<log type="junit" target="phpunit/log.xml"/>
+		<log type="testdox-html" target="phpunit/testdox.html"/>
+	</logging>
+</phpunit>
