@@ -31,7 +31,7 @@ trait Pgsql
      * - type, on tietokannan ilmoittama tyyppinimi
      * - pdotype, on pdo:n käsitys tyypistä
      * */
-    public function tableColumns(database $db, string $tablename) : array 
+    public function tableColumns(database $db, string $tablename) : array
     {
         if (!preg_match('/^[a-zA-Z0-9_]+$/', $tablename)) {
             return array();
@@ -42,7 +42,7 @@ trait Pgsql
         $st->fetch(\PDO::FETCH_ASSOC);
         $res=array();
         $clkm = $st->columnCount();
-        for($i=0;$i<$clkm;$i++) {
+        for ($i=0; $i<$clkm; $i++) {
             $c = $st->getColumnMeta($i);
             array_push($res, array("name"=>$c["name"], "type"=>$c["native_type"], "pdotype"=>$c["pdo_type"]));
         }
@@ -57,26 +57,26 @@ trait Pgsql
      * @return mixed false if there were no array columns in the result and
      *  an array with select-list and array of fields that are arrays and need to be unpacked
      *  */
-    public function hasArrayColumns(\PDOStatement $st) 
+    public function hasArrayColumns(\PDOStatement $st)
     {
         $i=0;
         $res=false;
         $slist="";
         $f=array();
         $clkm=$st->columnCount();
-        for($i=0;$i<$clkm;$i++) {
+        for ($i=0; $i<$clkm; $i++) {
             $c = $st->getColumnMeta($i);
             $slist.=$slist!=""?",":"";
             if (preg_match('/^_.*$/', $c["native_type"])) {
                 $slist.="to_json(".$c["name"].") as ".$c["name"];
                 $res=true;
-                $f[$c["name"]]=true;                
+                $f[$c["name"]]=true;
             } else {
                 $slist.=$c["name"];
             }
         }
         if ($res) {
-            return array($slist, $f); 
+            return array($slist, $f);
         }
         return false;
     }
@@ -88,10 +88,10 @@ trait Pgsql
      * @param  array $column Sarakkeiden nimet indekseinä, arvoina true, jotka ovat jsonia
      * @return array Purettu rivi
      * */
-    public function unpack(array $rivi, array $columns) : array 
+    public function unpack(array $rivi, array $columns) : array
     {
         $result = array();
-        foreach ($rivi as $c=>$v) {
+        foreach ($rivi as $c => $v) {
             if (isset($columns[$c])) {
                 $result[$c]=json_decode($v);
             } else {
@@ -101,4 +101,3 @@ trait Pgsql
         return $result;
     }
 }
-?>
