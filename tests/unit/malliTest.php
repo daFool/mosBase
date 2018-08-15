@@ -62,7 +62,40 @@ class malliTest extends \PHPUnit\Framework\TestCase {
     
     /**
      * @test
-     * @depends konstruktoriIlmanHakutaulua
+     * */
+    public function pvmTunnistuu() {
+        $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);        
+        $this->assertTrue($foo->resolveTime(\mosBase\Malli::DATE, "2018-08-13"));
+    }
+    /**
+     * @test
+     * */
+    public function pvmFeilaa() {
+        $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);        
+        $this->assertFalse($foo->resolveTime(\mosBase\Malli::DATE, "2018-08-32"));
+    }
+    /**
+     * @test
+     * */
+    public function aikaToimii() {
+        $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);        
+        $this->assertTrue($foo->resolveTime(\mosBase\Malli::TIME, "09:30:55"));
+        $this->assertTrue($foo->resolveTime(\mosBase\Malli::TIME, "09:30:55+0300"));
+        $this->assertTrue($foo->resolveTime(\mosBase\Malli::TIME, "09:30:55+03:00"));                      
+    }
+    /**
+     * @test
+     * */
+    public function aikaFeilaa() {
+        $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);        
+        $this->assertFalse($foo->resolveTime(\mosBase\Malli::TIME, "29:30:55"));
+        $this->assertFalse($foo->resolveTime(\mosBase\Malli::TIME, "09:30:55Z0300"));
+        $this->assertFalse($foo->resolveTime(\mosBase\Malli::TIME, "09:30:55+3A:00"));                      
+    }
+    /**
+    /**
+     * @test
+     * @depends konstruktoriIlmanHakutaulua     
      * */
     public function onnistuukoRiviKakkosenHakuIdlla() {
         $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);        
@@ -100,6 +133,7 @@ class malliTest extends \PHPUnit\Framework\TestCase {
     /**
      * @test
      * @depends konstruktoriHakutaululla
+     * @depends pvmTunnistuu
      * */
     public function loytyykoHeksakymppi() {
          $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);
@@ -112,6 +146,7 @@ class malliTest extends \PHPUnit\Framework\TestCase {
     /**
      *@test
      *@depends konstruktoriHakutaululla
+     *@depends pvmTunnistuu
      **/
     public function loytyykoKaksikymmenta() {
         $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);
@@ -124,6 +159,7 @@ class malliTest extends \PHPUnit\Framework\TestCase {
     /**
      *@test
      *@depends konstruktoriHakutaululla
+     *@depends pvmTunnistuu
      **/
     public function loytyykoElokuuKolmetoistaSeitsenmantoista() {
         $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);
@@ -134,8 +170,9 @@ class malliTest extends \PHPUnit\Framework\TestCase {
     }
     
     /**
-     *@test
-     *@depends konstruktoriHakutaululla
+     * @test
+     * @depends konstruktoriHakutaululla
+     * @depends pvmTunnistuu
      **/
     public function loytyykoKloYhdeksanKolmenkymmentaViisiViisiViisi() {
         $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);

@@ -62,6 +62,10 @@ class Malli
     protected $log;
     
     /**
+     * @var array $mallit Tuetut ajanhetken esitykset
+     * */
+    protected $mallit;
+    /**
      * Käytetään taulun sarakkeiden ominaisuuksien etsimiseen
      * */
     use Pgsql;
@@ -82,10 +86,13 @@ class Malli
     private const RIVIT='rivi';
     private const RIVEJA='riveja';
     private const NULLPATTERN="/\w*NULL\w*/i";
+   
     public const STRINGI="string";
     public const STRINGA="stringA";
     public const INTTI="int";
     public const DATE="date";
+    public const TIME="time";
+    public const DATETIME="datetime";
     
     /**
      * Konstruktori
@@ -126,6 +133,14 @@ class Malli
                     }
                 }
             }
+        }
+        $this->mallit = array(
+            Malli::DATE => array("Y-m-d"),
+            Malli::TIME => array("H:i:s", "H:i:sO", "H:i:sP"),            
+        );
+        $this->mallit[Malli::DATETIME]=array();
+        foreach($this->mallit[Malli::TIME] as $aika) {
+            $this->mallit[Malli::DATETIME][]=$this->mallit[Malli::DATE][0]." ".$aika;
         }
     }
     
@@ -398,6 +413,25 @@ class Malli
         }
         return array($v, $op);            
     }
+    
+    /**
+     * Onko laillinen mallinmukainen ajanesitys?
+     *
+     * @param string $malli Mitä haetaan, päivä, aika vai molemmat?
+     * @param string $arvo Mitä sovitetaan?
+     * @return bool False jos ei sovi, True jos sopii
+     * */
+    public function resolveTime(string $malli, string $arvo) : bool {
+        foreach($this->mallit[$malli] as $hahmo) {
+            if(($koe=\DateTime::createFromFormat($hahmo, $arvo))) {
+                if($koe->format($hahmo)!=$arvo) {
+                    continue;
+                }
+                return true;
+            }            
+        }
+        return false;
+    }
     /**
      * Datatablen haun käsittely
      * Käydään lävitse kaikki hakutaulun hakukentät ja kokeillaan sopisiko datatablen
@@ -434,13 +468,12 @@ class Malli
                     }
                     break;
                 case malli::DATE:
-                    $pvm = date_create($v);
+                case malli::TIME:
+                case malli::DATETIME;
+                    $pvm=$this->resolveTime($kentta[malli::TYYPPI], $v);
                     if ($pvm !== False) {
                         $so.=sprintf("%s%s = %s", $fmt, $kentta[malli::NIMI], $this->db->quote($v, \PDO::PARAM_STR));
                         $fmt=" or ";                        
-                    } else {
-                        var_dump($v);
-                        var_dump($pvm);
                     }
                     break;
                 default:

@@ -12,9 +12,10 @@ class TestiTaulu extends \mosBase\Malli {
             $hakutaulut = [];
             $hakutaulut[] = array("nimi"=>"intti", "tyyppi"=>\mosBase\Malli::INTTI);
             $hakutaulut[] = array("nimi"=>"merkkijono", "tyyppi"=>\mosBase\Malli::STRINGI);
-            $hakutaulut[] = array("nimi"=>"aika", "tyyppi"=>\mosBase\Malli::DATE);
-            $hakutaulut[] = array("nimi"=>"aikaleima", "tyyppi"=>\mosBase\Malli::DATE);
-            $hakutaulut[] = array("nimi"=>"kommentti", "tyyppi"=>\mosBase\Malli::DATE);
+            $hakutaulut[] = array("nimi"=>"aika", "tyyppi"=>\mosBase\Malli::TIME);
+            $hakutaulut[] = array("nimi"=>"pvm", "tyyppi"=>\mosBase\Malli::DATE);
+            $hakutaulut[] = array("nimi"=>"aikaleima", "tyyppi"=>\mosBase\Malli::DATETIME);
+            $hakutaulut[] = array("nimi"=>"kommentti", "tyyppi"=>\mosBase\Malli::STRINGI);
             $hakutaulut[] = array("nimi"=>"merkkijonot", "tyyppi"=>\mosBase\Malli::STRINGA);
             $hakutaulu="testi";
             parent::__construct($db, $log, $taulu, $avaimet, $hakutaulu, $hakutaulut);

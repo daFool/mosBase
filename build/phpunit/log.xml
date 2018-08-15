@@ -1,89 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="mosBase" tests="24" assertions="41" errors="2" failures="0" skipped="0" time="0.957919">
-    <testsuite name="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" tests="7" assertions="8" errors="0" failures="0" skipped="0" time="0.017864">
-      <testcase name="puuttuvaTiedostoFeilaa" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="21" assertions="1" time="0.008911"/>
-      <testcase name="viallinenTiedostoFeilaa" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="29" assertions="1" time="0.000990"/>
-      <testcase name="toimivaTiedostoLatautuu" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="37" assertions="1" time="0.003946"/>
-      <testcase name="eiAluettaPalauttaaFalse" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="45" assertions="1" time="0.000942"/>
-      <testcase name="GeneralPalauttaaTZn" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="54" assertions="1" time="0.000948"/>
-      <testcase name="classLoaderFeilaaTuntemattomallaLuokalla" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="65" assertions="1" time="0.000961"/>
-      <testcase name="classLoaderLoytaaLuokat" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="74" assertions="2" time="0.001166"/>
+  <testsuite name="mosBase" tests="28" assertions="51" errors="0" failures="0" skipped="0" time="1.202747">
+    <testsuite name="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" tests="7" assertions="8" errors="0" failures="0" skipped="0" time="0.018797">
+      <testcase name="puuttuvaTiedostoFeilaa" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="21" assertions="1" time="0.009994"/>
+      <testcase name="viallinenTiedostoFeilaa" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="29" assertions="1" time="0.001081"/>
+      <testcase name="toimivaTiedostoLatautuu" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="37" assertions="1" time="0.003786"/>
+      <testcase name="eiAluettaPalauttaaFalse" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="45" assertions="1" time="0.000901"/>
+      <testcase name="GeneralPalauttaaTZn" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="54" assertions="1" time="0.000970"/>
+      <testcase name="classLoaderFeilaaTuntemattomallaLuokalla" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="65" assertions="1" time="0.001014"/>
+      <testcase name="classLoaderLoytaaLuokat" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="74" assertions="2" time="0.001051"/>
     </testsuite>
-    <testsuite name="databaseTest" file="/home/mos/Projektit/mosBase/tests/unit/databaseTest.php" tests="1" assertions="2" errors="0" failures="0" skipped="0" time="0.012390">
-      <testcase name="DriveriOnPgsql" class="databaseTest" classname="databaseTest" file="/home/mos/Projektit/mosBase/tests/unit/databaseTest.php" line="9" assertions="2" time="0.012390"/>
+    <testsuite name="databaseTest" file="/home/mos/Projektit/mosBase/tests/unit/databaseTest.php" tests="1" assertions="2" errors="0" failures="0" skipped="0" time="0.006830">
+      <testcase name="DriveriOnPgsql" class="databaseTest" classname="databaseTest" file="/home/mos/Projektit/mosBase/tests/unit/databaseTest.php" line="9" assertions="2" time="0.006830"/>
     </testsuite>
-    <testsuite name="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" tests="8" assertions="24" errors="0" failures="0" skipped="0" time="0.425862">
-      <testcase name="logStartupCorrectDefaults" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="48" assertions="3" time="0.090041"/>
-      <testcase name="setMarkerSucceeds" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="58" assertions="1" time="0.040931"/>
-      <testcase name="logForCorrectLevel" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="67" assertions="1" time="0.052253"/>
-      <testcase name="noLogForIncorrectLevel" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="76" assertions="1" time="0.045315"/>
-      <testcase name="correctMarkerAndLogRow" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="85" assertions="3" time="0.061919"/>
-      <testcase name="kolmeOikeaaKokonaislukua" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="103" assertions="3" time="0.046231"/>
-      <testcase name="kolmeVaaraaKokonaislukua" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="114" assertions="3" time="0.044414"/>
-      <testcase name="etuliitteetTavustaYotaan" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="124" assertions="9" time="0.044758"/>
+    <testsuite name="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" tests="8" assertions="24" errors="0" failures="0" skipped="0" time="0.423029">
+      <testcase name="logStartupCorrectDefaults" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="48" assertions="3" time="0.061622"/>
+      <testcase name="setMarkerSucceeds" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="58" assertions="1" time="0.058907"/>
+      <testcase name="logForCorrectLevel" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="67" assertions="1" time="0.050481"/>
+      <testcase name="noLogForIncorrectLevel" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="76" assertions="1" time="0.059044"/>
+      <testcase name="correctMarkerAndLogRow" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="85" assertions="3" time="0.063886"/>
+      <testcase name="kolmeOikeaaKokonaislukua" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="103" assertions="3" time="0.042670"/>
+      <testcase name="kolmeVaaraaKokonaislukua" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="114" assertions="3" time="0.042565"/>
+      <testcase name="etuliitteetTavustaYotaan" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="124" assertions="9" time="0.043855"/>
     </testsuite>
-    <testsuite name="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" tests="8" assertions="7" errors="2" failures="0" skipped="0" time="0.501803">
-      <testcase name="konstruktoriIlmanHakutaulua" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="50" assertions="1" time="0.060493"/>
-      <testcase name="konstruktoriHakutaululla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="58" assertions="1" time="0.051945"/>
-      <testcase name="onnistuukoRiviKakkosenHakuIdlla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="67" assertions="2" time="0.068982"/>
-      <testcase name="feilaakoRiviKolmosenHakuIdlla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="94" assertions="1" time="0.058950"/>
-      <testcase name="loytyykoHeksakymppi" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="104" assertions="1" time="0.066150">
-        <system-out>/home/mos/Projektit/mosBase/model/Malli.php:442:
-string(4) "0x0A"
-/home/mos/Projektit/mosBase/model/Malli.php:443:
-bool(false)
-/home/mos/Projektit/mosBase/model/Malli.php:442:
-string(4) "0x0A"
-/home/mos/Projektit/mosBase/model/Malli.php:443:
-bool(false)
-/home/mos/Projektit/mosBase/model/Malli.php:442:
-string(4) "0x0A"
-/home/mos/Projektit/mosBase/model/Malli.php:443:
-bool(false)
-</system-out>
-      </testcase>
-      <testcase name="loytyykoKaksikymmenta" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="116" assertions="1" time="0.064523">
-        <system-out>/home/mos/Projektit/mosBase/model/Malli.php:442:
-string(2) "20"
-/home/mos/Projektit/mosBase/model/Malli.php:443:
-bool(false)
-/home/mos/Projektit/mosBase/model/Malli.php:442:
-string(2) "20"
-/home/mos/Projektit/mosBase/model/Malli.php:443:
-bool(false)
-/home/mos/Projektit/mosBase/model/Malli.php:442:
-string(2) "20"
-/home/mos/Projektit/mosBase/model/Malli.php:443:
-bool(false)
-</system-out>
-      </testcase>
-      <testcase name="loytyykoElokuuKolmetoistaSeitsenmantoista" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="128" assertions="0" time="0.064135">
-        <error type="mosBase\DatabaseException">malliTest::loytyykoElokuuKolmetoistaSeitsenmantoista
-mosBase\DatabaseException: Tietokantaoperaatio 'select * from testi where (merkkijono ilike '%2017-08-13%' or aika = '2017-08-13' or aikaleima = '2017-08-13' or kommentti = '2017-08-13' or exists (select * from unnest(merkkijonot) as x where x ilike '%2017-08-13%'))  order by id asc  limit 10 offset 0;' (22007, 7, ERROR:  invalid input syntax for type time with time zone: "2017-08-13"
-LINE 1: ... where (merkkijono ilike '%2017-08-13%' or aika = '2017-08-1...
-                                                             ^) epäonnistui!  
-
-
-/home/mos/Projektit/mosBase/util/Util.php:29
-/home/mos/Projektit/mosBase/util/Util.php:68
-/home/mos/Projektit/mosBase/model/Malli.php:517
-/home/mos/Projektit/mosBase/tests/unit/malliTest.php:132
-</error>
-      </testcase>
-      <testcase name="loytyykoKloYhdeksanKolmenkymmentaViisiViisiViisi" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="140" assertions="0" time="0.066625">
-        <error type="mosBase\DatabaseException">malliTest::loytyykoKloYhdeksanKolmenkymmentaViisiViisiViisi
-mosBase\DatabaseException: Tietokantaoperaatio 'select * from testi where (merkkijono ilike '%09:35:55%' or aika = '09:35:55' or aikaleima = '09:35:55' or kommentti = '09:35:55' or exists (select * from unnest(merkkijonot) as x where x ilike '%09:35:55%'))  order by id asc  limit 10 offset 0;' (22007, 7, ERROR:  invalid input syntax for type timestamp with time zone: "09:35:55"
-LINE 1: ... '%09:35:55%' or aika = '09:35:55' or aikaleima = '09:35:55'...
-                                                             ^) epäonnistui!  
-
-
-/home/mos/Projektit/mosBase/util/Util.php:29
-/home/mos/Projektit/mosBase/util/Util.php:68
-/home/mos/Projektit/mosBase/model/Malli.php:517
-/home/mos/Projektit/mosBase/tests/unit/malliTest.php:144
-</error>
-      </testcase>
+    <testsuite name="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" tests="12" assertions="17" errors="0" failures="0" skipped="0" time="0.754091">
+      <testcase name="konstruktoriIlmanHakutaulua" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="50" assertions="1" time="0.062454"/>
+      <testcase name="konstruktoriHakutaululla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="58" assertions="1" time="0.056551"/>
+      <testcase name="pvmTunnistuu" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="66" assertions="1" time="0.059639"/>
+      <testcase name="pvmFeilaa" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="73" assertions="1" time="0.059999"/>
+      <testcase name="aikaToimii" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="80" assertions="3" time="0.057362"/>
+      <testcase name="aikaFeilaa" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="89" assertions="3" time="0.061004"/>
+      <testcase name="onnistuukoRiviKakkosenHakuIdlla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="100" assertions="2" time="0.080328"/>
+      <testcase name="feilaakoRiviKolmosenHakuIdlla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="127" assertions="1" time="0.061794"/>
+      <testcase name="loytyykoHeksakymppi" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="138" assertions="1" time="0.066178"/>
+      <testcase name="loytyykoKaksikymmenta" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="151" assertions="1" time="0.061729"/>
+      <testcase name="loytyykoElokuuKolmetoistaSeitsenmantoista" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="164" assertions="1" time="0.063937"/>
+      <testcase name="loytyykoKloYhdeksanKolmenkymmentaViisiViisiViisi" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="177" assertions="1" time="0.063116"/>
     </testsuite>
   </testsuite>
 </testsuites>
