@@ -80,14 +80,17 @@ class Config
     /**
      * Luokkien autolataaja
      *
-     * Ei ole yhteensopiva
+     * Ei ole yhteensopiva standardin kanssa
      *
-     * @param string                                                                      $class Ladattavan luokan nimi
-     * @param boolean Palauttaa true, jos sai ladattua luokan tai false jos ei löytänyt
+     * @param string $class Ladattavan luokan nimi
+     * @return boolean Palauttaa true, jos sai ladattua luokan tai false jos ei löytänyt
      * */
     public function classLoader($class)
     {
-        $class = str_replace("mosBase\\", "", $class);
+        foreach ($this->data["ClassDirs"]["strip"] as $strip) {
+            $class = str_replace("$strip\\", "", $class);    
+        }
+        
         $class=str_replace("\\", '/', $class);
         foreach ($this->data["ClassDirs"]["dir"] as $classDir) {
             $fn = "$classDir/$class.php";
