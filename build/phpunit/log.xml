@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="mosBase" tests="33" assertions="76" errors="0" failures="0" skipped="0" time="1.687200">
-    <testsuite name="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" tests="7" assertions="8" errors="0" failures="0" skipped="0" time="0.078473">
-      <testcase name="puuttuvaTiedostoFeilaa" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="21" assertions="1" time="0.018743"/>
-      <testcase name="viallinenTiedostoFeilaa" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="29" assertions="1" time="0.000943"/>
-      <testcase name="toimivaTiedostoLatautuu" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="37" assertions="1" time="0.052615"/>
-      <testcase name="eiAluettaPalauttaaFalse" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="45" assertions="1" time="0.002047"/>
-      <testcase name="GeneralPalauttaaTZn" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="54" assertions="1" time="0.001958"/>
-      <testcase name="classLoaderFeilaaTuntemattomallaLuokalla" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="65" assertions="1" time="0.001078"/>
-      <testcase name="classLoaderLoytaaLuokat" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="74" assertions="2" time="0.001089"/>
+  <testsuite name="mosBase" tests="33" assertions="76" errors="0" failures="0" skipped="0" time="2.561941">
+    <testsuite name="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" tests="7" assertions="8" errors="0" failures="0" skipped="0" time="0.028540">
+      <testcase name="puuttuvaTiedostoFeilaa" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="21" assertions="1" time="0.018720"/>
+      <testcase name="viallinenTiedostoFeilaa" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="29" assertions="1" time="0.000988"/>
+      <testcase name="toimivaTiedostoLatautuu" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="37" assertions="1" time="0.004518"/>
+      <testcase name="eiAluettaPalauttaaFalse" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="45" assertions="1" time="0.000934"/>
+      <testcase name="GeneralPalauttaaTZn" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="54" assertions="1" time="0.001066"/>
+      <testcase name="classLoaderFeilaaTuntemattomallaLuokalla" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="65" assertions="1" time="0.001153"/>
+      <testcase name="classLoaderLoytaaLuokat" class="configTest" classname="configTest" file="/home/mos/Projektit/mosBase/tests/unit/configTest.php" line="74" assertions="2" time="0.001161"/>
     </testsuite>
-    <testsuite name="databaseTest" file="/home/mos/Projektit/mosBase/tests/unit/databaseTest.php" tests="1" assertions="2" errors="0" failures="0" skipped="0" time="0.016750">
-      <testcase name="DriveriOnPgsql" class="databaseTest" classname="databaseTest" file="/home/mos/Projektit/mosBase/tests/unit/databaseTest.php" line="9" assertions="2" time="0.016750"/>
+    <testsuite name="databaseTest" file="/home/mos/Projektit/mosBase/tests/unit/databaseTest.php" tests="1" assertions="2" errors="0" failures="0" skipped="0" time="0.016748">
+      <testcase name="DriveriOnPgsql" class="databaseTest" classname="databaseTest" file="/home/mos/Projektit/mosBase/tests/unit/databaseTest.php" line="9" assertions="2" time="0.016748"/>
     </testsuite>
-    <testsuite name="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" tests="8" assertions="24" errors="0" failures="0" skipped="0" time="0.485835">
-      <testcase name="logStartupCorrectDefaults" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="48" assertions="3" time="0.137296"/>
-      <testcase name="setMarkerSucceeds" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="58" assertions="1" time="0.042602"/>
-      <testcase name="logForCorrectLevel" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="67" assertions="1" time="0.059205"/>
-      <testcase name="noLogForIncorrectLevel" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="76" assertions="1" time="0.047630"/>
-      <testcase name="correctMarkerAndLogRow" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="85" assertions="3" time="0.066846"/>
-      <testcase name="kolmeOikeaaKokonaislukua" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="103" assertions="3" time="0.044072"/>
-      <testcase name="kolmeVaaraaKokonaislukua" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="114" assertions="3" time="0.046461"/>
-      <testcase name="etuliitteetTavustaYotaan" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="124" assertions="9" time="0.041723"/>
+    <testsuite name="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" tests="8" assertions="24" errors="0" failures="0" skipped="0" time="0.480359">
+      <testcase name="logStartupCorrectDefaults" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="48" assertions="3" time="0.113934"/>
+      <testcase name="setMarkerSucceeds" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="58" assertions="1" time="0.041943"/>
+      <testcase name="logForCorrectLevel" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="67" assertions="1" time="0.075375"/>
+      <testcase name="noLogForIncorrectLevel" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="76" assertions="1" time="0.044127"/>
+      <testcase name="correctMarkerAndLogRow" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="85" assertions="3" time="0.069099"/>
+      <testcase name="kolmeOikeaaKokonaislukua" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="103" assertions="3" time="0.043338"/>
+      <testcase name="kolmeVaaraaKokonaislukua" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="114" assertions="3" time="0.047937"/>
+      <testcase name="etuliitteetTavustaYotaan" class="logTest" classname="logTest" file="/home/mos/Projektit/mosBase/tests/unit/logTest.php" line="124" assertions="9" time="0.044606"/>
     </testsuite>
-    <testsuite name="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" tests="17" assertions="42" errors="0" failures="0" skipped="0" time="1.106141">
-      <testcase name="konstruktoriIlmanHakutaulua" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="50" assertions="1" time="0.054522"/>
-      <testcase name="konstruktoriHakutaululla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="58" assertions="1" time="0.055068"/>
-      <testcase name="pvmTunnistuu" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="66" assertions="1" time="0.058975"/>
-      <testcase name="pvmFeilaa" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="73" assertions="1" time="0.054905"/>
-      <testcase name="aikaToimii" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="80" assertions="3" time="0.060721"/>
-      <testcase name="aikaFeilaa" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="89" assertions="3" time="0.058230"/>
-      <testcase name="onnistuukoRiviKakkosenHakuIdlla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="100" assertions="2" time="0.075463"/>
-      <testcase name="feilaakoRiviKolmosenHakuIdlla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="127" assertions="1" time="0.060480"/>
-      <testcase name="loytyykoHeksakymppi" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="138" assertions="1" time="0.059269"/>
-      <testcase name="loytyykoKaksikymmenta" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="151" assertions="1" time="0.061078"/>
-      <testcase name="loytyykoElokuuKolmetoistaSeitsenmantoista" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="164" assertions="1" time="0.067116"/>
-      <testcase name="loytyykoKloYhdeksanKolmenkymmentaViisiViisiViisi" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="177" assertions="1" time="0.067230"/>
-      <testcase name="loytyykoKakkosrivinAikaleimalla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="189" assertions="1" time="0.064988"/>
-      <testcase name="loytyykoTestirivit" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="201" assertions="1" time="0.064642"/>
-      <testcase name="osumatonHaku" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="213" assertions="1" time="0.069982"/>
-      <testcase name="uusiRivi" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="225" assertions="11" time="0.071260"/>
-      <testcase name="paivitaRivi" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="255" assertions="11" time="0.102212"/>
+    <testsuite name="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" tests="17" assertions="42" errors="0" failures="0" skipped="0" time="2.036294">
+      <testcase name="konstruktoriIlmanHakutaulua" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="50" assertions="1" time="0.227501"/>
+      <testcase name="konstruktoriHakutaululla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="58" assertions="1" time="0.059560"/>
+      <testcase name="pvmTunnistuu" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="66" assertions="1" time="0.064734"/>
+      <testcase name="pvmFeilaa" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="73" assertions="1" time="0.061738"/>
+      <testcase name="aikaToimii" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="80" assertions="3" time="0.064442"/>
+      <testcase name="aikaFeilaa" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="89" assertions="3" time="0.065944"/>
+      <testcase name="onnistuukoRiviKakkosenHakuIdlla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="100" assertions="2" time="0.445914"/>
+      <testcase name="feilaakoRiviKolmosenHakuIdlla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="127" assertions="1" time="0.333370"/>
+      <testcase name="loytyykoHeksakymppi" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="138" assertions="1" time="0.142346"/>
+      <testcase name="loytyykoKaksikymmenta" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="151" assertions="1" time="0.066393"/>
+      <testcase name="loytyykoElokuuKolmetoistaSeitsenmantoista" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="164" assertions="1" time="0.065004"/>
+      <testcase name="loytyykoKloYhdeksanKolmenkymmentaViisiViisiViisi" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="177" assertions="1" time="0.068065"/>
+      <testcase name="loytyykoKakkosrivinAikaleimalla" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="189" assertions="1" time="0.063951"/>
+      <testcase name="loytyykoTestirivit" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="201" assertions="1" time="0.063818"/>
+      <testcase name="osumatonHaku" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="213" assertions="1" time="0.068221"/>
+      <testcase name="uusiRivi" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="225" assertions="11" time="0.076295"/>
+      <testcase name="paivitaRivi" class="malliTest" classname="malliTest" file="/home/mos/Projektit/mosBase/tests/unit/malliTest.php" line="255" assertions="11" time="0.098997"/>
     </testsuite>
   </testsuite>
 </testsuites>
