@@ -1,2 +1,6 @@
 build/phpunit/coverage.xml
 build/phpunit/log.xml
+.scannerwork/
+vendor/
+cache.properties
+koe.php
