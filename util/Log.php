@@ -41,7 +41,7 @@ class Log
      * */
     private $marker;
     
-    use util;
+    use Util;
     
     /**
      * @var object $db PDO-objekti tietokantaan

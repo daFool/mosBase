@@ -224,7 +224,8 @@ class malliTest extends \PHPUnit\Framework\TestCase {
      **/
     public function uusiRivi() {
         $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);
-        $rivi=array("intti"=>30,
+        $rivi=array("id"=>3,
+                    "intti"=>30,
                     "merkkijono"=>"Kolkyt",
                     "pvm"=>"2019-03-03",
                     "aika"=>"23:59:59+03",
@@ -279,6 +280,18 @@ class malliTest extends \PHPUnit\Framework\TestCase {
                     break;
             }
         }        
+    }
+    
+    /**
+     *@test
+     *@depends uusiRivi
+     **/
+    public function poistaRivi()
+    {
+        $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);
+        $d = array("id"=>3);
+        $this->assertTrue($foo->delete($d));
+        $this->assertFalse($foo->exists($d));
     }
 }
 ?>
