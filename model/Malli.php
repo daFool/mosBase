@@ -82,12 +82,12 @@ class Malli
     private const VALUE="value";
     private const SQLPATTERN='/.*[%_].*/';
     private const REXPATTERN="/.*[.*?+].*/";
-    private const NIMI='nimi';
-    private const TYYPPI="tyyppi";
     private const RIVIT='rivi';
     private const RIVEJA='riveja';
     private const NULLPATTERN="/\w*NULL\w*/i";
    
+    public const NIMI='nimi';
+    public const TYYPPI="tyyppi";
     public const STRINGI="string";
     public const STRINGA="stringA";
     public const INTTI="int";
