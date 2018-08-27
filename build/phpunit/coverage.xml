@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <coverage generated="1535107819">
   <project timestamp="1535107819">
+=======
+<coverage generated="1534958745">
+  <project timestamp="1534958745">
+>>>>>>> 1cdb819eac23fa582e92256e4c96b9ddd30debe9
     <package name="mosBase">
       <file name="/home/mos/Projektit/mosBase/model/Malli.php">
         <class name="mosBase\Malli" namespace="mosBase">
@@ -594,61 +599,61 @@
         <line num="77" type="stmt" count="0"/>
         <line num="78" type="stmt" count="0"/>
         <line num="79" type="stmt" count="0"/>
-        <line num="81" type="method" name="logout" visibility="private" complexity="3" crap="12" count="0"/>
-        <line num="84" type="stmt" count="0"/>
-        <line num="88" type="stmt" count="0"/>
+        <line num="86" type="method" name="logout" visibility="private" complexity="3" crap="12" count="0"/>
         <line num="89" type="stmt" count="0"/>
-        <line num="90" type="stmt" count="0"/>
-        <line num="91" type="stmt" count="0"/>
-        <line num="92" type="stmt" count="0"/>
         <line num="93" type="stmt" count="0"/>
         <line num="94" type="stmt" count="0"/>
         <line num="95" type="stmt" count="0"/>
         <line num="96" type="stmt" count="0"/>
         <line num="97" type="stmt" count="0"/>
+        <line num="98" type="stmt" count="0"/>
+        <line num="99" type="stmt" count="0"/>
+        <line num="100" type="stmt" count="0"/>
+        <line num="101" type="stmt" count="0"/>
         <line num="102" type="stmt" count="0"/>
-        <line num="103" type="stmt" count="0"/>
-        <line num="104" type="stmt" count="0"/>
-        <line num="105" type="stmt" count="0"/>
         <line num="107" type="stmt" count="0"/>
+        <line num="108" type="stmt" count="0"/>
         <line num="109" type="stmt" count="0"/>
         <line num="110" type="stmt" count="0"/>
-        <line num="113" type="method" name="timeOut" visibility="private" complexity="3" crap="12" count="0"/>
+        <line num="112" type="stmt" count="0"/>
+        <line num="114" type="stmt" count="0"/>
         <line num="115" type="stmt" count="0"/>
-        <line num="116" type="stmt" count="0"/>
-        <line num="117" type="stmt" count="0"/>
-        <line num="119" type="stmt" count="0"/>
-        <line num="120" type="stmt" count="0"/>
-        <line num="122" type="stmt" count="0"/>
-        <line num="123" type="stmt" count="0"/>
+        <line num="123" type="method" name="timeOut" visibility="private" complexity="3" crap="12" count="0"/>
+        <line num="125" type="stmt" count="0"/>
         <line num="126" type="stmt" count="0"/>
-        <line num="134" type="method" name="pageStart" visibility="public" complexity="8" crap="72" count="0"/>
+        <line num="127" type="stmt" count="0"/>
+        <line num="129" type="stmt" count="0"/>
+        <line num="130" type="stmt" count="0"/>
+        <line num="132" type="stmt" count="0"/>
+        <line num="133" type="stmt" count="0"/>
         <line num="136" type="stmt" count="0"/>
-        <line num="137" type="stmt" count="0"/>
-        <line num="138" type="stmt" count="0"/>
-        <line num="139" type="stmt" count="0"/>
-        <line num="140" type="stmt" count="0"/>
-        <line num="141" type="stmt" count="0"/>
-        <line num="143" type="stmt" count="0"/>
-        <line num="144" type="stmt" count="0"/>
+        <line num="144" type="method" name="pageStart" visibility="public" complexity="8" crap="72" count="0"/>
+        <line num="146" type="stmt" count="0"/>
         <line num="147" type="stmt" count="0"/>
         <line num="148" type="stmt" count="0"/>
         <line num="149" type="stmt" count="0"/>
         <line num="150" type="stmt" count="0"/>
         <line num="151" type="stmt" count="0"/>
-        <line num="152" type="stmt" count="0"/>
         <line num="153" type="stmt" count="0"/>
         <line num="154" type="stmt" count="0"/>
-        <line num="155" type="stmt" count="0"/>
+        <line num="157" type="stmt" count="0"/>
+        <line num="158" type="stmt" count="0"/>
+        <line num="159" type="stmt" count="0"/>
         <line num="160" type="stmt" count="0"/>
-        <line num="165" type="method" name="loggedIn" visibility="public" complexity="4" crap="20" count="0"/>
-        <line num="167" type="stmt" count="0"/>
-        <line num="168" type="stmt" count="0"/>
-        <line num="169" type="stmt" count="0"/>
-        <line num="171" type="stmt" count="0"/>
-        <line num="173" type="stmt" count="0"/>
-        <line num="175" type="stmt" count="0"/>
-        <metrics loc="176" ncloc="116" classes="1" methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="59" coveredstatements="0" elements="64" coveredelements="0"/>
+        <line num="161" type="stmt" count="0"/>
+        <line num="162" type="stmt" count="0"/>
+        <line num="163" type="stmt" count="0"/>
+        <line num="164" type="stmt" count="0"/>
+        <line num="165" type="stmt" count="0"/>
+        <line num="170" type="stmt" count="0"/>
+        <line num="178" type="method" name="loggedIn" visibility="public" complexity="4" crap="20" count="0"/>
+        <line num="180" type="stmt" count="0"/>
+        <line num="181" type="stmt" count="0"/>
+        <line num="182" type="stmt" count="0"/>
+        <line num="184" type="stmt" count="0"/>
+        <line num="186" type="stmt" count="0"/>
+        <line num="188" type="stmt" count="0"/>
+        <metrics loc="189" ncloc="116" classes="1" methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="59" coveredstatements="0" elements="64" coveredelements="0"/>
       </file>
       <file name="/home/mos/Projektit/mosBase/util/Util.php">
         <class name="Util" namespace="mosBase">
@@ -698,6 +703,10 @@
         <metrics loc="131" ncloc="75" classes="1" methods="6" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="35" coveredstatements="26" elements="41" coveredelements="28"/>
       </file>
     </package>
+<<<<<<< HEAD
     <metrics files="10" loc="1732" ncloc="1130" classes="9" methods="56" coveredmethods="22" conditionals="0" coveredconditionals="0" statements="579" coveredstatements="329" elements="635" coveredelements="351"/>
+=======
+    <metrics files="10" loc="1745" ncloc="1130" classes="9" methods="56" coveredmethods="22" conditionals="0" coveredconditionals="0" statements="579" coveredstatements="329" elements="635" coveredelements="351"/>
+>>>>>>> 1cdb819eac23fa582e92256e4c96b9ddd30debe9
   </project>
 </coverage>

@@ -76,9 +76,9 @@ class Language
      * Löytyykö lokaalin kieli?
      * Etsii ja asettaa, jos on
      * @param string $locale Etsittävä lokaali
-     * @return boolean False jos ei, True jos on
+     * @return bool False jos ei, True jos on
      * */
-    public function onko(string $locale) : boolean
+    public function onko(string $locale) : bool
     {
         $path = $this->basepath."/locale/$locale/LC_MESSAGES/messages.mo";
         if (file_exists($path)) {
@@ -102,7 +102,7 @@ class Language
      * @param string $kielet Toivotut kielet
      * @return boolean true jos tuetaan ja false jos ei
      * */
-    private function searchLocale(string $kielet) : boolean
+    private function searchLocale(string $kielet) : bool
     {
         $res = preg_match_all(language::KIELIREX, $kielet, $matches);
         if ($res) {
@@ -136,7 +136,7 @@ class Language
      * @uses mosBase\language::onko()
      * @return string palauttaa lokaalin
      **/
-    public function kieli() : boolean
+    public function kieli() : bool
     {
         $res = false;
         if (isset($_SESSION[language::LOCALE])) {
