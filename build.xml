@@ -8,6 +8,7 @@
  <property name="phploc"  value="phploc"/>
  <property name="phpmd"   value="phpmd"/>
  <property name="phpunit" value="phpunit6"/>
+ <property name="sonarqube" value="sonar-scanner"/>
 
  <!-- Use this when the tools are located as PHARs in ${basedir}/build/tools
  <property name="pdepend" value="${basedir}/build/tools/pdepend.phar"/>
@@ -261,6 +262,15 @@
 
   <property name="phpdox.done" value="true"/>
  </target>
+
+ <target name="sonarqube"
+        unless="sonarqube.done"
+        description="Run sonarqube analysis">
+  <exec executable="${sonarqube}" taskname="sonarqube">
+   <arg value="-Dsonar.login=${env.SONARLOGIN}"/>
+   <arg value="-Dsonar.host.url=${env.SONARHOST}"/>
+  </exec>
+</target>
 
  <target name="-check-failure">
   <fail message="PHPUnit did not finish successfully">
