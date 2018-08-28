@@ -42,9 +42,24 @@ trait Pgsql
         $st->fetch(\PDO::FETCH_ASSOC);
         $res=array();
         $clkm = $st->columnCount();
+        $mtypes = array("varchar"=>\mosBase\Malli::STRINGI,
+                        "int4"=>\mosBase\Malli::INTTI,
+                        "timestamptz"=>\mosBase\Malli::DATETIME,
+                        "numeric"=>\mosBase\Malli::NUMERIC,
+                        "_varchar"=>\mosBase\Malli::STRINGA,
+                        "_int4"=>\mosBase\Malli::INTTIA);
         for ($i=0; $i<$clkm; $i++) {
             $c = $st->getColumnMeta($i);
-            array_push($res, array("name"=>$c["name"], "type"=>$c["native_type"], "pdotype"=>$c["pdo_type"]));
+            $mtype = $mtypes[$c["native_type"]]??\mosBase\Malli::STRINGI;
+            array_push(
+                $res,
+                array(
+                    "name"=>$c["name"],
+                    "type"=>$c["native_type"],
+                    "pdotype"=>$c["pdo_type"],
+                    "mytype"=>$mtype
+                )
+            );
         }
         return $res;
     }

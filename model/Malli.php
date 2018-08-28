@@ -94,6 +94,8 @@ class Malli
     public const DATE="date";
     public const TIME="time";
     public const DATETIME="datetime";
+    public const NUMERIC="numeric";
+    public const INTA="inttia";
     
     /**
      * Konstruktori
