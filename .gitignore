@@ -4,3 +4,8 @@ build/phpunit/log.xml
 vendor/
 cache.properties
 koe.php
+build/api/
+build/logs/
+build/pdepend/
+build/phpdox/
+tests/unit/logirivit.xml
