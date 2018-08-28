@@ -115,4 +115,28 @@ trait Pgsql
         }
         return $result;
     }
+    
+    /**
+     * Haku regexillä
+     *
+     * @param \mosBase\Database $kanta kanta
+     * @param string $taulu            taulu, josta haetaan
+     * @param array $kentat            sarakkeet, joista haetaan
+     * @param string $mita             mitä haetaan
+     * @param string $filtteri         ylimääräinen hakuehto
+     *
+     * @return array - Rivit, joihin tuli osuma
+     * */
+    public function findWithRegex(
+        \mosBase\Database $kanta,
+        string $taulu,
+        array $kentat,
+        string $mita,
+        string $filtteri
+    ) : array {
+        $tyypit = $this->tableColumns($kanta, $taulu);
+        foreach($kentat as $kentta) {
+            switch($tyy)
+        }
+    }
 }
