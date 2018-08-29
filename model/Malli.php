@@ -500,7 +500,7 @@ class Malli
                     $fmt=" or ";
                     break;
                 case malli::INTTI:
-                    if (is_integer($v)) {
+                    if ($this->isInt($v)) {
                         $so.=sprintf("%s%s = %s", $fmt, $kentta[malli::NIMI], $this->db->quote($v, \PDO::PARAM_INT));
                         $fmt=" or ";
                     }

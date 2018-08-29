@@ -55,9 +55,11 @@ trait Pgsql
                 $res,
                 array(
                     "name"=>$c["name"],
-                    "type"=>$c["native_type"],
-                    "pdotype"=>$c["pdo_type"],
-                    "mytype"=>$mtype
+                    array(
+                        "type"=>$c["native_type"],
+                        "pdotype"=>$c["pdo_type"],
+                        "mytype"=>$mtype
+                    )
                 )
             );
         }
@@ -135,8 +137,47 @@ trait Pgsql
         string $filtteri
     ) : array {
         $tyypit = $this->tableColumns($kanta, $taulu);
+        $cj=" ";
+        if ($filtteri !="") {
+            $cj=" and (";
+        } else {
+            $w = " where (";
+        }
         foreach($kentat as $kentta) {
-            switch($tyy)
+            switch($tyypit[$kentta]["mytype"]) {
+                case Malli:STRINGI:
+                    $op='~*';
+                    $w.=sprintf("%s %s %s :rex", $cj, $kentta, $op);
+                    $cj=" or";
+                    break;
+                case Malli::STRINGA:
+                    $op='~*';
+                    $w.=sprintf(
+                        "%s exists (select * from unnest(%s) as x where x %s :rex",
+                        $cj,
+                        $kentta,
+                        $op);
+                    $cj=" or";
+                    break;
+                case Malli::INTTI:
+                    if ($this->isInt($rex)) {
+                        $op='=';
+                        $w.=sprintf(
+                            "%s %s%s:rex",
+                            $cj,
+                            $kentta,
+                            $$op
+                        );
+                        $cf=" or";
+                    }
+                    break;
+                case Malli::DATE:
+                case Malli::TIME:
+                case Malli::DATETIME:
+                case Malli::NUMERIC:
+                case Malli::INTA:
+                    
+            }
         }
     }
 }
