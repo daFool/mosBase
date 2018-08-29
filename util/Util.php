@@ -128,4 +128,33 @@ trait Util
         }
         return false;
     }
+    
+        /**
+     * Onko laillinen mallinmukainen ajanesitys?
+     *
+     * @param string $malli Mitä haetaan, päivä, aika vai molemmat?
+     * @param string $arvo Mitä sovitetaan?
+     * @return bool False jos ei sovi, True jos sopii
+     * */
+    public function resolveTime(string $malli, string $arvo) : bool
+    {
+        $mallit = array(
+            Malli::DATE => array("Y-m-d"),
+            Malli::TIME => array("H:i:s", "H:i:sO", "H:i:sP"),
+        );
+        $mallit[Malli::DATETIME]=array();
+        foreach ($mallit[Malli::TIME] as $aika) {
+            $mallit[Malli::DATETIME][]=$mallit[Malli::DATE][0]." ".$aika;
+        }
+        foreach ($mallit[$malli] as $hahmo) {
+            if ($koe=\DateTime::createFromFormat($hahmo, $arvo)) {
+                $f = substr($koe->format($hahmo),0,strlen($arvo));
+                if ($f!=$arvo) {
+                    continue;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
 }

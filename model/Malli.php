@@ -142,15 +142,7 @@ class Malli
                     }
                 }
             }
-        }
-        $this->mallit = array(
-            Malli::DATE => array("Y-m-d"),
-            Malli::TIME => array("H:i:s", "H:i:sO", "H:i:sP"),
-        );
-        $this->mallit[Malli::DATETIME]=array();
-        foreach ($this->mallit[Malli::TIME] as $aika) {
-            $this->mallit[Malli::DATETIME][]=$this->mallit[Malli::DATE][0]." ".$aika;
-        }
+        }      
     }
     
     
@@ -440,25 +432,7 @@ class Malli
         return array($v, $op);
     }
     
-    /**
-     * Onko laillinen mallinmukainen ajanesitys?
-     *
-     * @param string $malli Mitä haetaan, päivä, aika vai molemmat?
-     * @param string $arvo Mitä sovitetaan?
-     * @return bool False jos ei sovi, True jos sopii
-     * */
-    public function resolveTime(string $malli, string $arvo) : bool
-    {
-        foreach ($this->mallit[$malli] as $hahmo) {
-            if ($koe=\DateTime::createFromFormat($hahmo, $arvo)) {
-                if ($koe->format($hahmo)!=$arvo) {
-                    continue;
-                }
-                return true;
-            }
-        }
-        return false;
-    }
+
     /**
      * Datatablen haun käsittely
      * Käydään lävitse kaikki hakutaulun hakukentät ja kokeillaan sopisiko datatablen
