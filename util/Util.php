@@ -123,7 +123,7 @@ trait Util
      * */
     public function isInt(string $str) : bool
     {
-        if (preg_match("/^(0)$|^(-?[123456789][0-9]+)$/", $str)) {
+        if (preg_match("/^(0)$|^(-?[123456789][0-9]*)$/", $str)) {
             return true;
         }
         return false;
