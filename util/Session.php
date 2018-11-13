@@ -78,6 +78,11 @@ class Session
         $this->ldapGroup = $sessionparams["ldapGroup"]??array();
     }
     
+    /**
+     * Istunnon lopettaminen
+     *
+     * Palauttaa käyttäjän takaisin pääsivulle ja hävittää kaiken istuntoon liittyvän muistista.
+     * */
     private function logout()
     {
         // Unset all of the session variables.
@@ -110,7 +115,12 @@ class Session
         die;
     }
     
-    private function timeOut()
+    /**
+     * Onko istunto vanhentunut?
+     *
+     * @return bool true, jos on lahonnut käsiin ja false, jos puhkua on jäljellä
+     * */
+    private function timeOut() : bool
     {
         if (!isset($_SESSION[session::ACTIVITY])) {
             $_SESSION[session::ACTIVITY]=time();
@@ -161,6 +171,9 @@ class Session
     
     /**
      * Onko istuntoa?
+     *
+     * Jos ei ole, siirtää kirjautumisnäyttöön.
+     * 
      * */
     public function loggedIn($loginUrl = false)
     {

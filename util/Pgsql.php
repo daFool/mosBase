@@ -42,9 +42,25 @@ trait Pgsql
         $st->fetch(\PDO::FETCH_ASSOC);
         $res=array();
         $clkm = $st->columnCount();
+        $mtypes = array("varchar"=>\mosBase\Malli::STRINGI,
+                        "int4"=>\mosBase\Malli::INTTI,
+                        "timestamptz"=>\mosBase\Malli::DATETIME,
+                        "numeric"=>\mosBase\Malli::NUMERIC,
+                        "_varchar"=>\mosBase\Malli::STRINGA,
+                        "_int4"=>\mosBase\Malli::INTA,
+                        "int8"=>\mosBase\Malli::INTTI,
+                        "date"=>\mosBase\Malli::DATE,
+                        "time"=>\mosBase\Malli::TIME,
+                        "timetz"=>\mosBase\Malli::TIME,
+                        "text"=>\mosBase\Malli::STRINGI);
         for ($i=0; $i<$clkm; $i++) {
             $c = $st->getColumnMeta($i);
-            array_push($res, array("name"=>$c["name"], "type"=>$c["native_type"], "pdotype"=>$c["pdo_type"]));
+            $mtype = $mtypes[$c["native_type"]]??\mosBase\Malli::STRINGI;
+            $res[$c["name"]]=array(
+                "type"=>$c["native_type"],
+                "pdotype"=>$c["pdo_type"],
+                "mytype"=>$mtype
+            );              
         }
         return $res;
     }
@@ -99,5 +115,96 @@ trait Pgsql
             }
         }
         return $result;
+    }
+    
+    /**
+     * Haku regexillä
+     *
+     * @param \mosBase\Database $kanta kanta
+     * @param string $taulu            taulu, josta haetaan
+     * @param array $kentat            sarakkeet, joista haetaan
+     * @param string $mita             mitä haetaan
+     * @param string $filtteri         ylimääräinen hakuehto
+     *
+     * @return array - Rivit, joihin tuli osuma
+     * */
+    public function findWithRegex(
+        \mosBase\Database $kanta,
+        string $taulu,
+        array $kentat,
+        string $mita,
+        string $filtteri
+    ) : array {
+        $tyypit = $this->tableColumns($kanta, $taulu);
+        $cj=" ";
+        if ($filtteri !="") {
+            $cj=" and (";
+            $w=$filtteri;
+        } else {
+            $w = " where (";
+        }        
+        foreach($kentat as $kentta) {
+            switch($tyypit[$kentta]["mytype"]) {
+                case \mosBase\Malli::STRINGI:
+                    $op='~*';
+                    $fmt = "%s %s %s :rex";
+                    if($this->isInt($mita) || is_numeric($mita)) {
+                        $fmt="%s %s %s ':rex'";
+                    }
+                    $w.=sprintf($fmt, $cj, $kentta, $op);
+                    $cj=" or";
+                    break;
+                case \mosBase\Malli::STRINGA:
+                    $fmt="%s exists (select * from unnest(%s) as x where x %s :rex)";
+                    if($this->isInt($mita) || is_numeric($mita)) {
+                        $fmt="%s exists (select * from unnest(%s) as x where x %s ':rex')";
+                    }
+                    $op='~*';
+                    $w.=sprintf(
+                        $fmt,
+                        $cj,
+                        $kentta,
+                        $op);
+                    $cj=" or";
+                    break;
+                case \mosBase\Malli::INTTI:
+                    if ($this->isInt($mita)) {
+                        $op='=';
+                        $w.=sprintf(
+                            "%s %s%s:rex",
+                            $cj,
+                            $kentta,
+                            $op
+                        );
+                        $cj=" or";
+                    }
+                    break;
+                case \mosBase\Malli::DATE:
+                case \mosBase\Malli::TIME:
+                case \mosBase\Malli::DATETIME:
+                    $pvm = $this->resolveTime($tyypit[$kentta]["mytype"], $mita);
+                    if ($pvm!==false) {
+                        $w.=sprintf("%s %s=:rex::%s", $cj, $kentta, $tyypit[$kentta]["type"]);
+                        $cj=" or";
+                    }
+                    break;
+                case \mosBase\Malli::NUMERIC:
+                    if(is_numeric($mita)) {
+                        $w.=sprintf("%s %s=:rex", $cj, $kentta);
+                        $cj=" or";                        
+                    }
+                    break;
+                case \mosBase\Malli::INTA:
+                    $w.=sprintf("%s :rex = any(%s)", $cj, $kentta);
+                    $cj=" or";
+                    break;
+            }
+        }
+        $w.=");";
+        $s = sprintf("select * from %s %s", $taulu, $w);
+        $d = array("rex"=>$mita);
+        $st = $this->pdoPrepare($s, $kanta);
+        $this->pdoExecute($st, $d);
+        return $st->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

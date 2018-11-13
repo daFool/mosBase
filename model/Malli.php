@@ -82,18 +82,20 @@ class Malli
     private const VALUE="value";
     private const SQLPATTERN='/.*[%_].*/';
     private const REXPATTERN="/.*[.*?+].*/";
-    private const NIMI='nimi';
-    private const TYYPPI="tyyppi";
     private const RIVIT='rivi';
     private const RIVEJA='riveja';
     private const NULLPATTERN="/\w*NULL\w*/i";
    
+    public const NIMI='nimi';
+    public const TYYPPI="tyyppi";
     public const STRINGI="string";
     public const STRINGA="stringA";
     public const INTTI="int";
     public const DATE="date";
     public const TIME="time";
     public const DATETIME="datetime";
+    public const NUMERIC="numeric";
+    public const INTA="inttia";
     
     /**
      * Konstruktori
@@ -140,15 +142,7 @@ class Malli
                     }
                 }
             }
-        }
-        $this->mallit = array(
-            Malli::DATE => array("Y-m-d"),
-            Malli::TIME => array("H:i:s", "H:i:sO", "H:i:sP"),
-        );
-        $this->mallit[Malli::DATETIME]=array();
-        foreach ($this->mallit[Malli::TIME] as $aika) {
-            $this->mallit[Malli::DATETIME][]=$this->mallit[Malli::DATE][0]." ".$aika;
-        }
+        }      
     }
     
     
@@ -438,25 +432,7 @@ class Malli
         return array($v, $op);
     }
     
-    /**
-     * Onko laillinen mallinmukainen ajanesitys?
-     *
-     * @param string $malli Mitä haetaan, päivä, aika vai molemmat?
-     * @param string $arvo Mitä sovitetaan?
-     * @return bool False jos ei sovi, True jos sopii
-     * */
-    public function resolveTime(string $malli, string $arvo) : bool
-    {
-        foreach ($this->mallit[$malli] as $hahmo) {
-            if ($koe=\DateTime::createFromFormat($hahmo, $arvo)) {
-                if ($koe->format($hahmo)!=$arvo) {
-                    continue;
-                }
-                return true;
-            }
-        }
-        return false;
-    }
+
     /**
      * Datatablen haun käsittely
      * Käydään lävitse kaikki hakutaulun hakukentät ja kokeillaan sopisiko datatablen
@@ -498,7 +474,7 @@ class Malli
                     $fmt=" or ";
                     break;
                 case malli::INTTI:
-                    if (is_integer($v)) {
+                    if ($this->isInt($v)) {
                         $so.=sprintf("%s%s = %s", $fmt, $kentta[malli::NIMI], $this->db->quote($v, \PDO::PARAM_INT));
                         $fmt=" or ";
                     }

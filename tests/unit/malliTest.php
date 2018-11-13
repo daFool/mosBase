@@ -293,5 +293,56 @@ class malliTest extends \PHPUnit\Framework\TestCase {
         $this->assertTrue($foo->delete($d));
         $this->assertFalse($foo->exists($d));
     }
+    
+     /**
+     *@test
+     *@depends konstruktoriHakutaululla
+     *@depends poistaRivi
+     **/
+    public function regexpHaut() {
+        $foo = new \testStubs\TestiTaulu(self::$db, self::$log, true);
+        $rivi=array("id"=>3,
+                    "intti"=>30,
+                    "merkkijono"=>"Kolkyt",
+                    "pvm"=>"2019-03-03",
+                    "aika"=>"23:59:59+03",
+                    "aikaleima"=>"2020-01-02 12:12:12+03:00",
+                    "kommentti"=>"Kolmas testirivi",
+                    "merkkijonot"=>"{'30','0x1D','011110','0xF4'}",
+                    "valittu"=>1,
+                    "luoja"=>"Ruoja");
+        $this->assertTrue($foo->upsert($rivi));
+        $this->assertTrue($foo->has());
+        $res = $foo->give();
+        foreach($rivi as $i=>$v) {
+            switch($i) {
+                case "aikaleima":
+                    break;
+                default:
+                    $this->assertEquals($v, $res[$i]);
+                    break;
+            }
+        }
+        $this->assertArrayHasKey('id', $res);
+        $kentat = [ "id", "intti", "merkkijono", "pvm", "aika", "aikaleima", "kommentti", "merkkijonot", "valittu", "muokattu",
+                   "muokkaaja", "luotu", "luoja" ];
+         $rivit = $foo->findWithRegex(self::$db, "testi", $kentat, "17:35:55+03", "");
+        $this->assertCount(1, $rivit);
+        $rivit = $foo->findWithRegex(self::$db, "testi", $kentat, "0xF4", "");
+        $this->assertCount(2, $rivit);
+        $rivit = $foo->findWithRegex(self::$db, "testi", $kentat, ".*ky.*","where id=2");
+        $this->assertCount(1, $rivit);
+        $rivit = $foo->findWithRegex(self::$db, "testi", $kentat, ".*ky.*","");
+        $this->assertCount(3, $rivit);
+        $rivit = $foo->findWithRegex(self::$db, "testi", $kentat, "20", "");
+        $this->assertCount(1, $rivit);       
+        $rivit = $foo->findWithRegex(self::$db, "testi", $kentat, "2020-01-02 11:12:12+02", "");
+        $this->assertCount(1, $rivit);
+        $rivit = $foo->findWithRegex(self::$db, "testi", $kentat, "2018-08-13", "");
+        $this->assertCount(1, $rivit);
+        $rivit = $foo->findWithRegex(self::$db, "testi", $kentat, "Gargamel", "");
+        $this->assertCount(0, $rivit);        
+    }
+
 }
 ?>
