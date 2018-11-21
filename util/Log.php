@@ -106,7 +106,7 @@ class Log
             $d["mista"]=isset($res["ip"]) ? $res["ip"] : _("Tuntematon");
             $d[log::SELAIN]=isset($res[log::SELAIN]) ? $res[log::SELAIN] : _("Tuntematon");
         }
-        if ($this->db->getDatabase()==malli::PGSQL) {
+        if ($this->db->getDatabase()==Malli::PGSQL) {
             $s = "$s1) $s2) returning chain;";
         } else {
             $s = "$s1) $s2);";

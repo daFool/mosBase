@@ -33,7 +33,11 @@ create function isoLuku(luku bigint) returns numeric as '
     declare k numeric;
         
     begin
-        i := floor(log(1000,luku));
+        if luku is null or luku=0 then
+            i:=0;
+        else
+            i := floor(log(1000,luku));
+        end if;
         k := round((luku::numeric*100 / pow(1000,i))) / 100;
         return k;
     end;
@@ -51,7 +55,11 @@ create function isoLukuLiite(luku bigint) returns varchar as '
 
     begin
         liitteet := ARRAY[''B'', ''kB'', ''MB'', ''GB'', ''TB'', ''PB'', ''YB''];
-        i := floor(log(1000,luku));
+        if luku is null or luku=0 then
+            i:=0;
+        else
+            i := floor(log(1000,luku));
+        end if;
         l := liitteet[i+1];
         return l;
     end;
