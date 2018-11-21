@@ -1,9 +1,9 @@
-drop function if exists isoLuku(bigint);
-drop function if exists isoLukuLiite(bigint);
-drop function if exists stringiLuku(bigint);
-drop function if exists isoSkaala(bigint, char(1));
+drop function if exists iecLuku(bigint);
+drop function if exists iecLukuLiite(bigint);
+drop function if exists stringiLevyLuku(bigint);
+drop function if exists iecSkaala(bigint, char(1));
 
-create function iecSkaala(luku bigint, liite char(2)) returns numeric as '
+create function iecSkaala(luku bigint, liite char(3)) returns numeric as '
     declare i int;
     declare k numeric;
     declare liitteet varchar[];
@@ -49,7 +49,7 @@ create function iecLukuLiite(luku bigint) returns varchar as '
     declare i int;
     declare k numeric;
     declare tulos varchar(255);
-    declare l varchar(2);
+    declare l varchar(3);
     declare alku varchar(255);
     declare liitteet varchar[];
 
@@ -68,7 +68,7 @@ create function iecLukuLiite(luku bigint) returns varchar as '
 create function stringiLevyLuku(luku bigint) returns varchar as '
     declare i int;
     declare k numeric;
-    declare l varchar(2);
+    declare l varchar(3);
     declare alku varchar(255);
     
     begin
