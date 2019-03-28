@@ -280,6 +280,26 @@ class Malli
         return false;
     }
     
+    protected function arrayToString(array $arr) : string
+    {
+        if(!is_array($arr)) {
+            return $arr;
+        }
+        $s="{";
+        $i=0;
+        foreach($arr as $a) {
+            if(is_array($a)) {
+                $a = $this->arrayToString($a);
+            }
+            if($i>0) {
+                $s.=", ";
+            }
+            $s.=is_null($a)?"null":$a;
+            $i++;
+        }
+        $s.="}";
+        return $s;
+    }
     /**
      * Rakennetaan päivityslause ja kootaan data
      * @param array $data Data, jolla päivitetään
@@ -299,7 +319,11 @@ class Malli
                 continue;
             }
             $s.=", $key=:$key";
-            $d[$key]=$value;
+            if(is_array($data[$key])) {
+                $d[$key]=$this->arrayToString($data[$key]);
+            } else {
+                $d[$key]=$data[$key];    
+            } 
         }
         $s.=" {$r["w"]}";
         $d = array_merge($d, $r["d"]);
@@ -321,7 +345,11 @@ class Malli
             }
             $s1.=", $key";
             $s2.=", :$key";
-            $d[$key]=$data[$key];
+            if(is_array($data[$key])) {
+                $d[$key]=$this->arrayToString($data[$key]);
+            } else {
+                $d[$key]=$data[$key];    
+            }            
         }
         if ($this->db->getDatabase()=='pgsql') {
             $s = $s1.")".$s2.") returning *;";
@@ -348,11 +376,10 @@ class Malli
             $insert=true;
             list($s, $d)=$this->insert($data);
         }
-            
+        $m = sprintf(_("%s (%s)"), $s, serialize($d));
+        $this->log->l(log::MOSBASE, $m, __FILE__, __METHOD__, __LINE__, log::DEBUGMB);            
         $st = $this->pdoPrepare($s, $this->db);
         $this->pdoExecute($st, $d);
-        $m = sprintf(_("%s (%s)"), $s, serialize($d));
-        $this->log->l(log::MOSBASE, $m, __FILE__, __METHOD__, __LINE__, log::DEBUGMB);
         $this->log->l(log::MOSBASE, _("Onnistui"), __FILE__, __METHOD__, __LINE__, log::DEBUGMB);
 
         if ($insert && $this->db->getDatabase()==malli::PGSQL) {
