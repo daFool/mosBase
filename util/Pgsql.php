@@ -207,4 +207,53 @@ trait Pgsql
         $this->pdoExecute($st, $d);
         return $st->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Postgresql string array to php-array
+     *
+     * This function is lifted from
+     * https://stackoverflow.com/questions/3068683/convert-postgresql-array-to-php-array
+     *
+     * @param string $s string to parse
+     * @param int $start start position on string
+     * @param int $end end position on string
+     *
+     * @return mixed array on success or null on failure
+     * */
+    function pg_array_parse($s, $start = 0, &$end = null)
+    {
+        if (empty($s) || $s[0] != '{') return null;
+        $return = array();
+        $string = false;
+        $quote='';
+        $len = strlen($s);
+        $v = '';
+        for ($i = $start + 1; $i < $len; $i++) {
+            $ch = $s[$i];
+
+            if (!$string && $ch == '}') {
+                if ($v !== '' || !empty($return)) {
+                    $return[] = $v;
+                }
+                $end = $i;
+                break;
+            } elseif (!$string && $ch == '{') {
+                $v = $this->pg_array_parse($s, $i, $i);
+            } elseif (!$string && $ch == ','){
+                $return[] = $v;
+                $v = '';
+            } elseif (!$string && ($ch == '"' || $ch == "'")) {
+                $string = true;
+                $quote = $ch;
+            } elseif ($string && $ch == $quote && $s[$i - 1] == "\\") {
+                $v = substr($v, 0, -1) . $ch;
+            } elseif ($string && $ch == $quote && $s[$i - 1] != "\\") {
+                $string = false;
+            } else {
+                $v .= $ch;
+            }
+        }   
+
+        return $return;
+    }
 }
