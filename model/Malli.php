@@ -488,7 +488,7 @@ class Malli
                     break;
                 case malli::STRINGA:
                     if ($dtype!=malli::PGSQL) {
-                        continue;
+                        continue 2;
                     }
                     list($va,$op) = $this->kasitteleStringitaulu($v);
                     $so.=sprintf(
