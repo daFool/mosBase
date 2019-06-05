@@ -49,13 +49,14 @@ class Log
     
     private $db;
     
-    public const FATAL = 'FATAL';
-    public const ERROR = 'ERROR';
-    public const INFO = 'INFO';
-    public const AUDIT = 'AUDIT';
-    public const DEBUG = 'DEBUG';
-    public const DEBUGMB = 'DEBUGMB';
-    public const MOSBASE = 'mosBase';
+    const FATAL = 'FATAL';
+    const ERROR = 'ERROR';
+    const WARN = "WARN";
+    const INFO = 'INFO';
+    const AUDIT = 'AUDIT';
+    const DEBUG = 'DEBUG';
+    const DEBUGMB = 'DEBUGMB';
+    const MOSBASE = 'mosBase';
     
     private const SELAIN = 'selain';
     /**
@@ -70,10 +71,11 @@ class Log
         $this->levels = array(
                         log::FATAL=>0,
                         log::ERROR=>1,
-                        log::INFO=>2,
-                        log::AUDIT=>3,
-                        log::DEBUG=>4,
-                        log::DEBUGMB=>5
+			log::WARN=>2,
+                        log::INFO=>3,
+                        log::AUDIT=>4,
+                        log::DEBUG=>5,
+                        log::DEBUGMB=>6
         );
         $this->level=$this->levels[$level]??4;
         $this->db=$db;
